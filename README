@@ -1,0 +1,28 @@
+User Mannul
+
+Manager:
+    Set up shift sheet
+        Set up an Excel sheet with title column:
+            Sun     Mon     Tue      Wed     Thu     Fri     Sat
+        Each column represents schedule of a day of the week
+        In any column, there are multiple cells, each representing a shift
+        In any cell, input time and number of students needed
+        *Note there's an empty column on the right of each timed column, for student to fill out individually
+        *See example Excel sheet "schedule_sample.xlsx" for reference
+    Broadcast the sample shift sheet to student group
+    Collecting student responses and put in folder "Responses"
+    Double click executable file
+    Grab the result schedule "result_schedule_<time_generated>.xlsx" from the folder
+
+Student:
+    Grab the sample shift sheet from Manager
+    Open and input availability:
+        On the right of each time slot input
+            1: available, not prefered
+            2: prefered
+    Save a local copy as "schedule_filled_<name>.xlsx"
+    Send back the filled sheet
+    
+
+
+                
