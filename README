@@ -10,12 +10,8 @@ Manager:
         *Note there's an empty column on the right of each timed column, for student to fill out individually
         *See example Excel sheet "schedule_sample.xlsx" for reference
     Broadcast the sample shift sheet to student group
-    Collect student responses and put in folder "Responses"
-    Double click executable file, then result schedule will be generated shortly
-    Grab the result schedule "result_schedule_<time_generated>.xlsx" from the folder
-    
 
-Student:
+Student
     Grab the sample shift sheet from Manager
     Open and input availability:
         On the right of each time slot input
@@ -24,6 +20,7 @@ Student:
     Save a local copy as "schedule_filled_<name>.xlsx"
     Send back the filled sheet
 
-
-
-                
+Manager:
+    Collect student responses and put in folder "Responses"
+    Double click executable file, then result schedule will be generated shortly
+    Grab the result schedule "result_schedule_<time_generated>.xlsx" from the folder
