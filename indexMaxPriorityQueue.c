@@ -23,8 +23,10 @@ int swim(indexMaxPriorityQueue* pPQ, int keyPosition);
 int sink(indexMaxPriorityQueue* pPQ, int keyPosition);
 int insert(indexMaxPriorityQueue* pPQ, int keyId, float value);
 
-int delete();
+int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal);
 
+int peekTopId(indexMaxPriorityQueue* pPQ);
+/*
 int main(int argc, char* argv[])
 {   
     indexMaxPriorityQueue pq;
@@ -34,10 +36,12 @@ int main(int argc, char* argv[])
     insert(&pq, 2, 3);
     insert(&pq, 3, 4);
     insert(&pq, 4, 8);
+    update(&pq, 4, 0);
     printPM(&pq);
     printIM(&pq);
+    printf("top id %d\n", peekTopId(&pq));
 }
-
+*/
 int printPM(indexMaxPriorityQueue *pPQ){
     int size = pPQ->size;
     int i;
@@ -132,4 +136,23 @@ int insert(indexMaxPriorityQueue* pPQ, int keyId, float value){
     }
     perror("queue is currently full, consider increase the slot\n");
     return 1;
+}
+
+int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal){
+    int initVal = pPQ->values[keyId];
+    pPQ->values[keyId] = newVal;
+    int keyPosition = pPQ->positionMap[keyId];
+    if(initVal > newVal){
+        sink(pPQ, keyPosition);   
+    }else if(initVal < newVal){
+        swim(pPQ, keyPosition);
+    }else {
+        return 1;
+    }
+    return 0;
+}
+
+int peekTopId(indexMaxPriorityQueue* pPQ){
+    int topId = pPQ->inverseMap[0];
+    return topId;
 }
