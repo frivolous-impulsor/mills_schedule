@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDEXMAXPRIORITYQUEUE_H
+#define INDEXMAXPRIORITYQUEUE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,20 +7,22 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
-#include "indexMaxPriorityQueue.c"
 
 #define MAX_QUEUE_SLOT 20
 #define MAX_NAME_LENGTH 16
 
-struct indexMaxPriorityQueue;
+typedef struct
+{
+    int size;
+    float values[MAX_QUEUE_SLOT];   //return the priority value given a keyIndex
+    int positionMap[MAX_QUEUE_SLOT];//return the position of a node given a keyIndex
+    int inverseMap[MAX_QUEUE_SLOT]; //return the keyIndex of a node given a position
+} indexMaxPriorityQueue;
 
-int printPM(indexMaxPriorityQueue *pPQ);
-int printIM(indexMaxPriorityQueue *pPQ);
-int swap(indexMaxPriorityQueue* pPQ, int position1, int position2);
-int swim(indexMaxPriorityQueue* pPQ, int keyPosition);
-int sink(indexMaxPriorityQueue* pPQ, int keyPosition);
 int insert(indexMaxPriorityQueue* pPQ, int keyId, float value);
 
 int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal);
 
 int peekTopId(indexMaxPriorityQueue* pPQ);
+
+#endif
