@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
-#include "./indexMaxPriorityQueue.c"
+#include "indexMaxPriorityQueue.h"
 
 #define DAYS_IN_WEEK 7
 #define SLOTS_IN_DAY 10
