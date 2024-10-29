@@ -28,7 +28,10 @@ int main(int argc, char* argv[])
     insert(&pq, 2, 3);
     insert(&pq, 3, 4);
     insert(&pq, 4, 8);
-    update(&pq, 4, 0);
+    insert(&pq, 5, 10);
+    insert(&pq, 6, 8);
+    insert(&pq, 7, 22);
+    update(&pq, 8, 9);
     printPM(&pq);
     printIM(&pq);
     printf("top id %d\n", peekTopId(&pq));
