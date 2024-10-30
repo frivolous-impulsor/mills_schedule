@@ -97,6 +97,12 @@ int insert(indexMaxPriorityQueue* pPQ, int keyId, float value){
     return 1;
 }
 
+int remove(indexMaxPriorityQueue* pPQ, int keyId){
+    
+    
+    return 0;
+}
+
 int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal){
     int initVal = pPQ->values[keyId];
     pPQ->values[keyId] = newVal;
