@@ -97,10 +97,16 @@ int insert(indexMaxPriorityQueue* pPQ, int keyId, float value){
     return 1;
 }
 
-int remove(indexMaxPriorityQueue* pPQ, int keyId){
+int removeTop(indexMaxPriorityQueue* pPQ){//not tested yet
+    if(pPQ->size < 1){
+        perror("empty PQ, can't remove");
+    }
+    int idTop = pPQ->inverseMap[0];
+    swap(pPQ, 0, pPQ->size - 1);
+    pPQ->size--;
+    sink(pPQ, 0);
     
-    
-    return 0;
+    return idTop;
 }
 
 int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal){

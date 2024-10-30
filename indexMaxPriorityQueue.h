@@ -21,7 +21,7 @@ typedef struct
 
 int insert(indexMaxPriorityQueue* pPQ, int keyId, float value);
 
-int remove(indexMaxPriorityQueue* pPQ, int keyId);
+int removeTop(indexMaxPriorityQueue* pPQ);
 
 int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal);
 

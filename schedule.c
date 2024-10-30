@@ -28,15 +28,15 @@ float availableArray[MAX_QUEUE_SLOT];
 
 //Update prefMatrixArray and availableArray from csv grabed from python convert
 //TODO
+int preprocessing(){
+    return 0;
+}
 
-int main(int argc, char* argv[])
-{   
+
+int arrange(){
     int day, slot, spot, peopleNeeded, id;
     float hours;
 
-
-
-    
     for(day = 0; day < DAYS_IN_WEEK; day++){
         for(slot = 0; slot < SLOTS_IN_DAY; slot++){
             peopleNeeded = needMatrix[day][slot];
@@ -52,9 +52,18 @@ int main(int argc, char* argv[])
                 availableArray[id] -= hours;
                 //remove the updated studen from PQ
                 //TODO
-                
+
             }
         }
     }
+    return 0;
+}
+
+
+
+int main(int argc, char* argv[])
+{   
+
     
+    return 0;    
 }
