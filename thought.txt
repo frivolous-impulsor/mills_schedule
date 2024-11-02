@@ -1,0 +1,29 @@
+Basic Work Flow
+Preconvertion: Grab willingness(python) to individual csv
+
+Preprocessing: update prefMatrixArray and availableHoursArray from csv grabed from python convert
+
+Arrangement: for each day, 
+                for each slot
+                    calc priority(willingness, lefthours, hasn't worked that day already...) of each available student and insert(update) at PQ
+                    for number of spots needed,
+                        peek the student of top priority and update their priority to zero
+                        update schedule struct with student ids filled
+
+Postprocessing: put schedule in resulting csv
+
+Postconversion: convert csv to excel
+
+excel to csv, csv format:'
+
+SUN,,MON,,TUE,,WED,,THU,,FRI,,SAT,
+15:00-19:00,,10:30-11:30,,,,,,,,,,,
+oliver,,Starscream,,,,,,,,,,,
+19:00-23:00,,11:30-13:30,,,,,,,,,,,
+"optimus, bumblebee, arcee",,JetFire,,,,,,,,,,,
+,,13:30-16:30,,,,,,,,,,,
+,,"Megatron, Soundwave",,,,,,,,,,,
+,,16:00-19:00,,,,,,,,,,,
+,,"ShockWave, Detective, Jazz",,,,,,,,,,,
+,,19:00-23:00,,,,,,,,,,,
+,,"WheelJack, Grimlock, Ratchet",,,,,,,,,,,
