@@ -10,13 +10,11 @@
 const int DAYS_IN_WEEK = 7;
 const int SLOTS_IN_DAY = 10;
 
-const char responsePath[] = "Response";
 
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 float hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
 int updatedPQ[MAX_QUEUE_SLOT];
 
-char files[MAX_QUEUE_SLOT][MAX_NAME_LENGTH*2];
 
 char student[MAX_QUEUE_SLOT][MAX_NAME_LENGTH];
 
@@ -35,14 +33,24 @@ willTuple preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY][16];
 float availableHoursArray[MAX_QUEUE_SLOT];  
 //each element with index i denotes the remaining available hours of the student with id i
 
-int gatherCSVs(){
-    DIR *dir;
-    dir = opendir(responsePath);
-}
+int gatherCSVs(const char *dirName, char *files);
 
 int preprocessing(){
     //gather csv files from responses
+    int fileCount;
+    const char responsePath[] = "./ProcessData/responsesCSV";
+    char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
 
+    fileCount = gatherCSVs(responsePath, files);
+    char filePath[MAX_NAME_LENGTH*2];
+    printf("total csv files %d\n", fileCount);
+    for(int i = 0; i< fileCount; i++){
+        strcpy(filePath, files+i*MAX_NAME_LENGTH*2);
+        printf("file name: %s\n", filePath);
+    }
+    
+
+    free(files);
     return 0;
 }
 //
@@ -79,8 +87,26 @@ int arrange(){
 
 int main(int argc, char* argv[])
 {   
-    willTuple testT = {.id = 0, .willingness =3};
-    preferenceMatrix[0][0][0] = testT;
-    printf("id %d has willingness %d\n", preferenceMatrix[0][0][0].id,preferenceMatrix[0][0][0].willingness);
+    preprocessing();
     return 0;    
+}
+
+int gatherCSVs(const char *dirName, char *files){
+    DIR *dir;
+    struct dirent *entry;
+    dir = opendir(dirName);
+    if(dir == NULL){
+        printf("unable to open directory, check if Responses exists\n");
+        return -1;
+    }
+    int fileCount = 0;
+    while((entry = readdir(dir))){
+        char *ext = strrchr(entry->d_name, '.');
+        if( (ext != NULL)  && (!strcmp(ext, ".csv"))  ){
+            strcpy(files+fileCount*MAX_NAME_LENGTH*2, entry->d_name);
+            fileCount++;
+        }
+    }
+    closedir(dir);
+    return fileCount;
 }
