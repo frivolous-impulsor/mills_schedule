@@ -56,7 +56,7 @@ strtok_single (char * str, char const * delims)
 
   return ret;
 }
-
+//strictly only accepting csv file that has "DAY,NUM,NUM,NUM.." format and 2D int array for nums in each day 
 int csv2array(char *filePath, int *array){
     char buffer[255];
     int i = 0; 
@@ -76,7 +76,7 @@ int csv2array(char *filePath, int *array){
         while(token != NULL){
             tok = (char)(*token);
             val = tok - '0';
-            if(val < 0 || val > 4){
+            if(val < 0 || val > 9){
                 val = 0;
             }
             *(array+i*SLOTS_IN_DAY + j) = val;
@@ -91,39 +91,20 @@ int csv2array(char *filePath, int *array){
 
 int templateRead(){
     char templatePath[] = "ProcessData/schedule_template.csv";
-    char buffer[255];
-    bool validSlot[DAYS_IN_WEEK];
-    bool isValRow = false;
-    FILE *template = fopen(templatePath, "r");
-    if(template == NULL){
-        printf("no template found\n");
-        return 1;
-    }
-    printf("found template\n");
-    fgets(buffer, sizeof(buffer), template);
-    //enter the first slot
-    while (fgets(buffer, sizeof(buffer), template)){
-        //get tokens 
-        char* token;
-        token = strtok_single(buffer, ",");
-        while(token!=NULL){
-            printf(" <%s> ", token);
-
-            token = strtok_single(NULL, ",");
-        }
-        printf("\n");
-    }
-    fclose(template);
+    csv2array(templatePath, (int*)needMatrix);
     return 0;
 }
+
+
 
 int gatherCSVs(const char *dirName, char *files);
 
 int preprocessing(){
     //fill in needMatrix
-
+    templateRead();
 
     //gather csv files from responses
+
     int fileCount;
     const char responsePath[] = "./ProcessData/responsesCSV";
     char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
@@ -172,8 +153,7 @@ int arrange(){
 int main(int argc, char* argv[])
 {   
     int i, j;
-    char filePath[] = "ProcessData/schedule_template.csv";
-    csv2array(filePath, (int*)needMatrix);
+    templateRead();
     //preprocessing();
     for(i = 0; i<7; i++){
         for(j=0; j< SLOTS_IN_DAY; j++){
