@@ -16,14 +16,10 @@ Postconversion: convert csv to excel
 
 excel to csv, csv format:'
 
-SUN,,MON,,TUE,,WED,,THU,,FRI,,SAT,
-15:00-19:00,,10:30-11:30,,,,,,,,,,,
-oliver,,Starscream,,,,,,,,,,,
-19:00-23:00,,11:30-13:30,,,,,,,,,,,
-"optimus, bumblebee, arcee",,JetFire,,,,,,,,,,,
-,,13:30-16:30,,,,,,,,,,,
-,,"Megatron, Soundwave",,,,,,,,,,,
-,,16:00-19:00,,,,,,,,,,,
-,,"ShockWave, Detective, Jazz",,,,,,,,,,,
-,,19:00-23:00,,,,,,,,,,,
-,,"WheelJack, Grimlock, Ratchet",,,,,,,,,,,
+SUN, 3,2,3,,,
+MON, 2,1,3,2,3,
+TUE, 2,1,3,2,3,
+WED, 2,1,3,2,3,
+THU, 2,1,3,2,3,
+FRI, 2,1,3,2,3,
+SAT, 2,1,3,2,3,

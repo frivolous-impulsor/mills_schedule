@@ -6,7 +6,7 @@
 #include <time.h>
 #include <dirent.h>
 #include <stdbool.h>
-#include "indexMaxPriorityQueue.h"
+#include "indexMaxPriorityQueue.c"
 
 const int DAYS_IN_WEEK = 7;
 const int SLOTS_IN_DAY = 10;
@@ -57,32 +57,34 @@ strtok_single (char * str, char const * delims)
   return ret;
 }
 
-int csv2array(char *filePath, char *array, int eleLength){
+int csv2array(char *filePath, int *array){
     char buffer[255];
     int i = 0; 
     int j = 0;
+    int val;
     FILE *file = fopen(filePath, "r");
     if(file == NULL){
         printf("no template found\n");
         return 1;
     }
-    fgets(buffer, sizeof(buffer), file);
    
     while(fgets(buffer, sizeof(buffer), file)){
         char* token;
         token = strtok_single(buffer, ",");
-        char tok[32];
-        strcpy(tok, token);
-        strcpy((array+14*eleLength*i + eleLength*j), tok);
-        i++;
+        token = strtok_single(NULL, ",");
+        char tok;
         while(token != NULL){
+            tok = (char)(*token);
+            val = tok - '0';
+            if(val < 0 || val > 4){
+                val = 0;
+            }
+            *(array+i*SLOTS_IN_DAY + j) = val;
             token = strtok_single(NULL, ",");
-            char tok[32];
-            strcpy(tok, token);
-            strcpy((array+14*eleLength*i + eleLength*j), tok);
-            i++;
+            j++;
         }
-        j++;
+        j= 0;
+        i++;
     }
     return 0;
 }
@@ -169,12 +171,17 @@ int arrange(){
 
 int main(int argc, char* argv[])
 {   
+    int i, j;
     char filePath[] = "ProcessData/schedule_template.csv";
-    char *csvData = malloc(sizeof(char)*32*14*10);
-    csv2array(filePath, csvData, 32);
-    printf("%c",csvData[0]);
+    csv2array(filePath, (int*)needMatrix);
     //preprocessing();
-    free(csvData);
+    for(i = 0; i<7; i++){
+        for(j=0; j< SLOTS_IN_DAY; j++){
+            printf(" |%d| ", needMatrix[i][j]);
+
+        }
+        printf("\n");
+    }
     return 0;    
 }
 
