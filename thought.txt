@@ -5,7 +5,7 @@ Preprocessing: update prefMatrixArray and availableHoursArray from csv grabed fr
 
 Arrangement: for each day, 
                 for each slot
-                    calc priority(willingness, lefthours, hasn't worked that day already...) of each available student and insert(update) at PQ
+                    calc priority(willingness, lefthours, hasn't worked that day already...) of each available student and update at PQ
                     for number of spots needed,
                         peek the student of top priority and update their priority to zero
                         update schedule struct with student ids filled
