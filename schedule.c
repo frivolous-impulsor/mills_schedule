@@ -27,12 +27,33 @@ typedef struct{
     int willingness;
 } willTuple;
 
-typedef struct {
+typedef struct willNode{
     willTuple tuple;
-    willChain* nextWill;
-} willChain;    
+    willNode* nextWill;
+} willNode;    
 
-willChain* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+typedef struct linkedWill{
+    willNode *headNode;
+    willNode *tailNode;    
+} linkedWill;
+
+int initEptLink(linkedWill *link, willNode *node){
+    if(node->nextWill != NULL){
+        return 1;
+    }
+    link->headNode = node;
+    link->tailNode = node;
+    return 0;
+}
+
+int append_Link(linkedWill* link, willTuple* tuple){
+    willNode currentNode = {.tuple = *tuple, .nextWill = NULL};
+    (*(link->tailNode)).nextWill = &currentNode;
+    link->tailNode = &currentNode;
+}
+
+linkedWill* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+
 
 float availableHoursArray[MAX_QUEUE_SLOT];  
 //each element with index i denotes the remaining available hours of the student with id i
@@ -102,7 +123,19 @@ int templateRead(){
 
 int gatherCSVs(const char *dirName, char *files);
 
-int preprocessing(){
+int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    int i, j;
+    willTuple startingTuple = {.id = -1, .willingness = 0};
+    willNode startingNode = {.tuple = startingTuple, .nextWill = NULL};
+    for(i = 0; i<DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            linkedWill link = {.headNode = &startingNode, .tailNode = &startingNode};
+            matrxi[i][j] = &link;
+        }
+    }
+}
+
+int preprocessing(indexMaxPriorityQueue shiftPQ){
     //fill in needMatrix
     templateRead();
 
@@ -115,11 +148,11 @@ int preprocessing(){
     fileCount = gatherCSVs(responsePath, files);
     char filePath[MAX_NAME_LENGTH*2];
     int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+    linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+    initializeGeneralWillMatrix(&generalWillMatrix);
     int i,j;
     int willingness;
-    willTuple currentWill;
-    indexMaxPriorityQueue shiftPQ;
-    shiftPQ.size = 0;
+    
     printf("total csv files %d\n", fileCount);
     for(int i = 0; i< fileCount; i++){
         strcpy(filePath, files+i*MAX_NAME_LENGTH*2);
@@ -131,9 +164,8 @@ int preprocessing(){
             for(j = 0; j<SLOTS_IN_DAY; j++){
                 willingness = willMatrix[i][j];
                 if(willingness==1 || willingness==2){
-                    currentWill.id = id;
-                    currentWill.willingness = willingness;
-                    preferenceMatrix[i][j] = 
+                    willTuple currentWill = {.id = id, .willingness = willingness};
+                    append_Link(generalWillMatrix[i][j], &currentWill);                   
                 }
             }
         }
@@ -177,7 +209,9 @@ int main(int argc, char* argv[])
 {   
     int i, j;
     templateRead();
-    //preprocessing();
+    indexMaxPriorityQueue shiftPQ;
+    shiftPQ.size = 0;
+    //preprocessing(&shiftPQ);
     for(i = 0; i<7; i++){
         for(j=0; j< SLOTS_IN_DAY; j++){
             printf(" |%d| ", needMatrix[i][j]);
