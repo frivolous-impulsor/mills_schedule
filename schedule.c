@@ -13,9 +13,11 @@ const int SLOTS_IN_DAY = 10;
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 float hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
 int updatedPQ[MAX_QUEUE_SLOT];
-
+float availableHoursArray[MAX_QUEUE_SLOT];  
 
 char student[MAX_QUEUE_SLOT][MAX_NAME_LENGTH];
+
+
 
 typedef struct{
     int scheduleId;
@@ -55,7 +57,6 @@ int append_Link(linkedWill* link, willTuple* tuple){
 linkedWill* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 
 
-float availableHoursArray[MAX_QUEUE_SLOT];  
 //each element with index i denotes the remaining available hours of the student with id i
 char *strtok_single (char * str, char const * delims)
 {
@@ -140,7 +141,7 @@ int preprocessing(indexMaxPriorityQueue shiftPQ){
     templateRead();
 
     //gather csv files from responses
-    int id = 0;
+    int id;
     int fileCount;
     const char responsePath[] = "./ProcessData/responsesCSV";
     char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
@@ -154,11 +155,11 @@ int preprocessing(indexMaxPriorityQueue shiftPQ){
     int willingness;
     
     printf("total csv files %d\n", fileCount);
-    for(int i = 0; i< fileCount; i++){
+    for(id = 0; i< fileCount; i++){
         strcpy(filePath, files+i*MAX_NAME_LENGTH*2);
         printf("start integrating file: %s\n", filePath);
         
-        //for each csv, update preferenceMatrix, available hours, indexPQ
+        //for each csv, update generalWillMatrix, available hours, indexPQ
         csv2array(filePath, (int*)willMatrix);
         for(i = 0; i<DAYS_IN_WEEK; i++){
             for(j = 0; j<SLOTS_IN_DAY; j++){
@@ -169,6 +170,8 @@ int preprocessing(indexMaxPriorityQueue shiftPQ){
                 }
             }
         }
+        availableHoursArray[id] = 10;
+        strcpy(student[id], filePath);
         insert(&shiftPQ, id, 0);
         id++;
     }
