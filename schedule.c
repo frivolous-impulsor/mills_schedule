@@ -6,7 +6,7 @@
 #include <time.h>
 #include <dirent.h>
 #include <stdbool.h>
-#include "indexMaxPriorityQueue.c"
+#include "indexMaxPriorityQueue.h"
 
 const int DAYS_IN_WEEK = 7;
 const int SLOTS_IN_DAY = 10;
@@ -27,13 +27,16 @@ typedef struct{
     int willingness;
 } willTuple;
 
-willTuple preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY][16];
+typedef struct {
+    willTuple tuple;
+    willChain* nextWill;
+} willChain;    
+
+willChain* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 
 float availableHoursArray[MAX_QUEUE_SLOT];  
 //each element with index i denotes the remaining available hours of the student with id i
-
-char *
-strtok_single (char * str, char const * delims)
+char *strtok_single (char * str, char const * delims)
 {
   static char  * src = NULL;
   char  *  p,  * ret = 0;
@@ -91,11 +94,11 @@ int csv2array(char *filePath, int *array){
 
 int templateRead(){
     char templatePath[] = "ProcessData/schedule_template.csv";
+    char shiftHourPath[] = "ProcessData/schedule_shiftHour.csv";
     csv2array(templatePath, (int*)needMatrix);
+    csv2array(shiftHourPath, (float*)hoursMatrix);
     return 0;
 }
-
-
 
 int gatherCSVs(const char *dirName, char *files);
 
@@ -104,18 +107,38 @@ int preprocessing(){
     templateRead();
 
     //gather csv files from responses
-
+    int id = 0;
     int fileCount;
     const char responsePath[] = "./ProcessData/responsesCSV";
     char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
 
     fileCount = gatherCSVs(responsePath, files);
     char filePath[MAX_NAME_LENGTH*2];
+    int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+    int i,j;
+    int willingness;
+    willTuple currentWill;
+    indexMaxPriorityQueue shiftPQ;
+    shiftPQ.size = 0;
     printf("total csv files %d\n", fileCount);
     for(int i = 0; i< fileCount; i++){
         strcpy(filePath, files+i*MAX_NAME_LENGTH*2);
         printf("start integrating file: %s\n", filePath);
-        //for each csv, 
+        
+        //for each csv, update preferenceMatrix, available hours, indexPQ
+        csv2array(filePath, (int*)willMatrix);
+        for(i = 0; i<DAYS_IN_WEEK; i++){
+            for(j = 0; j<SLOTS_IN_DAY; j++){
+                willingness = willMatrix[i][j];
+                if(willingness==1 || willingness==2){
+                    currentWill.id = id;
+                    currentWill.willingness = willingness;
+                    preferenceMatrix[i][j] = 
+                }
+            }
+        }
+        insert(&shiftPQ, id, 0);
+        id++;
     }
     
 
