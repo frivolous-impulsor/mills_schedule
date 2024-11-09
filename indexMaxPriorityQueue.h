@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define MAX_QUEUE_SLOT 20
-#define MAX_NAME_LENGTH 16
+#define MAX_NAME_LENGTH 32
 
 typedef struct
 {

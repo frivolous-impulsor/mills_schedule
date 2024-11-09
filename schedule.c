@@ -55,50 +55,6 @@ void append_Link(linkedWill* link, willTuple* tuple){
 linkedWill* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 
 
-//each element with index i denotes the remaining available hours of the student with id i
-char *strtok_single (char * str, char const * delims);
-//strictly only accepting csv file that has "DAY,NUM,NUM,NUM.." format and 2D int array for nums in each day 
-int csv2array(char *filePath, int *array){
-    char buffer[255];
-    int i = 0; 
-    int j = 0;
-    int val;
-    FILE *file = fopen(filePath, "r");
-    if(file == NULL){
-        printf("no template found\n");
-        return 1;
-    }
-   
-    while(fgets(buffer, sizeof(buffer), file)){
-        char* token;
-        token = strtok_single(buffer, ",");
-        token = strtok_single(NULL, ",");
-        char tok;
-        while(token != NULL){
-            tok = (char)(*token);
-            val = tok - '0';
-            if(val < 0 || val > 9){
-                val = 0;
-            }
-            *(array+i*SLOTS_IN_DAY + j) = val;
-            token = strtok_single(NULL, ",");
-            j++;
-        }
-        j= 0;
-        i++;
-    }
-    return 0;
-}
-
-int templateRead(){
-    char templatePath[] = "ProcessData/schedule_template.csv";
-    char shiftHourPath[] = "ProcessData/schedule_shiftHour.csv";
-    csv2array(templatePath, (int*)needMatrix);
-    csv2array(shiftHourPath, (int*)hoursMatrix);
-    return 0;
-}
-
-int gatherCSVs(const char *dirName, char *files);
 
 int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     int i, j;
@@ -113,6 +69,33 @@ int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     return 0;
 }
 
+void test(){
+    linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+    initializeGeneralWillMatrix(generalWillMatrix);
+    printf((*(generalWillMatrix[0][0])->headNode))
+}
+
+//each element with index i denotes the remaining available hours of the student with id i
+char *strtok_single (char * str, char const * delims);
+//strictly only accepting csv file that has "DAY,NUM,NUM,NUM.." format and 2D int array for nums in each day 
+int csv2array(char *filePath, int *array);
+
+int templateRead();
+
+void printCSV(int* csvMatrix, char* name){
+    int i, j;
+    for(i = 0; i < DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            printf(" |%d| ", *(csvMatrix+i*SLOTS_IN_DAY +j));
+        }
+        printf("\n");
+    }
+}
+
+int gatherCSVs(const char *dirName, char *files);
+
+
+
 int preprocessing(indexMaxPriorityQueue* shiftPQ){
     //fill in needMatrix
     templateRead();
@@ -120,11 +103,10 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     //gather csv files from responses
     int id;
     int fileCount;
-    const char responsePath[] = "./ProcessData/responsesCSV";
+    char *responsePath = "./PRDAT/RSP/";
     char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
 
     fileCount = gatherCSVs(responsePath, files);
-    char filePath[MAX_NAME_LENGTH*2];
     int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
     linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
     initializeGeneralWillMatrix(generalWillMatrix);
@@ -132,12 +114,19 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     int willingness;
     
     printf("total csv files %d\n", fileCount);
-    for(id = 0; i< fileCount; i++){
-        strcpy(filePath, files+i*MAX_NAME_LENGTH*2);
+    printf("filecount: %d\n", fileCount);
+    for(id = 0; id< fileCount; id++){
+        char *fileName;
+        strcpy(fileName, files+id*MAX_NAME_LENGTH*2);
+        char *filePath = malloc(strlen(fileName) + strlen(responsePath) + 1);
+        strcpy(filePath, responsePath);
+        strcat(filePath, fileName);
         printf("start integrating file: %s\n", filePath);
         
         //for each csv, update generalWillMatrix, available hours, indexPQ
         csv2array(filePath, (int*)willMatrix);
+        printCSV((int*)willMatrix, filePath);
+        
         for(i = 0; i<DAYS_IN_WEEK; i++){
             for(j = 0; j<SLOTS_IN_DAY; j++){
                 willingness = willMatrix[i][j];
@@ -147,10 +136,12 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
                 }
             }
         }
+        /*
         availableHoursArray[id] = 10;
-        strcpy(student[id], filePath);
+        strcpy(student[id], "PRDAT/RSP/bumblebee.csv");
         insert(shiftPQ, id, 0);
-        id++;
+        */
+        free(filePath);
     }
     
 
@@ -167,14 +158,8 @@ int main(int argc, char* argv[])
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
-    preprocessing(&shiftPQ);
-    for(i = 0; i<7; i++){
-        for(j=0; j< SLOTS_IN_DAY; j++){
-            printf(" |%d| ", needMatrix[i][j]);
-
-        }
-        printf("\n");
-    }
+    //preprocessing(&shiftPQ);
+    test();
     return 0;    
 }
 
@@ -200,6 +185,47 @@ char *strtok_single (char * str, char const * delims)
   }
 
   return ret;
+}
+
+int templateRead(){
+    char peopleNeededPath[] = "PRDAT/peopleNeeded.csv";
+    char shiftHourPath[] = "PRDAT/shiftHour.csv";
+    csv2array(peopleNeededPath, (int*)needMatrix);
+    csv2array(shiftHourPath, (int*)hoursMatrix);
+    return 0;
+}
+
+
+int csv2array(char *filePath, int *array){
+    char buffer[255];
+    int i = 0; 
+    int j = 0;
+    int val;
+    FILE *file = fopen(filePath, "r");
+    if(file == NULL){
+        printf("no file found with name: %s\n", filePath);
+        return 1;
+    }
+   
+    while(fgets(buffer, sizeof(buffer), file)){
+        char* token;
+        token = strtok_single(buffer, ",");
+        token = strtok_single(NULL, ",");
+        char tok;
+        while(token != NULL){
+            tok = (char)(*token);
+            val = tok - '0';
+            if(val < 0 || val > 9){
+                val = 0;
+            }
+            *(array+i*SLOTS_IN_DAY + j) = val;
+            token = strtok_single(NULL, ",");
+            j++;
+        }
+        j= 0;
+        i++;
+    }
+    return 0;
 }
 
 int gatherCSVs(const char *dirName, char *files){
