@@ -45,12 +45,13 @@ void append_Link(linkedWill* link, willNode* node){
 
 int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     int i, j;
-    willNode *headNode = (willNode*)malloc(sizeof(willNode));
-    headNode->id = -1;
-    headNode->willingness = 0;
-    headNode->nextWill = NULL;
+    
     for(i = 0; i<DAYS_IN_WEEK; i++){
         for(j = 0; j<SLOTS_IN_DAY; j++){
+            willNode *headNode = (willNode*)malloc(sizeof(willNode));
+            headNode->id = -1;
+            headNode->willingness = 0;
+            headNode->nextWill = NULL;
             linkedWill *link = (linkedWill*)malloc(sizeof(linkedWill));
             link->headNode = headNode;
             link->tailNode = headNode;
@@ -100,16 +101,11 @@ void printGeneralWillMat(){
             linkedWill *currentLink = generalWillMatrix[i][j];
             willNode *currentNode = currentLink->headNode;
             while(1){
-                if(currentNode->id == -1){
-                    if(currentNode->nextWill == NULL){
-                        break;
-                    }
-                    currentNode = currentNode->nextWill;
-                    continue;
+                if(currentNode->id != -1){
+                    printf("(id: %d, will: %d) ", currentNode->id, currentNode->willingness);
                 }
-                printf("(id: %d, will: %d) ", currentNode->id, currentNode->willingness);
                 currentNode = currentNode->nextWill;
-                if(currentNode->nextWill == NULL){
+                if(currentNode == NULL){
                     break;
                 }
             }
@@ -183,17 +179,9 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
         
         free(filePath);
     }
-    linkedWill *link = generalWillMatrix[0][0];
-    willNode *currentNode = link->headNode;
+    
 
-    while(1){
-        printf("id: %d, will: %d\n", currentNode->id, currentNode->willingness);
-        if(currentNode->nextWill == NULL){
-            printf("end");
-            break;
-        }
-        currentNode = currentNode->nextWill;
-    }    
+    printGeneralWillMat();
 
     free(files);
     return 0;
@@ -201,6 +189,10 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
 //
 //TODO
 int arrange();
+
+void test(){
+    
+}
 
 int main(int argc, char* argv[])
 {   
