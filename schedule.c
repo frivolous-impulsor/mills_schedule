@@ -22,13 +22,10 @@ typedef struct{
     int resultSchedule[DAYS_IN_WEEK][SLOTS_IN_DAY][3];//id in each slot
 } schedule;
 
-typedef struct{
-    int id;
-    int willingness;
-} willTuple;
 
 typedef struct willNode{
-    willTuple tuple;
+    int id;
+    int willingness;
     struct willNode* nextWill;
 } willNode;    
 
@@ -37,43 +34,42 @@ typedef struct linkedWill{
     willNode *tailNode;    
 } linkedWill;
 
-int initEptLink(linkedWill *link, willNode *node){
-    if(node->nextWill != NULL){
-        return 1;
-    }
-    link->headNode = node;
+
+
+void append_Link(linkedWill* link, willNode* node){
+    link->tailNode->nextWill = node;
     link->tailNode = node;
-    return 0;
 }
-
-void append_Link(linkedWill* link, willTuple* tuple){
-    willNode currentNode = {.tuple = *tuple, .nextWill = NULL};
-    (*(link->tailNode)).nextWill = &currentNode;
-    link->tailNode = &currentNode;
-}
-
-linkedWill* preferenceMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 
 
 
 int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     int i, j;
-    willTuple startingTuple = {.id = -1, .willingness = 0};
-    willNode startingNode = {.tuple = startingTuple, .nextWill = NULL};
+    willNode *headNode = (willNode*)malloc(sizeof(willNode));
+    headNode->id = -1;
+    headNode->willingness = 0;
+    headNode->nextWill = NULL;
     for(i = 0; i<DAYS_IN_WEEK; i++){
         for(j = 0; j<SLOTS_IN_DAY; j++){
-            linkedWill link = {.headNode = &startingNode, .tailNode = &startingNode};
-            matrxi[i][j] = &link;
+            linkedWill *link = (linkedWill*)malloc(sizeof(linkedWill));
+            link->headNode = headNode;
+            link->tailNode = headNode;
+            matrxi[i][j] = link;
         }
     }
     return 0;
 }
 
-void test(){
-    linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
-    initializeGeneralWillMatrix(generalWillMatrix);
-    printf((*(generalWillMatrix[0][0])->headNode))
+void freeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    int i, j;
+    free(matrxi[0][0]->headNode);
+    for(i = 0; i<DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            free(matrxi[i][j]);
+        }
+    }
 }
+
 
 //each element with index i denotes the remaining available hours of the student with id i
 char *strtok_single (char * str, char const * delims);
@@ -104,21 +100,31 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     int id;
     int fileCount;
     char *responsePath = "./PRDAT/RSP/";
-    char *files = malloc(sizeof(char) * MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
+    char *files = malloc(sizeof(char)*MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
+    if(files == NULL){
+        fprintf(stderr, "Fatal: failed to allocate for files.\n");
+        
+    }
 
+    
     fileCount = gatherCSVs(responsePath, files);
+    for(int z = 0; z < fileCount; z++){
+        printf("%s\n", files+z*MAX_NAME_LENGTH*2);
+    }
     int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
-    linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
-    initializeGeneralWillMatrix(generalWillMatrix);
+    //initializeGeneralWillMatrix(generalWillMatrix);
     int i,j;
     int willingness;
     
     printf("total csv files %d\n", fileCount);
     printf("filecount: %d\n", fileCount);
     for(id = 0; id< fileCount; id++){
-        char *fileName;
+        char fileName[MAX_NAME_LENGTH*2];
         strcpy(fileName, files+id*MAX_NAME_LENGTH*2);
         char *filePath = malloc(strlen(fileName) + strlen(responsePath) + 1);
+        if(filePath == NULL){
+            fprintf(stderr, "Fatal: failed to allocate for filePath.\n");
+        }
         strcpy(filePath, responsePath);
         strcat(filePath, fileName);
         printf("start integrating file: %s\n", filePath);
@@ -126,16 +132,16 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
         //for each csv, update generalWillMatrix, available hours, indexPQ
         csv2array(filePath, (int*)willMatrix);
         printCSV((int*)willMatrix, filePath);
-        
+        /*
         for(i = 0; i<DAYS_IN_WEEK; i++){
             for(j = 0; j<SLOTS_IN_DAY; j++){
                 willingness = willMatrix[i][j];
-                if(willingness==1 || willingness==2){
-                    willTuple currentWill = {.id = id, .willingness = willingness};
-                    append_Link(generalWillMatrix[i][j], &currentWill);                   
-                }
+                //append_Link(generalWillMatrix[i][j], &currentWill);   
+                willNode currentNode = {.id = id, .willingness = willingness, .nextWill = NULL};
+                append_Link(generalWillMatrix[i][j], &currentNode);  
             }
         }
+        */
         /*
         availableHoursArray[id] = 10;
         strcpy(student[id], "PRDAT/RSP/bumblebee.csv");
@@ -158,8 +164,8 @@ int main(int argc, char* argv[])
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
-    //preprocessing(&shiftPQ);
-    test();
+    preprocessing(&shiftPQ);
+    //test();
     return 0;    
 }
 
@@ -195,6 +201,26 @@ int templateRead(){
     return 0;
 }
 
+int gatherCSVs(const char *dirName, char *files){
+    DIR *dir;
+    struct dirent *entry;
+    dir = opendir(dirName);
+    if(dir == NULL){
+        printf("unable to open directory, check if Responses exists\n");
+        return -1;
+    }
+    int fileCount = 0;
+    while((entry = readdir(dir))){
+        char *ext = strrchr(entry->d_name, '.');
+        if( (ext != NULL)  && (!strcmp(ext, ".csv"))  ){
+            strcpy(files+fileCount*MAX_NAME_LENGTH*2, entry->d_name);
+            fileCount++;
+        }
+    }
+    closedir(dir);
+    return fileCount;
+}
+
 
 int csv2array(char *filePath, int *array){
     char buffer[255];
@@ -228,25 +254,7 @@ int csv2array(char *filePath, int *array){
     return 0;
 }
 
-int gatherCSVs(const char *dirName, char *files){
-    DIR *dir;
-    struct dirent *entry;
-    dir = opendir(dirName);
-    if(dir == NULL){
-        printf("unable to open directory, check if Responses exists\n");
-        return -1;
-    }
-    int fileCount = 0;
-    while((entry = readdir(dir))){
-        char *ext = strrchr(entry->d_name, '.');
-        if( (ext != NULL)  && (!strcmp(ext, ".csv"))  ){
-            strcpy(files+fileCount*MAX_NAME_LENGTH*2, entry->d_name);
-            fileCount++;
-        }
-    }
-    closedir(dir);
-    return fileCount;
-}
+
 
 int arrange(){
     int day, slot, spot, peopleNeeded, id;
