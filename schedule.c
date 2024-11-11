@@ -13,15 +13,9 @@ const int SLOTS_IN_DAY = 10;
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 int hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
 int updatedPQ[MAX_QUEUE_SLOT];
-float availableHoursArray[MAX_QUEUE_SLOT];  
+int availableHoursArray[MAX_QUEUE_SLOT];  
 
 char student[MAX_QUEUE_SLOT][MAX_NAME_LENGTH];
-
-typedef struct{
-    int scheduleId;
-    int resultSchedule[DAYS_IN_WEEK][SLOTS_IN_DAY][3];//id in each slot
-} schedule;
-
 
 typedef struct willNode{
     int id;
@@ -34,165 +28,90 @@ typedef struct linkedWill{
     willNode *tailNode;    
 } linkedWill;
 
-
-
 void append_Link(linkedWill* link, willNode* node){
     link->tailNode->nextWill = node;
     link->tailNode = node;
 }
 
+linkedWill* result[DAYS_IN_WEEK][SLOTS_IN_DAY];
 
 
-int initializeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
-    int i, j;
-    
-    for(i = 0; i<DAYS_IN_WEEK; i++){
-        for(j = 0; j<SLOTS_IN_DAY; j++){
-            willNode *headNode = (willNode*)malloc(sizeof(willNode));
-            headNode->id = -1;
-            headNode->willingness = 0;
-            headNode->nextWill = NULL;
-            linkedWill *link = (linkedWill*)malloc(sizeof(linkedWill));
-            link->headNode = headNode;
-            link->tailNode = headNode;
-            matrxi[i][j] = link;
-        }
-    }
-    return 0;
-}
-
-void freeGeneralWillMatrix(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
-    int i, j;
-    free(matrxi[0][0]->headNode);
-    for(i = 0; i<DAYS_IN_WEEK; i++){
-        for(j = 0; j<SLOTS_IN_DAY; j++){
-            free(matrxi[i][j]);
-        }
-    }
-}
-
-
+int initializeLinkedMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]);
+void freeLinkedWillMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]);
 //each element with index i denotes the remaining available hours of the student with id i
 char *strtok_single (char * str, char const * delims);
 //strictly only accepting csv file that has "DAY,NUM,NUM,NUM.." format and 2D int array for nums in each day 
 int csv2array(char *filePath, int *array);
-
 int templateRead();
-
-void printCSV(int* csvMatrix, char* name){
-    int i, j;
-    for(i = 0; i < DAYS_IN_WEEK; i++){
-        for(j = 0; j<SLOTS_IN_DAY; j++){
-            printf(" |%d| ", *(csvMatrix+i*SLOTS_IN_DAY +j));
-        }
-        printf("\n");
-    }
-}
-
+void printCSV(int* csvMatrix, char* name);
 int gatherCSVs(const char *dirName, char *files);
-
 linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+void printGeneralWillMat();
+int preprocessing(indexMaxPriorityQueue* shiftPQ);
 
-void printGeneralWillMat(){
-    int i, j;
-    for(i = 0; i < DAYS_IN_WEEK; i++){
-        for(j = 0; j<SLOTS_IN_DAY; j++){
-            printf(" |");
-            linkedWill *currentLink = generalWillMatrix[i][j];
+int arrange(indexMaxPriorityQueue *pq){
+    int day, slot, spot, peopleNeeded, id;
+    float hours;
+    bool updatedMap[MAX_QUEUE_SLOT] = {false};
+    initializeLinkedMat(result);
+
+    for(day = 0; day < DAYS_IN_WEEK; day++){
+        for(slot = 0; slot < SLOTS_IN_DAY; slot++){
+
+            peopleNeeded = needMatrix[day][slot];
+            hours = hoursMatrix[day][slot];
+            //for each slot, update priority queue with available people, with priority being multifactor
+            
+            //for each person in generalWillMat on that linkedWill, calc their priority by p = (availableH + availableH*will)
+            linkedWill *currentLink = generalWillMatrix[day][slot];
             willNode *currentNode = currentLink->headNode;
             while(1){
-                if(currentNode->id != -1){
-                    printf("(id: %d, will: %d) ", currentNode->id, currentNode->willingness);
+                if(currentNode->id == -1){
+                    currentNode = currentNode->nextWill;
+                    continue;
                 }
+                id = currentNode->id;
+                int will = currentNode->willingness;
+                int priority = availableHoursArray[id]*will;
+
+                //update all students who have availability at this slot
+                update(pq, id, priority);
+                updatedMap[id] = true;
+
                 currentNode = currentNode->nextWill;
                 if(currentNode == NULL){
                     break;
                 }
             }
-            printf("| ");
-        }
-        printf("\n");
-    }
-}
 
-int preprocessing(indexMaxPriorityQueue* shiftPQ){
-    //fill in needMatrix
-    templateRead();
 
-    //gather csv files from responses
-    int id;
-    int fileCount;
-    char *responsePath = "./PRDAT/RSP/";
-    char *files = malloc(sizeof(char)*MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
-    if(files == NULL){
-        fprintf(stderr, "Fatal: failed to allocate for files.\n");
-        
-    }
+            //peek <peopleNeeded> times and update their hoursAvailable
+            linkedWill* resulLink = result[day][slot];
+            for(spot = 0; spot < peopleNeeded; spot++){
 
-    
-    fileCount = gatherCSVs(responsePath, files);
-    for(int z = 0; z < fileCount; z++){
-        printf("%s\n", files+z*MAX_NAME_LENGTH*2);
-    }
-    int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
-    initializeGeneralWillMatrix(generalWillMatrix);
-    int i,j;
-    int willingness;
-    
-    printf("total csv files %d\n", fileCount);
-    printf("filecount: %d\n", fileCount);
-    for(int i_file = 0; i_file< fileCount; i_file++){
-        int id = i_file;
-        char fileName[MAX_NAME_LENGTH*2];
-        strcpy(fileName, files+id*MAX_NAME_LENGTH*2);
-        char *filePath = malloc(strlen(fileName) + strlen(responsePath) + 1);
-        if(filePath == NULL){
-            fprintf(stderr, "Fatal: failed to allocate for filePath.\n");
-        }
-        strcpy(filePath, responsePath);
-        strcat(filePath, fileName);
-        printf("start integrating file: %s\n", filePath);
-        
-        //for each csv, update generalWillMatrix, available hours, indexPQ
-        csv2array(filePath, (int*)willMatrix);
-        printCSV((int*)willMatrix, filePath);
-        
-        for(i = 0; i<DAYS_IN_WEEK; i++){
-            for(j = 0; j<SLOTS_IN_DAY; j++){
-                willingness = willMatrix[i][j];
-
-                if(willingness == 1 || willingness == 2){
-
-                    willNode *currentNode = (willNode*)malloc(sizeof(willNode));    
-                    currentNode->id = id;
-                    currentNode->willingness = willingness;
-                    currentNode->nextWill = NULL;
-                    append_Link(generalWillMatrix[i][j], currentNode);  
+                id = peekTopId(pq);
+                if(pq->values[id] == 0){
+                    id = -1;
+                    break;
                 }
+                willNode resultNode = {.id = id, .willingness = -1, .nextWill = NULL};
+                append_Link(resulLink, &resultNode);
+                availableHoursArray[id] -= hours;
+
                 
             }
+
+            for(int cleanI = 0; cleanI < MAX_QUEUE_SLOT; cleanI++){
+                if(updatedMap[cleanI]){
+                    update(pq, cleanI, 0);
+                    updatedMap[cleanI] = false;
+                }
+            }
         }
-        
-        //availableHoursArray[id] = 10;
-        //strcpy(student[id], "PRDAT/RSP/bumblebee.csv");
-        //insert(shiftPQ, id, 0);
-        
-        free(filePath);
     }
-    
-
-    printGeneralWillMat();
-
-    free(files);
     return 0;
 }
-//
-//TODO
-int arrange();
 
-void test(){
-    
-}
 
 int main(int argc, char* argv[])
 {   
@@ -201,11 +120,21 @@ int main(int argc, char* argv[])
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
     preprocessing(&shiftPQ);
-
+    arrange(&shiftPQ);
 
     //test();
-    freeGeneralWillMatrix(generalWillMatrix);
+    freeLinkedWillMat(generalWillMatrix);
     return 0;    
+}
+
+void freeLinkedWillMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    int i, j;
+    for(i = 0; i<DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            free(matrxi[i][j]->headNode);
+            free(matrxi[i][j]);
+        }
+    }
 }
 
 char *strtok_single (char * str, char const * delims)
@@ -238,6 +167,16 @@ int templateRead(){
     csv2array(peopleNeededPath, (int*)needMatrix);
     csv2array(shiftHourPath, (int*)hoursMatrix);
     return 0;
+}
+
+void printCSV(int* csvMatrix, char* name){
+    int i, j;
+    for(i = 0; i < DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            printf(" |%d| ", *(csvMatrix+i*SLOTS_IN_DAY +j));
+        }
+        printf("\n");
+    }
 }
 
 int gatherCSVs(const char *dirName, char *files){
@@ -293,30 +232,105 @@ int csv2array(char *filePath, int *array){
     return 0;
 }
 
-
-
-int arrange(){
-    int day, slot, spot, peopleNeeded, id;
-    float hours;
-
-    for(day = 0; day < DAYS_IN_WEEK; day++){
-        for(slot = 0; slot < SLOTS_IN_DAY; slot++){
-            peopleNeeded = needMatrix[day][slot];
-            hours = hoursMatrix[day][slot];
-            //for each slot, form a priority queue with available people, with priority being multifactor 
-            indexMaxPriorityQueue pq;
-            pq.size = 0;
-            //insert all students who have availability at this slot
-
-            //peek <peopleNeeded> times and update their hoursAvailable
-            for(spot = 0; spot < peopleNeeded; spot++){
-                id = peekTopId(&pq);
-                availableHoursArray[id] -= hours;
-                //remove the updated studen from PQ
-                //TODO
-
+void printGeneralWillMat(){
+    int i, j;
+    for(i = 0; i < DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            printf(" |");
+            linkedWill *currentLink = generalWillMatrix[i][j];
+            willNode *currentNode = currentLink->headNode;
+            while(1){
+                if(currentNode->id != -1){
+                    printf("(id: %d, will: %d) ", currentNode->id, currentNode->willingness);
+                }
+                currentNode = currentNode->nextWill;
+                if(currentNode == NULL){
+                    break;
+                }
             }
+            printf("| ");
+        }
+        printf("\n");
+    }
+}
+
+int initializeLinkedMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    int i, j;
+    
+    for(i = 0; i<DAYS_IN_WEEK; i++){
+        for(j = 0; j<SLOTS_IN_DAY; j++){
+            willNode *headNode = (willNode*)malloc(sizeof(willNode));
+            headNode->id = -1;
+            headNode->willingness = 0;
+            headNode->nextWill = NULL;
+            linkedWill *link = (linkedWill*)malloc(sizeof(linkedWill));
+            link->headNode = headNode;
+            link->tailNode = headNode;
+            matrxi[i][j] = link;
         }
     }
+    return 0;
+}
+
+int preprocessing(indexMaxPriorityQueue* shiftPQ){
+    //fill in needMatrix
+    templateRead();
+
+    //gather csv files from responses
+    int id;
+    int fileCount;
+    char *responsePath = "./PRDAT/RSP/";
+    char *files = malloc(sizeof(char)*MAX_QUEUE_SLOT*MAX_NAME_LENGTH*2);
+    if(files == NULL){
+        fprintf(stderr, "Fatal: failed to allocate for files.\n");
+        
+    }
+
+    fileCount = gatherCSVs(responsePath, files);
+    int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
+    initializeLinkedMat(generalWillMatrix);
+    int i,j;
+    int willingness;
+    
+    printf("total response files %d\n", fileCount);
+    for(int i_file = 0; i_file< fileCount; i_file++){
+        int id = i_file;
+        char fileName[MAX_NAME_LENGTH*2];
+        strcpy(fileName, files+id*MAX_NAME_LENGTH*2);
+        strcpy(student[id], files+id*MAX_NAME_LENGTH*2);
+        char *filePath = malloc(strlen(fileName) + strlen(responsePath) + 1);
+        if(filePath == NULL){
+            fprintf(stderr, "Fatal: failed to allocate for filePath.\n");
+        }
+        strcpy(filePath, responsePath);
+        strcat(filePath, fileName);
+        printf("start integrating file: %s\n", filePath);
+        
+        //for each csv, update generalWillMatrix, available hours, indexPQ
+        csv2array(filePath, (int*)willMatrix);
+        //printCSV((int*)willMatrix, filePath);
+        
+        for(i = 0; i<DAYS_IN_WEEK; i++){
+            for(j = 0; j<SLOTS_IN_DAY; j++){
+                willingness = willMatrix[i][j];
+
+                if(willingness == 1 || willingness == 2){
+
+                    willNode *currentNode = (willNode*)malloc(sizeof(willNode));    
+                    currentNode->id = id;
+                    currentNode->willingness = willingness;
+                    currentNode->nextWill = NULL;
+                    append_Link(generalWillMatrix[i][j], currentNode);  
+                } 
+            }
+        }
+        availableHoursArray[id] = 10;
+        insert(shiftPQ, id, 0);
+        printf("finished integrating file: %s\n", filePath);
+        free(filePath);
+
+    }
+    //printGeneralWillMat();
+    free(files);
     return 0;
 }
