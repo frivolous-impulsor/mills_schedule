@@ -46,7 +46,7 @@ int templateRead();
 void printCSV(int* csvMatrix, char* name);
 int gatherCSVs(const char *dirName, char *files);
 linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
-void printGeneralWillMat();
+void printLinkedMat(linkedWill* mat[DAYS_IN_WEEK][SLOTS_IN_DAY]);
 int preprocessing(indexMaxPriorityQueue* shiftPQ);
 
 int arrange(indexMaxPriorityQueue *pq){
@@ -67,6 +67,9 @@ int arrange(indexMaxPriorityQueue *pq){
             willNode *currentNode = currentLink->headNode;
             while(1){
                 if(currentNode->id == -1){
+                    if(currentNode->nextWill == NULL){
+                        break;
+                    }
                     currentNode = currentNode->nextWill;
                     continue;
                 }
@@ -91,15 +94,16 @@ int arrange(indexMaxPriorityQueue *pq){
 
                 id = peekTopId(pq);
                 if(pq->values[id] == 0){
-                    id = -1;
                     break;
                 }
-                willNode resultNode = {.id = id, .willingness = -1, .nextWill = NULL};
-                append_Link(resulLink, &resultNode);
-                availableHoursArray[id] -= hours;
-
-                
+                willNode *resultNode = (willNode*)malloc(sizeof(willNode));
+                resultNode->id = id;
+                resultNode->willingness = -1;
+                resultNode->nextWill = NULL;
+                append_Link(resulLink, resultNode);
+                availableHoursArray[id] -= hours; 
             }
+
 
             for(int cleanI = 0; cleanI < MAX_QUEUE_SLOT; cleanI++){
                 if(updatedMap[cleanI]){
@@ -107,6 +111,7 @@ int arrange(indexMaxPriorityQueue *pq){
                     updatedMap[cleanI] = false;
                 }
             }
+
         }
     }
     return 0;
@@ -121,9 +126,10 @@ int main(int argc, char* argv[])
     shiftPQ.size = 0;
     preprocessing(&shiftPQ);
     arrange(&shiftPQ);
-
+    printLinkedMat(result);
     //test();
     freeLinkedWillMat(generalWillMatrix);
+    freeLinkedWillMat(result);
     return 0;    
 }
 
@@ -232,12 +238,12 @@ int csv2array(char *filePath, int *array){
     return 0;
 }
 
-void printGeneralWillMat(){
+void printLinkedMat(linkedWill* mat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     int i, j;
     for(i = 0; i < DAYS_IN_WEEK; i++){
         for(j = 0; j<SLOTS_IN_DAY; j++){
             printf(" |");
-            linkedWill *currentLink = generalWillMatrix[i][j];
+            linkedWill *currentLink = mat[i][j];
             willNode *currentNode = currentLink->headNode;
             while(1){
                 if(currentNode->id != -1){
@@ -273,7 +279,6 @@ int initializeLinkedMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
 }
 
 int preprocessing(indexMaxPriorityQueue* shiftPQ){
-    //fill in needMatrix
     templateRead();
 
     //gather csv files from responses
