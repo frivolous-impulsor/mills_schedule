@@ -52,11 +52,11 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ);
 int arrange(indexMaxPriorityQueue *pq){
     int day, slot, spot, peopleNeeded, id;
     float hours;
-    bool updatedMap[MAX_QUEUE_SLOT] = {false};
+    bool updatedMap[MAX_QUEUE_SLOT] = {false};//a record for all students that's been considered with priority. for clean up reference at the end of each slot
     initializeLinkedMat(result);
 
     for(day = 0; day < DAYS_IN_WEEK; day++){
-        int worked[MAX_QUEUE_SLOT] = {0};
+        int worked[MAX_QUEUE_SLOT] = {0};//a record of wether a student worked on any given day, reference for priority calc.
         for(slot = 0; slot < SLOTS_IN_DAY; slot++){
             
 
