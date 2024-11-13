@@ -92,16 +92,20 @@ int arrange(indexMaxPriorityQueue *pq){
             linkedWill* resulLink = result[day][slot];
             for(spot = 0; spot < peopleNeeded; spot++){
 
-                id = peekTopId(pq);
-                if(pq->values[id] == 0){
-                    break;
+                int topId = peekTopId(pq);
+                printf("peeped val %f\n", pq->values[topId]);
+                if(pq->values[topId] <= 0){
+                    topId = -2;//if val(priority) of the top person is not even suitable for shift, -1 indicate vacancy
                 }
                 willNode *resultNode = (willNode*)malloc(sizeof(willNode));
-                resultNode->id = id;
+                resultNode->id = topId;
                 resultNode->willingness = -1;
                 resultNode->nextWill = NULL;
                 append_Link(resulLink, resultNode);
-                availableHoursArray[id] -= hours; 
+                if(topId != -2){
+                    update(pq, topId, 0);
+                    availableHoursArray[topId] -= hours; 
+                }
             }
 
 
