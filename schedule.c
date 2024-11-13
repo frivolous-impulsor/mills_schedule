@@ -56,7 +56,9 @@ int arrange(indexMaxPriorityQueue *pq){
     initializeLinkedMat(result);
 
     for(day = 0; day < DAYS_IN_WEEK; day++){
+        int worked[MAX_QUEUE_SLOT] = {0};
         for(slot = 0; slot < SLOTS_IN_DAY; slot++){
+            
 
             peopleNeeded = needMatrix[day][slot];
             hours = hoursMatrix[day][slot];
@@ -87,7 +89,6 @@ int arrange(indexMaxPriorityQueue *pq){
                 }
             }
 
-
             //peek <peopleNeeded> times and update their hoursAvailable
             linkedWill* resulLink = result[day][slot];
             for(spot = 0; spot < peopleNeeded; spot++){
@@ -104,6 +105,7 @@ int arrange(indexMaxPriorityQueue *pq){
                 append_Link(resulLink, resultNode);
                 if(topId != -2){
                     update(pq, topId, 0);
+                    worked[id] = 1;
                     availableHoursArray[topId] -= hours; 
                 }
             }
