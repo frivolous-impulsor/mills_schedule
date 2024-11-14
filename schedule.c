@@ -94,7 +94,7 @@ int arrange(indexMaxPriorityQueue *pq){
             for(spot = 0; spot < peopleNeeded; spot++){
 
                 int topId = peekTopId(pq);
-                printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
+                //printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
                 if(pq->values[topId] <= 0){
                     topId = -2;//if val(priority) of the top person is not even suitable for shift, -1 indicate vacancy
                 }
@@ -125,26 +125,32 @@ int arrange(indexMaxPriorityQueue *pq){
 }
 
 void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
-    FILE *fd = fopen("result.txt", "w");
+    FILE *fd = fopen("PRDAT/result.csv", "w");
     int currentId;
     if(fd == NULL){
         perror("result file open failed\n");
     }
+    char *days[] = {"SUN", "MON", "TUE", "WED", "THR", "FRI", "SAT"};
     for(int i = 0; i < DAYS_IN_WEEK; i++){
-        fprintf(fd, "MON,");
+        fprintf(fd, "%s,", days[i]);
         for(int j = 0; j < SLOTS_IN_DAY; j++){
             linkedWill *currentLink = resultMat[i][j];
-            willNode *currentNode = currentLink->headNode;
+            willNode *currentNode = currentLink->headNode->nextWill;
 
             while(1){
-                if(currentNode->id == -1){
-                    currentNode = currentNode->nextWill;
+                if(currentNode == NULL){
+                    break;
                 }
-                
-                fprintf(fd, "todo");
+                if(currentNode->id == -2){
+                    fprintf(fd, "[       ]");
+                }else{
+                    fprintf(fd, "[%s]", student[currentNode->id]);
+                }
+                currentNode = currentNode->nextWill;
             }
-            
+            fprintf(fd, ",");
         }
+        fprintf(fd, "\n");
     }
 }
 
@@ -157,7 +163,8 @@ int main(int argc, char* argv[])
     shiftPQ.size = 0;
     preprocessing(&shiftPQ);
     arrange(&shiftPQ);
-    printLinkedMat(result);
+    //printLinkedMat(result);
+    writeResult(result);
     //test();
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
