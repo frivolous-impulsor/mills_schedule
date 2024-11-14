@@ -94,7 +94,7 @@ int arrange(indexMaxPriorityQueue *pq){
             for(spot = 0; spot < peopleNeeded; spot++){
 
                 int topId = peekTopId(pq);
-                printf("peeped val %f\n", pq->values[topId]);
+                printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
                 if(pq->values[topId] <= 0){
                     topId = -2;//if val(priority) of the top person is not even suitable for shift, -1 indicate vacancy
                 }
@@ -107,6 +107,7 @@ int arrange(indexMaxPriorityQueue *pq){
                     update(pq, topId, 0);
                     worked[id] = 1;
                     availableHoursArray[topId] -= hours; 
+                    
                 }
             }
 
@@ -121,6 +122,30 @@ int arrange(indexMaxPriorityQueue *pq){
         }
     }
     return 0;
+}
+
+void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    FILE *fd = fopen("result.txt", "w");
+    int currentId;
+    if(fd == NULL){
+        perror("result file open failed\n");
+    }
+    for(int i = 0; i < DAYS_IN_WEEK; i++){
+        fprintf(fd, "MON,");
+        for(int j = 0; j < SLOTS_IN_DAY; j++){
+            linkedWill *currentLink = resultMat[i][j];
+            willNode *currentNode = currentLink->headNode;
+
+            while(1){
+                if(currentNode->id == -1){
+                    currentNode = currentNode->nextWill;
+                }
+                
+                fprintf(fd, "todo");
+            }
+            
+        }
+    }
 }
 
 
@@ -315,7 +340,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
         }
         strcpy(filePath, responsePath);
         strcat(filePath, fileName);
-        printf("start integrating file: %s\n", filePath);
+        printf("start integrating file: %s for %s\n", filePath, student[id]);
         
         //for each csv, update generalWillMatrix, available hours, indexPQ
         csv2array(filePath, (int*)willMatrix);
