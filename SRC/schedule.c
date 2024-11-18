@@ -3,6 +3,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <math.h>
 #include <time.h>
 #include <dirent.h>
 #include <stdbool.h>
@@ -77,7 +78,7 @@ int arrange(indexMaxPriorityQueue *pq){
                 }
                 id = currentNode->id;
                 int will = currentNode->willingness;
-                int priority = availableHoursArray[id]*will;
+                int priority = will*20 + pow(availableHoursArray[id],3) - pow(worked[id]*5, 3);//logic needs tunning
 
                 //update all students who have availability at this slot
                 update(pq, id, priority);
