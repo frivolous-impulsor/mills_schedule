@@ -19,7 +19,11 @@ MAX_SLOT_IN_DAY: int = 10
 MAX_DAY_IN_WEEK: int = 7
 
 def writeCSV(filePath: str, matrix: list[list[int]]):
-    "todo"
+    for i, row in enumerate(matrix):
+        matrix[i] = [list(Day)[i].name]+row 
+    with open(filePath, 'w', newline='') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(matrix)
 
 def getTimeDiff(initT: str, finalT: str)->int:
     if("am" in initT.lower() or "pm" in initT.lower() or "am" in finalT.lower() or "pm" in finalT.lower()):
@@ -35,7 +39,7 @@ def getTimeDiff(initT: str, finalT: str)->int:
         initObj = datetime.strptime(initT, "%H:%M")
         finalObj = datetime.strptime(finalT, "%H:%M")
     deltaT = finalObj - initObj
-    hourDiff = (int)((deltaT.total_seconds())//(3600))
+    hourDiff = int((deltaT.total_seconds())//(3600))
     return hourDiff
 
 
@@ -45,6 +49,11 @@ def getMasterFilePath():
         raise FileNotFoundError("Ensure exactly one \"schedule_template.xlsx\" at root dir")
     return files[0]
 
+def getResponsesPath(dirPath: str = "RSP"):
+    files = [os.path.join(dirPath,file) for file in os.listdir(dirPath) if (os.path.isfile(os.path.join(dirPath,file)) and file[-5:] == ".xlsx")]
+    return files
+
+
 def analyzeMaster(masterPath: str):
     hourMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     peopleNeededMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
@@ -52,13 +61,13 @@ def analyzeMaster(masterPath: str):
     sheet = workbook.active
     dayCounter = 0
 
-    for row in range(1, MAX_DAY_IN_WEEK*2 +1, 2):
+    for col in range(1, MAX_DAY_IN_WEEK*2 +1, 2):
         timeCounter = 0
         peopleCounter = 0
         isTime: bool = True
 
-        for col in range(2, MAX_SLOT_IN_DAY*2+1):
-            val = sheet.cell(col, row).value
+        for row in range(2, MAX_SLOT_IN_DAY*2+1):
+            val = sheet.cell(row, col).value
             if val is None:
                 if(isTime):
                     timeCounter+=1
@@ -80,20 +89,52 @@ def analyzeMaster(masterPath: str):
                 timeCounter+=1
 
             else:
-                peopleNeededMat[dayCounter][peopleCounter] = val      
+                peopleNeededMat[dayCounter][peopleCounter] = int(val)    
                 peopleCounter+=1      
             isTime = not isTime
 
         dayCounter+=1
+
+    print(hourMat)
+    print("somehting")
+    print(peopleNeededMat)
+    writeCSV("PRDAT/shiftHour.csv", hourMat)
+    writeCSV("PRDAT/peopleNeeded.csv", peopleNeededMat)
     
+def analyzeResponse(filePath: str):
+    willMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
+    workbook = load_workbook(filePath)
+    sheet = workbook.active
+    dayCounter = 0
+    for col in range(2, MAX_DAY_IN_WEEK*2 +1, 2):
+        willCounter = 0
+        for row in range(2, MAX_SLOT_IN_DAY*2+1, 2):
+            val = sheet.cell(row, col).value
+            if val is None:
+                val = 0
+            else:
+                try:
+                    val = int(val)
+                except ValueError:
+                    val = 0
+                if val < 0:
+                    val = 0
+                elif val >2:
+                    val = 2
+            willMat[dayCounter][willCounter] = val
+            willCounter +=1
+        dayCounter +=1
     
-            
+    print(willMat)
             
 
 
 def main():
-    masterPath = getMasterFilePath()
-    analyzeMaster(masterPath)
+    #masterPath = getMasterFilePath()
+    #analyzeMaster(masterPath)
+    files = getResponsesPath()
+    file = 'RSP/oliver.xlsx'
+    analyzeResponse(file)
 
 
 
