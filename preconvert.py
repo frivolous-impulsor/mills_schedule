@@ -50,7 +50,7 @@ def getMasterFilePath():
     return files[0]
 
 def getResponsesPath(dirPath: str = "RSP"):
-    files = [os.path.join(dirPath,file) for file in os.listdir(dirPath) if (os.path.isfile(os.path.join(dirPath,file)) and file[-5:] == ".xlsx")]
+    files = [file for file in os.listdir(dirPath) if (os.path.isfile(os.path.join(dirPath,file)) and file[-5:] == ".xlsx")]
     return files
 
 
@@ -101,7 +101,7 @@ def analyzeMaster(masterPath: str):
     writeCSV("PRDAT/shiftHour.csv", hourMat)
     writeCSV("PRDAT/peopleNeeded.csv", peopleNeededMat)
     
-def analyzeResponse(filePath: str):
+def analyzeResponse(filePath: str, writePath: str):
     willMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     workbook = load_workbook(filePath)
     sheet = workbook.active
@@ -125,7 +125,7 @@ def analyzeResponse(filePath: str):
             willCounter +=1
         dayCounter +=1
     
-    print(willMat)
+    writeCSV(writePath, willMat)
             
 
 
@@ -133,10 +133,11 @@ def main():
     #masterPath = getMasterFilePath()
     #analyzeMaster(masterPath)
     files = getResponsesPath()
-    file = 'RSP/oliver.xlsx'
-    analyzeResponse(file)
-
-
-
+    csvDir: str = "PRDAT/RSP"
+    rspDir: str = "RSP"
+    for file in files:
+        writePath = os.path.join(csvDir, file[:-5]+".csv")
+        readPath = os.path.join(rspDir, file)
+        analyzeResponse(readPath, writePath)
 
 main()
