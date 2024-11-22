@@ -95,9 +95,6 @@ def analyzeMaster(masterPath: str):
 
         dayCounter+=1
 
-    print(hourMat)
-    print("somehting")
-    print(peopleNeededMat)
     writeCSV("PRDAT/shiftHour.csv", hourMat)
     writeCSV("PRDAT/peopleNeeded.csv", peopleNeededMat)
     
@@ -129,9 +126,9 @@ def analyzeResponse(filePath: str, writePath: str):
             
 
 
-def main():
-    #masterPath = getMasterFilePath()
-    #analyzeMaster(masterPath)
+def preconvert():
+    masterPath = getMasterFilePath()
+    analyzeMaster(masterPath)
     files = getResponsesPath()
     csvDir: str = "PRDAT/RSP"
     rspDir: str = "RSP"
@@ -140,4 +137,9 @@ def main():
         readPath = os.path.join(rspDir, file)
         analyzeResponse(readPath, writePath)
 
-main()
+def postconvert():
+    sourcePath: str = "PRDAT/result.csv"
+    workBook = load_workbook()
+    #read csv
+
+preconvert()
