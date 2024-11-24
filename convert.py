@@ -1,9 +1,10 @@
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 import os
 import csv
 from datetime import datetime
 import re
 from enum import Enum
+import shutil
 
 class Day(Enum):
     SUN = 0
@@ -137,9 +138,50 @@ def preconvert():
         readPath = os.path.join(rspDir, file)
         analyzeResponse(readPath, writePath)
 
-def postconvert():
-    sourcePath: str = "PRDAT/result.csv"
-    workBook = load_workbook()
-    #read csv
+def readCSV(csvPath):
+    resultArray: list[list[str]] = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
+    with open(csvPath, mode='r') as csvResultFile:
+        resultContent = csv.reader(csvResultFile)
+        for i, line in enumerate(resultContent):
+            resultArray[i] = line[1:]
+    return resultArray
 
-preconvert()
+
+def postconvert():
+    template_path: str = "schedule_template.xlsx"
+    timeStamp = datetime.today().strftime('%H:%M:%S_%Y-%m-%d')
+    resultPath = "result_" + timeStamp + ".xlsx"
+    csvSourcePath: str = "PRDAT/result.csv"
+    resultDirPath = "RESULT"
+    #check and create result dir
+    try:
+        os.mkdir(resultDirPath)
+    except FileExistsError:
+        pass
+    resultPath = os.path.join(resultDirPath, resultPath)
+
+    shutil.copyfile(template_path, resultPath)
+    #read csv
+    resultArray = readCSV(csvSourcePath)
+
+
+    workBook = load_workbook(resultPath)
+    sheet = workBook.active
+    dayCount = 0
+    slotCount = 0
+    for col in range(1, MAX_DAY_IN_WEEK*2, 2):
+        slotCount = 0
+        for row in range(3, MAX_SLOT_IN_DAY*2, 2):
+            val: str = resultArray[dayCount][slotCount]
+            if(val == ''):
+                slotCount +=1
+                continue
+            val = val.replace(".csv", '')
+            sheet.cell(row, col).value = val
+
+            slotCount +=1
+
+        dayCount +=1
+    workBook.save(resultPath)
+
+postconvert()
