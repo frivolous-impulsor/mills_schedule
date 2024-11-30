@@ -1,10 +1,11 @@
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook
 import os
 import csv
 from datetime import datetime
 import re
 from enum import Enum
 import shutil
+import subprocess
 
 class Day(Enum):
     SUN = 0
@@ -184,4 +185,9 @@ def postconvert():
         dayCount +=1
     workBook.save(resultPath)
 
-postconvert()
+def main():
+    preconvert()
+    subprocess.run(["./main"])
+    postconvert()
+
+main()

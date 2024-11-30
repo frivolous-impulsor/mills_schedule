@@ -79,7 +79,7 @@ int arrange(indexMaxPriorityQueue *pq){
           
                 id = currentNode->id;
                 int will = currentNode->willingness;
-                int priority = will * (availableHoursArray[id]+2)/10 * (2-worked[id]) ;//logic needs tunning
+                int priority = will * (availableHoursArray[id] - 10*worked[id]) ;//logic needs tunning
 
                 //update all students who have availability at this slot
                 update(pq, id, priority);
