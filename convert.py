@@ -150,7 +150,7 @@ def readCSV(csvPath):
 
 def postconvert():
     template_path: str = "schedule_template.xlsx"
-    timeStamp = datetime.today().strftime('%H:%M:%S_%Y-%m-%d')
+    timeStamp = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
     resultPath = "result_" + timeStamp + ".xlsx"
     csvSourcePath: str = "PRDAT/result.csv"
     resultDirPath = "RESULT"
@@ -187,6 +187,7 @@ def postconvert():
 
 def main():
     preconvert()
+    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
     subprocess.run(["./main"])
     postconvert()
 

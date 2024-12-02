@@ -90,7 +90,7 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
     int positionTotal = 0;
     int positionCovered = 0;
     int positionPrefered = 0;
-    int worked[MAX_QUEUE_SLOT] = {0};//a record of wether a student worked on any given day, reference for priority calc.
+    int *worked = (int*)calloc(MAX_QUEUE_SLOT*DAYS_IN_WEEK, sizeof(int)) ;//a record of wether a student worked on any given day, reference for priority calc.
     do{
         slotIndex = removeTop(slotPopulorPQ);
         day = slotIndex / SLOTS_IN_DAY;
@@ -114,7 +114,7 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
             
             id = currentNode->id;
             int will = currentNode->willingness;
-            int priority = will * (availableHoursArray[id] - 10*worked[id]) ;//logic needs tunning
+            int priority = will * (availableHoursArray[id] - 5* (*(worked + id*DAYS_IN_WEEK + day)) ) ;//logic needs tunning
 
             //update all students who have availability at this slot
             update(pq, id, priority);
@@ -145,6 +145,7 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
             if(topId != -2){
                 update(pq, topId, 0);
                 positionCovered++;
+                *(worked + id*DAYS_IN_WEEK + day) = 1;
 
                 availableHoursArray[topId] -= hours; 
                 
@@ -162,6 +163,8 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
 
     *ratio = ((float)positionCovered)/positionTotal;
     *satisfaction = ((float)positionPrefered)/positionTotal;
+
+    free(worked);
 }
 
 
