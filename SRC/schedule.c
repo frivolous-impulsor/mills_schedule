@@ -14,7 +14,7 @@ const int SLOTS_IN_DAY = 10;
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 int hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
 int updatedPQ[MAX_QUEUE_SLOT];
-int availableHoursArray[MAX_QUEUE_SLOT];  
+int availableHoursArray[MAX_QUEUE_SLOT];
 
 char student[MAX_QUEUE_SLOT][MAX_NAME_LENGTH];
 
@@ -74,87 +74,96 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
                     break;
                 }
             }
-            insert(slotPQ, slotIndex, count);
+            insert(slotPQ, slotIndex, MAX_QUEUE_SLOT-count);//value in queue for each slot will be inverse of popularity
         }
     }
     return 0;
 }
 
-int arrange(indexMaxPriorityQueue *pq){
-    int day, slot, spot, peopleNeeded, id;
+
+
+void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, float *ratio, float *satisfaction){
+    int day, slot, spot, peopleNeeded, id, slotIndex;
     float hours;
     bool updatedMap[MAX_QUEUE_SLOT] = {false};//a record for all students that's been considered with priority. for clean up reference at the end of each slot
     initializeLinkedMat(result);
-
-    for(day = 0; day < DAYS_IN_WEEK; day++){
-        int worked[MAX_QUEUE_SLOT] = {0};//a record of wether a student worked on any given day, reference for priority calc.
-        for(slot = 0; slot < SLOTS_IN_DAY; slot++){
-            
-
-            peopleNeeded = needMatrix[day][slot];
-            hours = hoursMatrix[day][slot];
-            //for each slot, update priority queue with available people, with priority being multifactor
-            
-            //for each person in generalWillMat on that linkedWill, calc their priority by p = (availableH + availableH*will)
-            linkedWill *currentLink = generalWillMatrix[day][slot];
-            willNode *currentNode = currentLink->headNode;
-            while(1){
-                if(currentNode->id == -1){
-                    if(currentNode->nextWill == NULL){
-                        break;
-                    }
-                    currentNode = currentNode->nextWill;
-                    continue;
-                }
-          
-                id = currentNode->id;
-                int will = currentNode->willingness;
-                int priority = will * (availableHoursArray[id] - 10*worked[id]) ;//logic needs tunning
-
-                //update all students who have availability at this slot
-                update(pq, id, priority);
-                updatedMap[id] = true;
-
-                currentNode = currentNode->nextWill;
-                if(currentNode == NULL){
+    int positionTotal = 0;
+    int positionCovered = 0;
+    int positionPrefered = 0;
+    int worked[MAX_QUEUE_SLOT] = {0};//a record of wether a student worked on any given day, reference for priority calc.
+    do{
+        slotIndex = removeTop(slotPopulorPQ);
+        day = slotIndex / SLOTS_IN_DAY;
+        slot = slotIndex % SLOTS_IN_DAY;
+        peopleNeeded = needMatrix[day][slot];
+        positionTotal += peopleNeeded;
+        hours = hoursMatrix[day][slot];
+        //for each slot, update priority queue with available people, with priority being multifactor
+        
+        //for each person in generalWillMat on that linkedWill, calc their priority by p = (availableH + availableH*will)
+        linkedWill *currentLink = generalWillMatrix[day][slot];
+        willNode *currentNode = currentLink->headNode;
+        while(1){
+            if(currentNode->id == -1){
+                if(currentNode->nextWill == NULL){
                     break;
                 }
+                currentNode = currentNode->nextWill;
+                continue;
             }
+            
+            id = currentNode->id;
+            int will = currentNode->willingness;
+            int priority = will * (availableHoursArray[id] - 10*worked[id]) ;//logic needs tunning
 
-            //peek <peopleNeeded> times and update their hoursAvailable
-            linkedWill* resulLink = result[day][slot];
-            for(spot = 0; spot < peopleNeeded; spot++){
+            //update all students who have availability at this slot
+            update(pq, id, priority);
+            updatedMap[id] = true;
 
-                int topId = peekTopId(pq);
-                //printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
-                if(pq->values[topId] <= 0){
-                    topId = -2;//if val(priority) of the top person is not even suitable for shift, -1 indicate vacancy
-                }
-                willNode *resultNode = (willNode*)malloc(sizeof(willNode));
-                resultNode->id = topId;
-                resultNode->willingness = -1;
-                resultNode->nextWill = NULL;
-                append_Link(resulLink, resultNode);
-                if(topId != -2){
-                    update(pq, topId, 0);
-                    worked[id] = 1;
-                    availableHoursArray[topId] -= hours; 
-                    
-                }
+            currentNode = currentNode->nextWill;
+            if(currentNode == NULL){
+                break;
             }
-
-
-            for(int cleanI = 0; cleanI < MAX_QUEUE_SLOT; cleanI++){
-                if(updatedMap[cleanI]){
-                    update(pq, cleanI, 0);
-                    updatedMap[cleanI] = false;
-                }
-            }
-
         }
-    }
-    return 0;
+
+        //peek <peopleNeeded> times and update their hoursAvailable
+        linkedWill* resulLink = result[day][slot];
+        for(spot = 0; spot < peopleNeeded; spot++){
+
+            int topId = peekTopId(pq);
+            //printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
+            if(pq->values[topId] <= 0){
+                topId = -2;//if val(willingness) of the top person is not even suitable for shift, -2 indicate vacancy
+            }else if(pq->values[topId] > 1){
+                positionPrefered++;
+            }
+            willNode *resultNode = (willNode*)malloc(sizeof(willNode));
+            resultNode->id = topId;
+            resultNode->willingness = -1;
+            resultNode->nextWill = NULL;
+            append_Link(resulLink, resultNode);
+            if(topId != -2){
+                update(pq, topId, 0);
+                positionCovered++;
+
+                availableHoursArray[topId] -= hours; 
+                
+            }
+        }
+
+
+        for(int cleanI = 0; cleanI < MAX_QUEUE_SLOT; cleanI++){
+            if(updatedMap[cleanI]){
+                update(pq, cleanI, 0);
+                updatedMap[cleanI] = false;
+            }
+        }
+    }while(slotPopulorPQ->size > 0);   
+
+    *ratio = ((float)positionCovered)/positionTotal;
+    *satisfaction = ((float)positionPrefered)/positionTotal;
 }
+
 
 void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     FILE *fd = fopen("PRDAT/result.csv", "w");
@@ -186,10 +195,18 @@ void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     }
 }
 
+void printAvailable(){
+    int i;
+    for(i = 0; i< MAX_QUEUE_SLOT; i++){
+        printf("%s: %d\n", student[i], availableHoursArray[i]);
+    }
+}
 
 int main(int argc, char* argv[])
 {   
     int i, j;
+    float coveredRatio, //ratio of covered position count to needed position count
+        satisfaction;   //ratio of position allocated to a student with 2 to total positions
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
@@ -201,10 +218,16 @@ int main(int argc, char* argv[])
 
     willDenseProcessing(&slotPQ);
 
-    arrange(&shiftPQ);
+    arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
+    printf("coverRatio: %f\n", coveredRatio);
+    printf("Satisfaction: %f\n", satisfaction);
+
     writeResult(result);
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
+
+    //printAvailable();
+    
     return 0;    
 }
 
@@ -372,7 +395,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     int i,j;
     int willingness;
     
-    printf("total response files %d\n", fileCount);
+    printf("total responses %d\n", fileCount);
     for(int i_file = 0; i_file< fileCount; i_file++){
         int id = i_file;
         char fileName[MAX_NAME_LENGTH*2];
