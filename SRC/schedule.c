@@ -50,6 +50,36 @@ linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 void printLinkedMat(linkedWill* mat[DAYS_IN_WEEK][SLOTS_IN_DAY]);
 int preprocessing(indexMaxPriorityQueue* shiftPQ);
 
+int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that reflects popularity of shifts, arranging from least to most later
+    int day, slot, count, slotIndex;
+    for(day = 0; day < DAYS_IN_WEEK; day++){
+        for(slot = 0; slot < SLOTS_IN_DAY; slot++){
+            count = 0;
+
+            slotIndex = day*SLOTS_IN_DAY + slot;
+            linkedWill *currentLink = generalWillMatrix[day][slot];
+            willNode *currentNode = currentLink->headNode;
+            while(1){
+                if(currentNode->id == -1){
+                    if(currentNode->nextWill == NULL){
+                        break;
+                    }
+                    currentNode = currentNode->nextWill;
+                    continue;
+                }
+
+                count++;
+                currentNode = currentNode->nextWill;
+                if(currentNode == NULL){
+                    break;
+                }
+            }
+            insert(slotPQ, slotIndex, count);
+        }
+    }
+    return 0;
+}
+
 int arrange(indexMaxPriorityQueue *pq){
     int day, slot, spot, peopleNeeded, id;
     float hours;
@@ -163,11 +193,16 @@ int main(int argc, char* argv[])
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
+
+    indexMaxPriorityQueue slotPQ;
+    slotPQ.size = 0;
+
     preprocessing(&shiftPQ);
+
+    willDenseProcessing(&slotPQ);
+
     arrange(&shiftPQ);
-    //printLinkedMat(result);
     writeResult(result);
-    //test();
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
     return 0;    
@@ -349,7 +384,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
         }
         strcpy(filePath, responsePath);
         strcat(filePath, fileName);
-        printf("start integrating file: %s for %s\n", filePath, student[id]);
+        //printf("start integrating file: %s for %s\n", filePath, student[id]);
         
         //for each csv, update generalWillMatrix, available hours, indexPQ
         csv2array(filePath, (int*)willMatrix);
@@ -371,7 +406,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
         }
         availableHoursArray[id] = 10;
         insert(shiftPQ, id, 0);
-        printf("finished integrating file: %s\n", filePath);
+        //printf("finished integrating file: %s\n", filePath);
         free(filePath);
 
     }

@@ -14,6 +14,21 @@ int printPM(indexMaxPriorityQueue *pPQ){
     }
     return 1;
 }
+
+int printVM(indexMaxPriorityQueue *pPQ){
+    int size = pPQ->size;
+    int i;
+    if(size){
+        printf("value map: ");
+        for(i = 0; i<size; i++){
+            printf("%d ", (int)pPQ->values[i]);
+        }
+        printf("\n");
+        return 0;
+    }
+    return 1;
+}
+
 int printIM(indexMaxPriorityQueue *pPQ){
     int size = pPQ->size;
     int i;

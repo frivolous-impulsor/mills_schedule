@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <time.h>
 
-#define MAX_QUEUE_SLOT 20
+#define MAX_QUEUE_SLOT 100
 #define MAX_NAME_LENGTH 32
 
 typedef struct
@@ -26,5 +26,7 @@ int removeTop(indexMaxPriorityQueue* pPQ);
 int update(indexMaxPriorityQueue* pPQ, int keyId, float newVal);
 
 int peekTopId(indexMaxPriorityQueue* pPQ);
+
+int printVM(indexMaxPriorityQueue *pPQ);
 
 #endif
