@@ -80,11 +80,22 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
     return 0;
 }
 
-
+void randWeight(int *willW, int *availW, int *workW){
+    srand(clock());
+    *willW = 1 + rand() % 10;
+    *availW = 1 + rand() % 10;
+    *workW = 1 + rand() % 10;
+}
 
 void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, float *ratio, float *satisfaction){
     int day, slot, spot, peopleNeeded, id, slotIndex;
+
+    
+    
+
     float hours;
+    int willWeight, availWeight, workedWeight;
+    randWeight(&willWeight, &availWeight, &workedWeight);
     bool updatedMap[MAX_QUEUE_SLOT] = {false};//a record for all students that's been considered with priority. for clean up reference at the end of each slot
     initializeLinkedMat(result);
     int positionTotal = 0;
@@ -114,8 +125,8 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
             
             id = currentNode->id;
             int will = currentNode->willingness;
-            int priority = will * (availableHoursArray[id] - 5* (*(worked + id*DAYS_IN_WEEK + day)) ) ;//logic needs tunning
-
+            int priority = (willWeight + will) * ( (availWeight + availableHoursArray[id]) - (workedWeight + (*(worked + id*DAYS_IN_WEEK + day))) ) ;//logic needs tunning
+            printf("priority: %d\n", priority);
             //update all students who have availability at this slot
             update(pq, id, priority);
             updatedMap[id] = true;
