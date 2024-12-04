@@ -82,9 +82,9 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
 
 void randWeight(int *willW, int *availW, int *workW){
     srand(clock());
-    *willW = 1 + rand() % 10;
+    *willW = 1 + rand() % 3;
     *availW = 1 + rand() % 10;
-    *workW = 1 + rand() % 10;
+    *workW = 3 + rand() % 8;
 }
 
 void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, float *ratio, float *satisfaction){
@@ -101,6 +101,8 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
     int positionTotal = 0;
     int positionCovered = 0;
     int positionPrefered = 0;
+    int *willArray = (int *)calloc(MAX_QUEUE_SLOT, sizeof(int));
+
     int *worked = (int*)calloc(MAX_QUEUE_SLOT*DAYS_IN_WEEK, sizeof(int)) ;//a record of wether a student worked on any given day, reference for priority calc.
     do{
         slotIndex = removeTop(slotPopulorPQ);
@@ -109,6 +111,7 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
         peopleNeeded = needMatrix[day][slot];
         positionTotal += peopleNeeded;
         hours = hoursMatrix[day][slot];
+        
         //for each slot, update priority queue with available people, with priority being multifactor
         
         //for each person in generalWillMat on that linkedWill, calc their priority by p = (availableH + availableH*will)
@@ -125,8 +128,9 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
             
             id = currentNode->id;
             int will = currentNode->willingness;
+            *(willArray + id) = will;
+            //printf("willingness: %d\n", will);
             int priority = (willWeight + will) * ( (availWeight + availableHoursArray[id]) - (workedWeight + (*(worked + id*DAYS_IN_WEEK + day))) ) ;//logic needs tunning
-            printf("priority: %d\n", priority);
             //update all students who have availability at this slot
             update(pq, id, priority);
             updatedMap[id] = true;
@@ -143,10 +147,9 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
 
             int topId = peekTopId(pq);
             //printf("peeped val %f for %s at slot %d day %d\n", pq->values[topId], student[topId], slot, day);
+            //printf("priority: %f\n", pq->values[topId]);
             if(pq->values[topId] <= 0){
                 topId = -2;//if val(willingness) of the top person is not even suitable for shift, -2 indicate vacancy
-            }else if(pq->values[topId] > 1){
-                positionPrefered++;
             }
             willNode *resultNode = (willNode*)malloc(sizeof(willNode));
             resultNode->id = topId;
@@ -154,6 +157,10 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
             resultNode->nextWill = NULL;
             append_Link(resulLink, resultNode);
             if(topId != -2){
+                //printf("willingness: %d\n",   *(willArray+topId));
+                if(  *(willArray+topId) == 2  ){
+                    positionPrefered++;
+                }
                 update(pq, topId, 0);
                 positionCovered++;
                 *(worked + id*DAYS_IN_WEEK + day) = 1;
@@ -162,6 +169,7 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
                 
             }
         }
+        memset(willArray, 0, sizeof(int)*MAX_QUEUE_SLOT);
 
 
         for(int cleanI = 0; cleanI < MAX_QUEUE_SLOT; cleanI++){
@@ -174,12 +182,13 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
 
     *ratio = ((float)positionCovered)/positionTotal;
     *satisfaction = ((float)positionPrefered)/positionTotal;
-
+    free(willArray);
     free(worked);
 }
 
 
 void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
+    
     FILE *fd = fopen("PRDAT/result.csv", "w");
     int currentId;
     if(fd == NULL){
@@ -216,11 +225,33 @@ void printAvailable(){
     }
 }
 
+void writeScore(float score){
+    FILE *fd = fopen("PRDAT/score.txt", "w");
+    if(fd == NULL){
+        perror("result file open failed\n");
+    }
+        
+    fprintf(fd, "%f", score);
+    fclose(fd);
+}
+
+void readScore(float *reading){
+    FILE *fd = fopen("PRDAT/score.txt", "r");
+    if(fd == NULL){
+        perror("result file open failed\n");
+    }
+        
+    fscanf(fd,"%f", reading);
+    fclose(fd);
+}
+
 int main(int argc, char* argv[])
 {   
     int i, j;
     float coveredRatio, //ratio of covered position count to needed position count
-        satisfaction;   //ratio of position allocated to a student with 2 to total positions
+        satisfaction,
+        score;   //ratio of position allocated to a student with 2 to total positions
+    float *reading = (float*)malloc(sizeof(float));
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
@@ -233,13 +264,20 @@ int main(int argc, char* argv[])
     willDenseProcessing(&slotPQ);
 
     arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
-    printf("coverRatio: %f\n", coveredRatio);
-    printf("Satisfaction: %f\n", satisfaction);
+    score = coveredRatio * 3 + satisfaction;
 
-    writeResult(result);
+    
+    readScore(reading);
+
+    if(score > *reading){
+        printf("new high score: %f\n", score);
+        writeScore(score);
+        writeResult(result);
+    }
+
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
-
+    free(reading);
     //printAvailable();
     
     return 0;    
@@ -409,7 +447,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     int i,j;
     int willingness;
     
-    printf("total responses %d\n", fileCount);
+    //printf("total responses %d\n", fileCount);
     for(int i_file = 0; i_file< fileCount; i_file++){
         int id = i_file;
         char fileName[MAX_NAME_LENGTH*2];
