@@ -279,13 +279,14 @@ int main(int argc, char* argv[])
     arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
     calcAvailDeviation(deviation);
     //printf("deviation %d\n", *deviation);
-    score = coveredRatio * 2 + satisfaction - *deviation;
+    score = coveredRatio * 3 + satisfaction * 2 - pow(*deviation, 1/2);
 
 
     
     readScore(reading);
 
-    if(score > *reading){
+
+    if(score > *reading || (*reading == 0 && score != 0)){
         printf("new high score: %f\n", score);
         writeScore(score);
         writeResult(result);

@@ -187,26 +187,29 @@ def postconvert():
     open('PRDAT/score.txt', 'w').close()
 
 
-def flushRSP(dirPath: str):
+def flush(dirPath: str):
     for fileName in os.listdir(dirPath):
+        if ".git" in fileName or "score.txt" == fileName:
+            continue
         filePath = os.path.join(dirPath, fileName)
         try:
             if os.path.isfile(filePath) or os.path.islink(filePath):
                 os.unlink(filePath)
-            elif os.path.isdir(filePath):
-                shutil.rmtree(filePath)
         except Exception as e:
             print("fail to delete: %s for %s" % (filePath, e))
         
 
 def main():
-    flushRSP("PRDAT/RSP")
 
     preconvert()
-    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
+    #subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
     for _ in range(300):
         subprocess.run(["./main"])
     postconvert()
+
+    flush("PRDAT/RSP")
+    flush("PRDAT")
+
 
 
 main()
