@@ -286,7 +286,7 @@ int main(int argc, char* argv[])
     readScore(reading);
 
 
-    if(score > *reading || (*reading == 0 && score != 0)){
+    if(score > *reading || (*reading == 0 && score == 0)){
         printf("new high score: %f\n", score);
         writeScore(score);
         writeResult(result);

@@ -6,6 +6,7 @@ import re
 from enum import Enum
 import shutil
 import subprocess
+from time import sleep
 
 class Day(Enum):
     SUN = 0
@@ -184,7 +185,10 @@ def postconvert():
 
         dayCount +=1
     workBook.save(resultPath)
-    open('PRDAT/score.txt', 'w').close()
+    number = -100000
+
+    with open('PRDAT/score.txt', 'w') as f:
+        f.write('%d' % number)
 
 
 def flush(dirPath: str):
@@ -202,7 +206,7 @@ def flush(dirPath: str):
 def main():
 
     preconvert()
-    #subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
+    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
     for _ in range(300):
         subprocess.run(["./main"])
     postconvert()
