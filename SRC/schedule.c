@@ -245,6 +245,18 @@ void readScore(float *reading){
     fclose(fd);
 }
 
+void calcAvailDeviation(int *deviation){
+    int i;
+    int diffSqure, sum;
+
+    sum = 0;
+    for(i = 0; i<MAX_QUEUE_SLOT; i++){
+        diffSqure = pow(availableHoursArray[i], 2);
+        sum +=diffSqure;
+    }
+    *deviation = sum;
+}
+
 int main(int argc, char* argv[])
 {   
     int i, j;
@@ -252,6 +264,7 @@ int main(int argc, char* argv[])
         satisfaction,
         score;   //ratio of position allocated to a student with 2 to total positions
     float *reading = (float*)malloc(sizeof(float));
+    int *deviation = (int*)malloc(sizeof(int));
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
@@ -264,7 +277,10 @@ int main(int argc, char* argv[])
     willDenseProcessing(&slotPQ);
 
     arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
-    score = coveredRatio * 3 + satisfaction;
+    calcAvailDeviation(deviation);
+    //printf("deviation %d\n", *deviation);
+    score = coveredRatio * 2 + satisfaction - *deviation;
+
 
     
     readScore(reading);
@@ -278,6 +294,7 @@ int main(int argc, char* argv[])
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
     free(reading);
+    free(deviation);
     //printAvailable();
     
     return 0;    

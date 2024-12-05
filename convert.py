@@ -204,7 +204,7 @@ def main():
 
     preconvert()
     subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
-    for i in range(300):
+    for _ in range(300):
         subprocess.run(["./main"])
     postconvert()
 
