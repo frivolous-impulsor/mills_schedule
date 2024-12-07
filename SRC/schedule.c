@@ -9,8 +9,8 @@
 #include <stdbool.h>
 #include "indexMaxPriorityQueue.h"
 
-const int DAYS_IN_WEEK = 7;
-const int SLOTS_IN_DAY = 10;
+#define DAYS_IN_WEEK 7
+#define SLOTS_IN_DAY 10
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 int hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
 int updatedPQ[MAX_QUEUE_SLOT];
@@ -81,7 +81,6 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
 }
 
 void randWeight(int *willW, int *availW, int *workW){
-    srand(clock());
     *willW = 1 + rand() % 3;
     *availW = 1 + rand() % 10;
     *workW = 3 + rand() % 8;
@@ -182,6 +181,10 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
 
     *ratio = ((float)positionCovered)/positionTotal;
     *satisfaction = ((float)positionPrefered)/positionTotal;
+
+    for(int i = 0; i< MAX_QUEUE_SLOT; i++){
+        availableHoursArray[i] = 10;
+    }
     free(willArray);
     free(worked);
 }
@@ -225,25 +228,6 @@ void printAvailable(){
     }
 }
 
-void writeScore(float score){
-    FILE *fd = fopen("PRDAT/score.txt", "w");
-    if(fd == NULL){
-        perror("result file open failed\n");
-    }
-        
-    fprintf(fd, "%f", score);
-    fclose(fd);
-}
-
-void readScore(float *reading){
-    FILE *fd = fopen("PRDAT/score.txt", "r");
-    if(fd == NULL){
-        perror("result file open failed\n");
-    }
-        
-    fscanf(fd,"%f", reading);
-    fclose(fd);
-}
 
 void calcAvailDeviation(int *deviation){
     int i;
@@ -259,37 +243,43 @@ void calcAvailDeviation(int *deviation){
 
 int main(int argc, char* argv[])
 {   
-    int i, j;
+    srand(clock());
+    int i, repeat;
     float coveredRatio, //ratio of covered position count to needed position count
         satisfaction,
-        score;   //ratio of position allocated to a student with 2 to total positions
+        newScore,
+        highScore;   //ratio of position allocated to a student with 2 to total positions
+    repeat = 300;
+    highScore = -1000;
     float *reading = (float*)malloc(sizeof(float));
     int *deviation = (int*)malloc(sizeof(int));
     templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
 
-    indexMaxPriorityQueue slotPQ;
+    indexMaxPriorityQueue slotPQ;   //popularity of each shift
     slotPQ.size = 0;
 
     preprocessing(&shiftPQ);
 
     willDenseProcessing(&slotPQ);
 
-    arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
-    calcAvailDeviation(deviation);
-    //printf("deviation %d\n", *deviation);
-    score = coveredRatio * 3 + satisfaction * 2 - pow(*deviation, 1/2);
+    for(i = 0; i < repeat; i++){
+        arrange(&shiftPQ, &slotPQ, &coveredRatio, &satisfaction);
+        calcAvailDeviation(deviation);
+        //printf("deviation %d\n", *deviation);
+        //printf("cover: %f sat: %f dev: %d\n", coveredRatio, satisfaction, *deviation);
+        newScore = coveredRatio * 3 + satisfaction * 2 - pow(*deviation, 1/2);
+        //printf("new score: %f\n", newScore);
+        if(newScore - highScore > 0.000001){
+            printf("iteration: %d:", i);
 
+            printf("new high score: %f\n", newScore);
+            writeResult(result);
+            highScore = newScore;
+        }
 
-    
-    readScore(reading);
-
-
-    if(score > *reading || (*reading == 0 && score == 0)){
-        printf("new high score: %f\n", score);
-        writeScore(score);
-        writeResult(result);
+        willDenseProcessing(&slotPQ);
     }
 
     freeLinkedWillMat(generalWillMatrix);

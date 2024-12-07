@@ -151,8 +151,8 @@ def readCSV(csvPath):
 
 def postconvert():
     template_path: str = "schedule_template.xlsx"
-    timeStamp = datetime.today().strftime('%Y-%m-%d_%H:%M:%S')
-    resultPath = "result_" + timeStamp + ".xlsx"
+    timeStamp = datetime.today().strftime('%Y-%m-%d_%H%M%S')
+    resultPath = "schedule_" + timeStamp + ".xlsx"
     csvSourcePath: str = "PRDAT/result.csv"
     resultDirPath = "RESULT"
     #check and create result dir
@@ -185,10 +185,7 @@ def postconvert():
 
         dayCount +=1
     workBook.save(resultPath)
-    number = -100000
 
-    with open('PRDAT/score.txt', 'w') as f:
-        f.write('%d' % number)
 
 
 def flush(dirPath: str):
@@ -207,8 +204,7 @@ def main():
 
     preconvert()
     subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
-    for _ in range(300):
-        subprocess.run(["./main"])
+    subprocess.run(["./main.exe"])
     postconvert()
 
     flush("PRDAT/RSP")
@@ -216,4 +212,6 @@ def main():
 
 
 
-main()
+#main()
+
+preconvert()
