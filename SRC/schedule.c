@@ -357,9 +357,6 @@ int templateRead(){
     csv2array(peopleNeededPath, (int*)needMatrix);
     csv2array(shiftHourPath, (int*)hoursMatrix);
     csv2array(shiftPriorityPath, (int*)shiftPriorityMatrix);
-    printCSV((int*)shiftPriorityMatrix);
-    printf("-----------------\n");
-    printCSV((int*)needMatrix);
     return 0;
 }
 
