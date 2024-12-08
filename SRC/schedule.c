@@ -12,10 +12,13 @@
 
 #define DAYS_IN_WEEK 7
 #define SLOTS_IN_DAY 10
+int studentNum;
 int needMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];   //needed number of people in each slot
 int hoursMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];    //hours in each slot in each day
+int shiftPriorityMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 int updatedPQ[MAX_QUEUE_SLOT];
 int availableHoursArray[MAX_QUEUE_SLOT];
+int resultHours[MAX_QUEUE_SLOT];
 
 char student[MAX_QUEUE_SLOT][MAX_NAME_LENGTH];
 
@@ -45,14 +48,21 @@ char *strtok_single (char * str, char const * delims);
 //strictly only accepting csv file that has "DAY,NUM,NUM,NUM.." format and 2D int array for nums in each day 
 int csv2array(char *filePath, int *array);
 int templateRead();
-void printCSV(int* csvMatrix, char* name);
+void printCSV(int* csvMatrix);
 int gatherCSVs(const char *dirName, char *files);
 linkedWill* generalWillMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
 void printLinkedMat(linkedWill* mat[DAYS_IN_WEEK][SLOTS_IN_DAY]);
 int preprocessing(indexMaxPriorityQueue* shiftPQ);
 
+
+
 int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that reflects popularity of shifts, arranging from least to most later
     int day, slot, count, slotIndex;
+    int asteriskWeight, priority;
+    int *needOpMatrix = calloc(DAYS_IN_WEEK*SLOTS_IN_DAY, sizeof(int)); 
+    memcpy(needOpMatrix, needMatrix, DAYS_IN_WEEK*SLOTS_IN_DAY*sizeof(int));
+
+
     for(day = 0; day < DAYS_IN_WEEK; day++){
         for(slot = 0; slot < SLOTS_IN_DAY; slot++){
             count = 0;
@@ -75,16 +85,19 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
                     break;
                 }
             }
-            insert(slotPQ, slotIndex, MAX_QUEUE_SLOT-count);//value in queue for each slot will be inverse of popularity
+            asteriskWeight = (3 + rand()%10 ) * shiftPriorityMatrix[day][slot];
+            priority = studentNum-count + asteriskWeight;
+            insert(slotPQ, slotIndex, priority);//value in queue for each slot will be inverse of popularity
         }
     }
+    free(needOpMatrix);
     return 0;
 }
 
 void randWeight(int *willW, int *availW, int *workW){
-    *willW = 1 + rand() % 3;
-    *availW = 1 + rand() % 10;
-    *workW = 3 + rand() % 8;
+    *willW = 1 + rand() % 9;
+    *availW = 0 + rand() % 1;
+    *workW = 1 + rand() % 6;
 }
 
 void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, float *ratio, float *satisfaction){
@@ -104,6 +117,10 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
     int *willArray = (int *)calloc(MAX_QUEUE_SLOT, sizeof(int));
 
     int *worked = (int*)calloc(MAX_QUEUE_SLOT*DAYS_IN_WEEK, sizeof(int)) ;//a record of wether a student worked on any given day, reference for priority calc.
+
+        for(int i = 0; i< studentNum; i++){
+        availableHoursArray[i] = 10;
+    }
     do{
         slotIndex = removeTop(slotPopulorPQ);
         day = slotIndex / SLOTS_IN_DAY;
@@ -183,9 +200,6 @@ void arrange(indexMaxPriorityQueue *pq, indexMaxPriorityQueue *slotPopulorPQ, fl
     *ratio = ((float)positionCovered)/positionTotal;
     *satisfaction = ((float)positionPrefered)/positionTotal;
 
-    for(int i = 0; i< MAX_QUEUE_SLOT; i++){
-        availableHoursArray[i] = 10;
-    }
     free(willArray);
     free(worked);
 }
@@ -222,10 +236,10 @@ void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     }
 }
 
-void printAvailable(){
+void printResultHour(){
     int i;
-    for(i = 0; i< MAX_QUEUE_SLOT; i++){
-        printf("%s: %d\n", student[i], availableHoursArray[i]);
+    for(i = 0; i< studentNum; i++){
+        printf("%-15s: %3d\n", student[i], resultHours[i]);
     }
 }
 
@@ -235,7 +249,7 @@ void calcAvailDeviation(int *deviation){
     int diffSqure, sum;
 
     sum = 0;
-    for(i = 0; i<MAX_QUEUE_SLOT; i++){
+    for(i = 0; i<studentNum; i++){
         diffSqure = pow(availableHoursArray[i], 2);
         sum +=diffSqure;
     }
@@ -254,11 +268,10 @@ int main(int argc, char* argv[])
         satisfaction,
         newScore,
         highScore;   //ratio of position allocated to a student with 2 to total positions
-    repeat = 500;
-    highScore = -1000;
+    repeat = 1000;
+    highScore = -100000;
     float *reading = (float*)malloc(sizeof(float));
     int *deviation = (int*)malloc(sizeof(int));
-    templateRead();
     indexMaxPriorityQueue shiftPQ;
     shiftPQ.size = 0;
 
@@ -277,20 +290,19 @@ int main(int argc, char* argv[])
         newScore = coveredRatio * 3 + satisfaction * 2 - pow(*deviation, 1/2);
         //printf("new score: %f\n", newScore);
         if(newScore - highScore > 0.000001){
-            printf("iteration: %4d: new high score: %6f\n", i, newScore);
+            printf("iteration: %4d-> new high score: %6f\n", i, newScore);
             writeResult(result);
             highScore = newScore;
+            memcpy(resultHours, availableHoursArray, MAX_QUEUE_SLOT*sizeof(int));
         }
 
         willDenseProcessing(&slotPQ);
     }
-
+    printResultHour();
     freeLinkedWillMat(generalWillMatrix);
     freeLinkedWillMat(result);
     free(reading);
     free(deviation);
-    //printAvailable();
-    
     return 0;    
 }
 
@@ -328,15 +340,7 @@ char *strtok_single (char * str, char const * delims)
   return ret;
 }
 
-int templateRead(){
-    char peopleNeededPath[] = "PRDAT/peopleNeeded.csv";
-    char shiftHourPath[] = "PRDAT/shiftHour.csv";
-    csv2array(peopleNeededPath, (int*)needMatrix);
-    csv2array(shiftHourPath, (int*)hoursMatrix);
-    return 0;
-}
-
-void printCSV(int* csvMatrix, char* name){
+void printCSV(int* csvMatrix){
     int i, j;
     for(i = 0; i < DAYS_IN_WEEK; i++){
         for(j = 0; j<SLOTS_IN_DAY; j++){
@@ -345,6 +349,21 @@ void printCSV(int* csvMatrix, char* name){
         printf("\n");
     }
 }
+
+int templateRead(){
+    char peopleNeededPath[] = "PRDAT/peopleNeeded.csv";
+    char shiftHourPath[] = "PRDAT/shiftHour.csv";
+    char shiftPriorityPath[] = "PRDAT/shiftPriority.csv";
+    csv2array(peopleNeededPath, (int*)needMatrix);
+    csv2array(shiftHourPath, (int*)hoursMatrix);
+    csv2array(shiftPriorityPath, (int*)shiftPriorityMatrix);
+    printCSV((int*)shiftPriorityMatrix);
+    printf("-----------------\n");
+    printCSV((int*)needMatrix);
+    return 0;
+}
+
+
 
 int gatherCSVs(const char *dirName, char *files){
     DIR *dir;
@@ -453,6 +472,7 @@ int preprocessing(indexMaxPriorityQueue* shiftPQ){
     }
 
     fileCount = gatherCSVs(responsePath, files);
+    studentNum = fileCount;
     int willMatrix[DAYS_IN_WEEK][SLOTS_IN_DAY];
     initializeLinkedMat(generalWillMatrix);
     int i,j;

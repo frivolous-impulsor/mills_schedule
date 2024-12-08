@@ -52,7 +52,7 @@ def getMasterFilePath():
         raise FileNotFoundError("Ensure exactly one \"schedule_template.xlsx\" at root dir")
     return files[0]
 
-def getResponsesPath(dirPath: str = "RSP"):
+def getResponsesPath(dirPath: str = "RSPONSES"):
     files = [file for file in os.listdir(dirPath) if (os.path.isfile(os.path.join(dirPath,file)) and file[-5:] == ".xlsx")]
     return files
 
@@ -60,6 +60,7 @@ def getResponsesPath(dirPath: str = "RSP"):
 def analyzeMaster(masterPath: str):
     hourMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     peopleNeededMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
+    shiftPriority = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     workbook = load_workbook(masterPath)
     sheet = workbook.active
     dayCounter = 0
@@ -84,22 +85,35 @@ def analyzeMaster(masterPath: str):
                 pattern = re.compile("([0-1]?[0-9]|2[0-3])(:)([0-5][0-9])")
                 times = [x.group() for x in re.finditer(pattern, val)]
                 if(len(times) != 2):
-                    raise Exception(f"time format off on {list(Day)[row].name} at slot {col}")
+                    print(f"time format off on {list(Day)[row].name} at slot {col}")
+                    continue
                 hourdiff = getTimeDiff(times[0], times[1])
                 if hourdiff < 1:
                     hourdiff = 0
                 hourMat[dayCounter][timeCounter] = hourdiff
                 timeCounter+=1
 
-            else:
-                peopleNeededMat[dayCounter][peopleCounter] = int(val)    
-                peopleCounter+=1      
+            else:   #people needed, if marked with *, more priority
+                isPriority = 0
+                if('*' in val):
+                    val = val.replace('*', '')
+                    isPriority = 1
+                try:
+                    numVal = int(val)
+                except Exception as e:
+                    peopleCounter +=1
+                    continue
+                if(isPriority):
+                    shiftPriority[dayCounter][peopleCounter] = 1
+                peopleNeededMat[dayCounter][peopleCounter] = numVal    
+                peopleCounter+=1
             isTime = not isTime
 
         dayCounter+=1
 
     writeCSV("PRDAT/shiftHour.csv", hourMat)
     writeCSV("PRDAT/peopleNeeded.csv", peopleNeededMat)
+    writeCSV("PRDAT/shiftPriority.csv", shiftPriority)
     
 def analyzeResponse(filePath: str, writePath: str):
     willMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
@@ -134,7 +148,7 @@ def preconvert():
     analyzeMaster(masterPath)
     files = getResponsesPath()
     csvDir: str = "PRDAT/RSP"
-    rspDir: str = "RSP"
+    rspDir: str = "RSPONSES"
     for file in files:
         writePath = os.path.join(csvDir, file[:-5]+".csv")
         readPath = os.path.join(rspDir, file)
@@ -203,11 +217,11 @@ def flush(dirPath: str):
 def main():
 
     preconvert()
-    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "main"])
-    subprocess.run(["./main.exe"])
+    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "SRC/main"])
+    subprocess.run(["SRC/main.exe"])
     postconvert()
 
     flush("PRDAT/RSP")
-    flush("PRDAT")
+    #flush("PRDAT")
 
 main()
