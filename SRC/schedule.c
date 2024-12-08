@@ -7,6 +7,7 @@
 #include <time.h>
 #include <dirent.h>
 #include <stdbool.h>
+#include <sysinfoapi.h>
 #include "indexMaxPriorityQueue.h"
 
 #define DAYS_IN_WEEK 7
@@ -241,15 +242,19 @@ void calcAvailDeviation(int *deviation){
     *deviation = sum;
 }
 
+
+
 int main(int argc, char* argv[])
 {   
-    srand(clock());
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    srand(st.wMilliseconds);
     int i, repeat;
     float coveredRatio, //ratio of covered position count to needed position count
         satisfaction,
         newScore,
         highScore;   //ratio of position allocated to a student with 2 to total positions
-    repeat = 300;
+    repeat = 500;
     highScore = -1000;
     float *reading = (float*)malloc(sizeof(float));
     int *deviation = (int*)malloc(sizeof(int));
@@ -272,9 +277,7 @@ int main(int argc, char* argv[])
         newScore = coveredRatio * 3 + satisfaction * 2 - pow(*deviation, 1/2);
         //printf("new score: %f\n", newScore);
         if(newScore - highScore > 0.000001){
-            printf("iteration: %d:", i);
-
-            printf("new high score: %f\n", newScore);
+            printf("iteration: %4d: new high score: %6f\n", i, newScore);
             writeResult(result);
             highScore = newScore;
         }

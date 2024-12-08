@@ -210,8 +210,4 @@ def main():
     flush("PRDAT/RSP")
     flush("PRDAT")
 
-
-
-#main()
-
-preconvert()
+main()
