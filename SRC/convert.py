@@ -6,7 +6,11 @@ import re
 from enum import Enum
 import shutil
 import subprocess
-from time import sleep
+import ctypes
+
+def Mbox(title, text, style):
+    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
+
 
 class Day(Enum):
     SUN = 0
@@ -60,7 +64,7 @@ def getResponsesPath(dirPath: str = "RSPONSES"):
 def analyzeMaster(masterPath: str):
     hourMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     peopleNeededMat = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
-    shiftPriority = [[0 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
+    shiftPriority = [[1 for _ in range(MAX_SLOT_IN_DAY)] for _ in range(MAX_DAY_IN_WEEK)]
     workbook = load_workbook(masterPath)
     sheet = workbook.active
     dayCounter = 0
@@ -71,7 +75,7 @@ def analyzeMaster(masterPath: str):
         isTime: bool = True
 
         for row in range(2, MAX_SLOT_IN_DAY*2+1):
-            val = sheet.cell(row, col).value
+            val = (sheet.cell(row, col).value)
             if val is None:
                 if(isTime):
                     timeCounter+=1
@@ -93,18 +97,19 @@ def analyzeMaster(masterPath: str):
                 hourMat[dayCounter][timeCounter] = hourdiff
                 timeCounter+=1
 
-            else:   #people needed, if marked with *, more priority
-                isPriority = 0
+            else:   #people needed, if marked with *, less priority
+                val = str(val)
+                isPriority = 1
                 if('*' in val):
                     val = val.replace('*', '')
-                    isPriority = 1
+                    isPriority = 0
                 try:
                     numVal = int(val)
                 except Exception as e:
                     peopleCounter +=1
                     continue
-                if(isPriority):
-                    shiftPriority[dayCounter][peopleCounter] = 1
+                if(not isPriority):
+                    shiftPriority[dayCounter][peopleCounter] = 0
                 peopleNeededMat[dayCounter][peopleCounter] = numVal    
                 peopleCounter+=1
             isTime = not isTime

@@ -85,7 +85,7 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
                     break;
                 }
             }
-            asteriskWeight = (3 + rand()%10 ) * shiftPriorityMatrix[day][slot];
+            asteriskWeight = (15 + rand()%20 ) * shiftPriorityMatrix[day][slot];
             priority = studentNum-count + asteriskWeight;
             insert(slotPQ, slotIndex, priority);//value in queue for each slot will be inverse of popularity
         }
@@ -232,7 +232,9 @@ void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
             }
             fprintf(fd, ",");
         }
-        fprintf(fd, "\n");
+        if(i < 6){
+            fprintf(fd, "\n");
+        }
     }
 }
 
@@ -387,7 +389,10 @@ int csv2array(char *filePath, int *array){
     char buffer[255];
     int i = 0; 
     int j = 0;
+    errno = 0;
     int val;
+    char* token;
+    char* end;
     FILE *file = fopen(filePath, "r");
     if(file == NULL){
         printf("no file found with name: %s\n", filePath);
@@ -395,18 +400,21 @@ int csv2array(char *filePath, int *array){
     }
    
     while(fgets(buffer, sizeof(buffer), file)){
-        char* token;
-        token = strtok_single(buffer, ",");
-        token = strtok_single(NULL, ",");
-        char tok;
-        while(token != NULL){
-            tok = (char)(*token);
-            val = tok - '0';
-            if(val < 0 || val > 9){
+        token = strtok(buffer, ",");
+        token = strtok(NULL, ",");
+        val = strtol(token, &end, 10);
+
+        if(errno == ERANGE){
+            val = 0;
+        }
+        
+        while(token != end){
+            if((val < 0) || (val > MAX_QUEUE_SLOT)){
                 val = 0;
             }
             *(array+i*SLOTS_IN_DAY + j) = val;
-            token = strtok_single(NULL, ",");
+            token = strtok(NULL, ",");
+            val = strtol(token, &end, 10);
             j++;
         }
         j= 0;
