@@ -220,7 +220,7 @@ def flush(dirPath: str):
 def main():
 
     preconvert()
-    subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "SRC/main"])
+    #subprocess.run(["gcc", "SRC/schedule.c", "SRC/indexMaxPriorityQueue.c", "-o", "SRC/main"])
     subprocess.run(["SRC/main.exe"])
     postconvert()
 

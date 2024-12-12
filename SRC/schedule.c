@@ -55,7 +55,6 @@ void printLinkedMat(linkedWill* mat[DAYS_IN_WEEK][SLOTS_IN_DAY]);
 int preprocessing(indexMaxPriorityQueue* shiftPQ);
 
 
-
 int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that reflects popularity of shifts, arranging from least to most later
     int day, slot, count, slotIndex;
     int asteriskWeight, priority;
@@ -241,9 +240,15 @@ void writeResult(linkedWill * resultMat[DAYS_IN_WEEK][SLOTS_IN_DAY]){
 }
 
 void printResultHour(){
-    int i;
-    for(i = 0; i< studentNum; i++){
-        printf("%-15s: %3d\n", student[i], resultHours[i]);
+    FILE *fd = fopen("report.csv", "w");
+    int currentId;
+    if(fd == NULL){
+        perror("result file open failed\n");
+    }
+    fprintf(fd, "%-15s: %6s\n", "name", "hours");
+
+    for(int i = 0; i < studentNum; i++){
+        fprintf(fd, "%-15s: %6d\n", student[i], -(resultHours[i]-10));
     }
 }
 
@@ -464,6 +469,8 @@ int initializeLinkedMat(linkedWill* matrxi[DAYS_IN_WEEK][SLOTS_IN_DAY]){
     }
     return 0;
 }
+
+
 
 int preprocessing(indexMaxPriorityQueue* shiftPQ){
     templateRead();
