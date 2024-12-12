@@ -89,11 +89,9 @@ def analyzeMaster(masterPath: str):
                 pattern = re.compile("([0-1]?[0-9]|2[0-3])(:)([0-5][0-9])")
                 times = [x.group() for x in re.finditer(pattern, val)]
                 if(len(times) != 2):
-                    print(f"time format off on {list(Day)[row].name} at slot {col}")
-                    continue
-                hourdiff = getTimeDiff(times[0], times[1])
-                if hourdiff < 1:
                     hourdiff = 0
+                else:
+                    hourdiff = max(getTimeDiff(times[0], times[1]), 0)
                 hourMat[dayCounter][timeCounter] = hourdiff
                 timeCounter+=1
 
@@ -227,6 +225,6 @@ def main():
     postconvert()
 
     flush("PRDAT/RSP")
-    #flush("PRDAT")
+    flush("PRDAT")
 
 main()

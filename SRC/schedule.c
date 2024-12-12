@@ -66,7 +66,9 @@ int willDenseProcessing(indexMaxPriorityQueue* slotPQ){ //construct slotPQ that 
     for(day = 0; day < DAYS_IN_WEEK; day++){
         for(slot = 0; slot < SLOTS_IN_DAY; slot++){
             count = 0;
-
+            if(needMatrix[day][slot] == 0 || hoursMatrix[day][slot] == 0){
+                continue;
+            }
             slotIndex = day*SLOTS_IN_DAY + slot;
             linkedWill *currentLink = generalWillMatrix[day][slot];
             willNode *currentNode = currentLink->headNode;
