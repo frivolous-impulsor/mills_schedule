@@ -503,29 +503,53 @@ Scheduling/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/build
 .PHONY : Scheduling/fast
 
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
+tests/catch_amalgamated.o: tests/catch_amalgamated.cpp.o
+.PHONY : tests/catch_amalgamated.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+tests/catch_amalgamated.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o
+.PHONY : tests/catch_amalgamated.cpp.o
 
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
+tests/catch_amalgamated.i: tests/catch_amalgamated.cpp.i
+.PHONY : tests/catch_amalgamated.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+tests/catch_amalgamated.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.i
+.PHONY : tests/catch_amalgamated.cpp.i
 
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
+tests/catch_amalgamated.s: tests/catch_amalgamated.cpp.s
+.PHONY : tests/catch_amalgamated.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+tests/catch_amalgamated.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
+.PHONY : tests/catch_amalgamated.cpp.s
+
+tests/index.o: tests/index.cpp.o
+.PHONY : tests/index.o
+
+# target to build an object file
+tests/index.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.o
+.PHONY : tests/index.cpp.o
+
+tests/index.i: tests/index.cpp.i
+.PHONY : tests/index.i
+
+# target to preprocess a source file
+tests/index.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.i
+.PHONY : tests/index.cpp.i
+
+tests/index.s: tests/index.cpp.s
+.PHONY : tests/index.s
+
+# target to generate assembly for a file
+tests/index.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.s
+.PHONY : tests/index.cpp.s
 
 # Help Target
 help:
@@ -565,9 +589,12 @@ help:
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
 	@echo "... Scheduling"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
+	@echo "... tests/catch_amalgamated.o"
+	@echo "... tests/catch_amalgamated.i"
+	@echo "... tests/catch_amalgamated.s"
+	@echo "... tests/index.o"
+	@echo "... tests/index.i"
+	@echo "... tests/index.s"
 .PHONY : help
 
 

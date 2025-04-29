@@ -1,8 +1,14 @@
 [
 {
   "directory": "/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build",
-  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=14.7 -o CMakeFiles/Scheduling.dir/src/main.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/src/main.cpp",
-  "file": "/Users/machine_1997/Program/Shift_scheduling/src/main.cpp",
-  "output": "CMakeFiles/Scheduling.dir/src/main.cpp.o"
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=14.7 -o CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/catch_amalgamated.cpp",
+  "file": "/Users/machine_1997/Program/Shift_scheduling/tests/catch_amalgamated.cpp",
+  "output": "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o"
+},
+{
+  "directory": "/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=14.7 -o CMakeFiles/Scheduling.dir/tests/index.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp",
+  "file": "/Users/machine_1997/Program/Shift_scheduling/tests/index.cpp",
+  "output": "CMakeFiles/Scheduling.dir/tests/index.cpp.o"
 }
 ]
