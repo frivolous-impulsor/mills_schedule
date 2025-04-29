@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Darwin-c++"
+	BuildStamp="20250429-0054-Experimental"
+	Name="microQuantumComputer95"
+	Generator="ctest-3.31.6"
+	CompilerName="/Library/Developer/CommandLineTools/usr/bin/c++"
+	CompilerVersion="16.0.0.16000026"
+	OSName="macOS"
+	Hostname="microQuantumComputer95"
+	OSRelease="14.7.3"
+	OSVersion="23H417"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="142"
+	ModelName="Intel(R) Core(TM) i5-8210Y CPU @ 1.60GHz"
+	ProcessorCacheSize="32768"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="2"
+	TotalVirtualMemory="1024"
+	TotalPhysicalMemory="8192"
+	LogicalProcessorsPerPhysical="8"
+	ProcessorClockFrequency="1600"
+	>
+	<Testing>
+		<StartDateTime>Apr 28 20:55 EDT</StartDateTime>
+		<StartTestTime>1745888123</StartTestTime>
+		<TestList/>
+		<EndDateTime>Apr 28 20:55 EDT</EndDateTime>
+		<EndTestTime>1745888123</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
