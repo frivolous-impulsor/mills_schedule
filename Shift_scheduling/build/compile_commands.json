@@ -7,8 +7,8 @@
 },
 {
   "directory": "/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build",
-  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=14.7 -o CMakeFiles/Scheduling.dir/tests/index.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp",
-  "file": "/Users/machine_1997/Program/Shift_scheduling/tests/index.cpp",
-  "output": "CMakeFiles/Scheduling.dir/tests/index.cpp.o"
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=14.7 -o CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp",
+  "file": "/Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp",
+  "output": "CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o"
 }
 ]

@@ -1086,8 +1086,8 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o
  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h
  /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
 
-CMakeFiles/Scheduling.dir/tests/index.cpp.o
- /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o
+ /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp
  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/Availability.h
  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h
  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h
@@ -2070,7 +2070,6 @@ CMakeFiles/Scheduling.dir/tests/index.cpp.o
  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdarg.h
  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h
  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h
- /Users/machine_1997/Program/Shift_scheduling/src/indexPriorityQueue.tpp
  /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
- /Users/machine_1997/Program/Shift_scheduling/include/indexPriorityQueue.hpp
+ /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp
 

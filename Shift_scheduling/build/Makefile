@@ -527,29 +527,29 @@ tests/catch_amalgamated.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 .PHONY : tests/catch_amalgamated.cpp.s
 
-tests/index.o: tests/index.cpp.o
-.PHONY : tests/index.o
+tests/workerTest.o: tests/workerTest.cpp.o
+.PHONY : tests/workerTest.o
 
 # target to build an object file
-tests/index.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.o
-.PHONY : tests/index.cpp.o
+tests/workerTest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o
+.PHONY : tests/workerTest.cpp.o
 
-tests/index.i: tests/index.cpp.i
-.PHONY : tests/index.i
+tests/workerTest.i: tests/workerTest.cpp.i
+.PHONY : tests/workerTest.i
 
 # target to preprocess a source file
-tests/index.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.i
-.PHONY : tests/index.cpp.i
+tests/workerTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/workerTest.cpp.i
+.PHONY : tests/workerTest.cpp.i
 
-tests/index.s: tests/index.cpp.s
-.PHONY : tests/index.s
+tests/workerTest.s: tests/workerTest.cpp.s
+.PHONY : tests/workerTest.s
 
 # target to generate assembly for a file
-tests/index.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/index.cpp.s
-.PHONY : tests/index.cpp.s
+tests/workerTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/workerTest.cpp.s
+.PHONY : tests/workerTest.cpp.s
 
 # Help Target
 help:
@@ -592,9 +592,9 @@ help:
 	@echo "... tests/catch_amalgamated.o"
 	@echo "... tests/catch_amalgamated.i"
 	@echo "... tests/catch_amalgamated.s"
-	@echo "... tests/index.o"
-	@echo "... tests/index.i"
-	@echo "... tests/index.s"
+	@echo "... tests/workerTest.o"
+	@echo "... tests/workerTest.i"
+	@echo "... tests/workerTest.s"
 .PHONY : help
 
 

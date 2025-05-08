@@ -6,6 +6,6 @@ include(CTest)
 
 enable_testing()
 
-add_executable(Scheduling tests/catch_amalgamated.cpp tests/index.cpp)
+add_executable(Scheduling tests/catch_amalgamated.cpp tests/workerTest.cpp)
 
 set_property(TARGET Scheduling PROPERTY CXX_STANDARD 17)

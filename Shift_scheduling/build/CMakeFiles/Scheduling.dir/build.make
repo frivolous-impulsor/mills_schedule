@@ -86,30 +86,30 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/machine_1997/Program/Shift_scheduling/tests/catch_amalgamated.cpp -o CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 
-CMakeFiles/Scheduling.dir/tests/index.cpp.o: CMakeFiles/Scheduling.dir/flags.make
-CMakeFiles/Scheduling.dir/tests/index.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp
-CMakeFiles/Scheduling.dir/tests/index.cpp.o: CMakeFiles/Scheduling.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Scheduling.dir/tests/index.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Scheduling.dir/tests/index.cpp.o -MF CMakeFiles/Scheduling.dir/tests/index.cpp.o.d -o CMakeFiles/Scheduling.dir/tests/index.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: CMakeFiles/Scheduling.dir/flags.make
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: CMakeFiles/Scheduling.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o -MF CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o.d -o CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o -c /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp
 
-CMakeFiles/Scheduling.dir/tests/index.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Scheduling.dir/tests/index.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp > CMakeFiles/Scheduling.dir/tests/index.cpp.i
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Scheduling.dir/tests/workerTest.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp > CMakeFiles/Scheduling.dir/tests/workerTest.cpp.i
 
-CMakeFiles/Scheduling.dir/tests/index.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scheduling.dir/tests/index.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/machine_1997/Program/Shift_scheduling/tests/index.cpp -o CMakeFiles/Scheduling.dir/tests/index.cpp.s
+CMakeFiles/Scheduling.dir/tests/workerTest.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scheduling.dir/tests/workerTest.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp -o CMakeFiles/Scheduling.dir/tests/workerTest.cpp.s
 
 # Object files for target Scheduling
 Scheduling_OBJECTS = \
 "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o" \
-"CMakeFiles/Scheduling.dir/tests/index.cpp.o"
+"CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o"
 
 # External object files for target Scheduling
 Scheduling_EXTERNAL_OBJECTS =
 
 Scheduling: CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o
-Scheduling: CMakeFiles/Scheduling.dir/tests/index.cpp.o
+Scheduling: CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o
 Scheduling: CMakeFiles/Scheduling.dir/build.make
 Scheduling: CMakeFiles/Scheduling.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/machine_1997/Program/Shift_scheduling/Shift_scheduling/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Scheduling"
