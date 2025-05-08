@@ -2,6 +2,9 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include "commonFunctions.hpp"
 
 
 class Worker
@@ -12,7 +15,7 @@ private:
     double m_desiredHours {};
     double m_allocatedHours {};
     double m_allocatedPreferedHours {};
-    std::vector<std::vector<int>> m_referenceMatrix {};
+    std::vector<std::vector<int>> m_preferenceMatrix {};
 
 public:
     Worker(std::string name, double desiredHours, int id)
@@ -57,5 +60,26 @@ public:
         }
     }
 
-    
+    void setPreferenceMatrixCSV(std::string csvFileName){
+        std::vector<std::vector<std::string>> result {readCSV(csvFileName)};
+        if(result.size() == 0){
+            throw std::invalid_argument("readCSV failed at ");
+        }
+        int r {0};
+        for (auto row: result){
+            for (auto val: row){
+                if(m_preferenceMatrix.size() <= r){
+                    m_preferenceMatrix.push_back({});
+                }
+                m_preferenceMatrix[r].push_back(std::stoi(val));
+
+            }
+            r++;
+        }
+    }
+
+    std::vector<std::vector<int>> getPreferenceMatrix(){
+        return m_preferenceMatrix;
+    }
+
 };
