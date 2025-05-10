@@ -1085,7 +1085,7 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o: /Users/machine_1997/Pro
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
 
-CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp \
+CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/slotTest.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -2089,8 +2089,12 @@ CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: /Users/machine_1997/Program/Sh
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp
+  /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp
 
+
+/Users/machine_1997/Program/Shift_scheduling/include/slot.hpp:
+
+/Users/machine_1997/Program/Shift_scheduling/tests/slotTest.cpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp:
 
@@ -2115,8 +2119,6 @@ CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: /Users/machine_1997/Program/Sh
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_va_list.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_header_macro.h:
-
-/Users/machine_1997/Program/Shift_scheduling/tests/workerTest.cpp:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg___va_copy.h:
 
@@ -3897,8 +3899,6 @@ CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o: /Users/machine_1997/Program/Sh
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_day.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_ends_with.h:
-
-/Users/machine_1997/Program/Shift_scheduling/include/worker.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/width_estimation_table.h:
 

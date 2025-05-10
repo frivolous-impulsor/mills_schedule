@@ -106,7 +106,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "tests/workerTest.cpp",
+			"path" : "tests/slotTest.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

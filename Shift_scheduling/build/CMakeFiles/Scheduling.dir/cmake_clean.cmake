@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o"
   "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o.d"
-  "CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o"
-  "CMakeFiles/Scheduling.dir/tests/workerTest.cpp.o.d"
+  "CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o"
+  "CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o.d"
   "Scheduling"
   "Scheduling.pdb"
 )
