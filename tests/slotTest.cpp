@@ -12,22 +12,17 @@ TEST_CASE("worker class basic functions", "[worker]"){
 
     
     SECTION("duration calculation"){
-        std::string startTimeString {"2023-06-17 12:36:00"};
-        std::string endTimeString   {"2023-06-18 12:50:00"};
+        std::string startTimeString {"2023-06-17 9:30:00"};
+        std::string endTimeString   {"2023-06-18 10:00:00"};
         std::string timeFormat      {"%Y-%m-%d %H:%M:%S"};
 
-        std::tm tmStart = {};
-        std::stringstream ssStart("2023-06-17 12:36:00");
-        ssStart >> std::get_time(&tmStart, "%Y-%m-%d %H:%M:%S");
-        auto tpStart = std::chrono::system_clock::from_time_t(std::mktime(&tmStart));
+        std::chrono::time_point<std::chrono::system_clock> tpStart {parseDateTime(startTimeString, timeFormat)};
+        std::chrono::time_point<std::chrono::system_clock> tpEnd {parseDateTime(endTimeString, timeFormat)};
 
-        std::tm tmEnd = {};
-        std::stringstream ssEnd("2023-06-18 12:50:00");
-        ssEnd >> std::get_time(&tmEnd, "%Y-%m-%d %H:%M:%S");
-        auto tpEnd = std::chrono::system_clock::from_time_t(std::mktime(&tmEnd));
 
         Slot s {0, 0, tpStart, tpEnd};
-        REQUIRE(s.getDurationInMinute() == 14 + 24*60);
+        REQUIRE(s.getDurationInMinute() == 30 + 24*60);
+        REQUIRE(s.getDurationInHour() == (30+24*60)/60.0);
     }
     
     SECTION("set num people wanted"){
@@ -68,5 +63,6 @@ TEST_CASE("worker class basic functions", "[worker]"){
         REQUIRE(!s.wantMorePeople());
     }
 
+    
 
 }

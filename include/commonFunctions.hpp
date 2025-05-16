@@ -4,6 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <iostream>
+#include <chrono>
 
 std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     std::vector<std::vector<std::string>> data;
@@ -32,3 +33,12 @@ std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     return data;
 }
 
+std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string dateTime, std::string format){
+    std::tm tm = {};   
+    std::stringstream ssStart(dateTime);
+    size_t len {format.length()};
+    char arr[len + 1];
+    strcpy(arr, format.c_str());
+    ssStart >> std::get_time(&tm, arr);
+    return std::chrono::system_clock::from_time_t(std::mktime(&tm));
+}

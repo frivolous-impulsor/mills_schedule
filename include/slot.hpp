@@ -33,6 +33,10 @@ public:
         return m_duration;
     }
 
+    double getDurationInHour(){
+        return m_duration/60;
+    }
+
     void setNumPeopleWanted(int n){
         if(n<0){
             throw std::invalid_argument("only non-negative number of people can be wanted");
