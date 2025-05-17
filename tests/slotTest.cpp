@@ -10,6 +10,26 @@ TEST_CASE("worker class basic functions", "[worker]"){
         REQUIRE(true);
     }
 
+    SECTION("parse time calc"){
+        std::string startTimeString {"2023-06-17 9:30"};
+        std::string endTimeString {"2023-06-17 9:40"};
+        std::string timeFormat      {"%Y-%m-%d %H:%M"};
+        std::chrono::time_point<std::chrono::system_clock> tpStart {parseDateTime(startTimeString, timeFormat)};
+        std::chrono::time_point<std::chrono::system_clock> tpEnd {parseDateTime(endTimeString, timeFormat)};
+
+        auto timeDiffDurationMin1 = std::chrono::duration_cast<std::chrono::minutes>(tpEnd - tpStart);
+        REQUIRE(timeDiffDurationMin1.count() == 10);
+
+        auto timeDiffDurationMin2 = std::chrono::duration_cast<std::chrono::minutes>(tpStart - tpEnd);
+        REQUIRE(timeDiffDurationMin2.count() == -10);
+
+        endTimeString = "2023-06-17 13:40";
+        tpEnd = parseDateTime(endTimeString, timeFormat);
+        
+        timeDiffDurationMin2 = std::chrono::duration_cast<std::chrono::minutes>(tpEnd - tpStart);
+        REQUIRE(timeDiffDurationMin2.count() == 4*60+10);
+
+    }
     
     SECTION("duration calculation"){
         std::string startTimeString {"2023-06-17 9:30:00"};
@@ -23,6 +43,25 @@ TEST_CASE("worker class basic functions", "[worker]"){
         Slot s {0, 0, tpStart, tpEnd};
         REQUIRE(s.getDurationInMinute() == 30 + 24*60);
         REQUIRE(s.getDurationInHour() == (30+24*60)/60.0);
+    }
+
+    SECTION("invalid construction"){
+        std::string startTimeString {"2023-06-17 9:30:00"};
+        std::string endTimeString   {"2023-06-17 10:00:00"};
+        std::string timeFormat      {"%Y-%m-%d %H:%M:%S"};
+
+        std::chrono::time_point<std::chrono::system_clock> tpStart {parseDateTime(startTimeString, timeFormat)};
+        std::chrono::time_point<std::chrono::system_clock> tpEnd {parseDateTime(endTimeString, timeFormat)};
+        try
+        {
+            Slot s {0, 0, tpEnd, tpStart};
+            REQUIRE(false);
+        }
+        catch(const std::invalid_argument& e)
+        {   
+            REQUIRE(true);
+        }
+        
     }
     
     SECTION("set num people wanted"){
@@ -41,7 +80,17 @@ TEST_CASE("worker class basic functions", "[worker]"){
         {
             REQUIRE(true);
         }
-        
+        REQUIRE(s.wantMorePeople());
+        s.assignPersonID(0);
+        s.assignPersonID(1);
+        s.assignPersonID(2);
+        s.assignPersonID(3);
+        s.assignPersonID(4);
+        s.assignPersonID(5);
+        REQUIRE(s.wantMorePeople());
+        s.setNumPeopleWanted(3);
+        REQUIRE(!s.wantMorePeople());
+        REQUIRE(s.getNumAssigned() == 6);
     }
 
     SECTION("assign id"){
@@ -62,7 +111,5 @@ TEST_CASE("worker class basic functions", "[worker]"){
         REQUIRE(s.getNumAssigned() == 3);
         REQUIRE(!s.wantMorePeople());
     }
-
-    
 
 }

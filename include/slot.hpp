@@ -25,8 +25,11 @@ public:
         ,m_startTime {startT}
         ,m_endTime {endT}
         {
-            auto timeDiffSec = std::chrono::duration_cast<std::chrono::minutes>(endT - startT);
-            m_duration = timeDiffSec.count();
+            auto timeDiffDurationMin = std::chrono::duration_cast<std::chrono::minutes>(endT - startT);
+            m_duration = timeDiffDurationMin.count();
+            if (m_duration < 0){
+                throw std::invalid_argument("negative duration detected, end time shoud be no earlier than start time");
+            }
         }
 
     double getDurationInMinute(){
