@@ -11,9 +11,9 @@ TEST_CASE("worker class basic functions", "[worker]"){
     }
 
     SECTION("parse time calc"){
-        std::string startTimeString {"2023-06-17 9:30"};
-        std::string endTimeString {"2023-06-17 9:40"};
-        std::string timeFormat      {"%Y-%m-%d %H:%M"};
+        std::string startTimeString {"5/20/2025 9:00 PM"};
+        std::string endTimeString {"5/20/2025 9:10 PM"};
+        std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
         std::chrono::time_point<std::chrono::system_clock> tpStart {parseDateTime(startTimeString, timeFormat)};
         std::chrono::time_point<std::chrono::system_clock> tpEnd {parseDateTime(endTimeString, timeFormat)};
 
@@ -23,11 +23,11 @@ TEST_CASE("worker class basic functions", "[worker]"){
         auto timeDiffDurationMin2 = std::chrono::duration_cast<std::chrono::minutes>(tpStart - tpEnd);
         REQUIRE(timeDiffDurationMin2.count() == -10);
 
-        endTimeString = "2023-06-17 13:40";
+        endTimeString = "5/21/2025 11:00 AM";
         tpEnd = parseDateTime(endTimeString, timeFormat);
         
         timeDiffDurationMin2 = std::chrono::duration_cast<std::chrono::minutes>(tpEnd - tpStart);
-        REQUIRE(timeDiffDurationMin2.count() == 4*60+10);
+        REQUIRE(timeDiffDurationMin2.count() == 14*60);
 
     }
     
