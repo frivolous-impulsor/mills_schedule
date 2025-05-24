@@ -5,6 +5,24 @@
 #include <stdexcept>
 #include <iostream>
 #include <chrono>
+#include <algorithm>
+#include <cctype>
+#include <locale>
+
+std::string trim(const std::string& s) {
+    auto start = s.begin();
+    while (start != s.end() && std::isspace(*start)) {
+        ++start;
+    }
+
+    auto end = s.end();
+    do {
+        --end;
+    } while (std::distance(start, end) > 0 && std::isspace(*end));
+
+    return std::string(start, end + 1);
+}
+
 
 std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     std::vector<std::vector<std::string>> data;
@@ -29,8 +47,59 @@ std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     }
 
     file.close();
-
     return data;
+}
+
+int getItemIndex(const std::string& item, const std::string& filename){
+    std::ifstream file(filename);
+    
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+    }
+
+    char bom[3];
+    file.read(bom, 3);
+    if (!(static_cast<unsigned char>(bom[0]) == 0xEF &&
+        static_cast<unsigned char>(bom[1]) == 0xBB &&
+        static_cast<unsigned char>(bom[2]) == 0xBF)) {
+        // No BOM — rewind to start
+        file.seekg(0);
+    }
+
+    std::string line;
+    
+    while(std::getline(file, line)){
+        int index {0};
+        std::vector<std::string> row;
+        std::stringstream ss(line);
+        std::string cell;
+
+        while (std::getline(ss, cell, ',')) {
+            cell = trim(cell);
+            if(cell.front() == '"'){
+                cell.erase(0,1);
+            }
+            if(cell.back() == '"'){
+                cell.erase(cell.length()-1,1);
+            }
+            cell = trim(cell);
+            if(cell == item){
+                return index;
+            }
+
+            //std::cout << "[" << cell << "] size: " << cell.size()
+            //<< " front: " << (int)cell.front()
+            //<< " back: " << (int)cell.back() << std::endl;
+            //std::cout<<cell<<' ';
+            //std::cout<<item<<'\n';
+            ++index;
+        }
+    }
+
+    
+    file.close();
+    throw std::invalid_argument("item not found");
+
 }
 
 std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string dateTime, std::string format){
