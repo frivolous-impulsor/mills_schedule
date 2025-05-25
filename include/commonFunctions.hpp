@@ -25,19 +25,6 @@ std::string trim(const std::string& s) {
     return std::string(start, end + 1);
 }
 
-int timeIntervalEnclosePersentage(const std::vector<tp> targetInterval, const std::vector<tp> currentInterval){
-    if (currentInterval[0]> targetInterval[1] || targetInterval[0] > currentInterval[1]){
-        return 0;
-    }
-    tp intersectionStart { std::max(targetInterval[0], currentInterval[0])};
-    tp intersectionEnd { std::min(targetInterval[1], currentInterval[1])};
-    double targetDuration = (std::chrono::duration_cast<std::chrono::minutes>(targetInterval[1] - targetInterval[0])).count();
-    double intersectionDuration =(std::chrono::duration_cast<std::chrono::minutes>(intersectionEnd - intersectionStart)).count();
-    return static_cast<int>(intersectionDuration / targetDuration * 100);
-
-
-
-}
 
 
 std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
@@ -47,30 +34,6 @@ std::vector<std::vector<std::string>> readCSV(const std::string& filename) {
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
         return data;
-    }
-
-    std::string line;
-    while (std::getline(file, line)) {
-        std::vector<std::string> row;
-        std::stringstream ss(line);
-        std::string cell;
-
-        while (std::getline(ss, cell, ',')) {
-            row.push_back(cell);
-        }
-
-        data.push_back(row);
-    }
-
-    file.close();
-    return data;
-}
-
-int getItemIndex(const std::string& item, const std::string& filename){
-    std::ifstream file(filename);
-    
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
     }
 
     char bom[3];
@@ -83,9 +46,7 @@ int getItemIndex(const std::string& item, const std::string& filename){
     }
 
     std::string line;
-    
-    while(std::getline(file, line)){
-        int index {0};
+    while (std::getline(file, line)) {
         std::vector<std::string> row;
         std::stringstream ss(line);
         std::string cell;
@@ -99,24 +60,41 @@ int getItemIndex(const std::string& item, const std::string& filename){
                 cell.erase(cell.length()-1,1);
             }
             cell = trim(cell);
-            if(cell == item){
-                return index;
-            }
-
-            //std::cout << "[" << cell << "] size: " << cell.size()
-            //<< " front: " << (int)cell.front()
-            //<< " back: " << (int)cell.back() << std::endl;
-            //std::cout<<cell<<' ';
-            //std::cout<<item<<'\n';
-            ++index;
+            row.push_back(cell);
         }
+
+        data.push_back(row);
     }
 
-    
     file.close();
-    throw std::invalid_argument("item not found");
-
+    return data;
 }
+
+int getItemIndex(const std::string& item, const std::vector<std::vector<std::string>>& matrix){
+    int index {0};
+    for(auto row: matrix){
+        for(auto str: row){
+            if(str == item){
+                return index;
+            }
+            ++index;
+        }
+        index = 0;
+    }
+    throw std::invalid_argument("can't find item in matrix");
+}
+
+int timeIntervalEnclosePersentage(const std::vector<tp> targetInterval, const std::vector<tp> currentInterval){
+    if (currentInterval[0]> targetInterval[1] || targetInterval[0] > currentInterval[1]){
+        return 0;
+    }
+    tp intersectionStart { std::max(targetInterval[0], currentInterval[0])};
+    tp intersectionEnd { std::min(targetInterval[1], currentInterval[1])};
+    double targetDuration = (std::chrono::duration_cast<std::chrono::minutes>(targetInterval[1] - targetInterval[0])).count();
+    double intersectionDuration =(std::chrono::duration_cast<std::chrono::minutes>(intersectionEnd - intersectionStart)).count();
+    return static_cast<int>(intersectionDuration / targetDuration * 100);
+}
+
 
 std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string dateTime, std::string format){
     std::tm tm = {};   

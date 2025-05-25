@@ -7,15 +7,16 @@ TEST_CASE("shift class", "[shift]"){
     SECTION("commonfunction - find item index"){
         std::string item {"Created By"};
         std::string filename {"../../timeSheetSample.csv"};
-        int result {getItemIndex(item, filename)};
+        auto mat {readCSV(filename)};
+        int result {getItemIndex(item, mat)};
         REQUIRE(result == 2);
 
         item = "Title";
-        result = getItemIndex(item, filename);
+        result = getItemIndex(item, mat);
         REQUIRE(result == 3);
 
         item = "5/23/2025 3:30 PM";
-        result = getItemIndex(item, filename);
+        result = getItemIndex(item, mat);
         REQUIRE(result == 1);
     }
 
