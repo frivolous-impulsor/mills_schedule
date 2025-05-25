@@ -9,6 +9,8 @@
 #include <cctype>
 #include <locale>
 
+typedef std::chrono::time_point<std::chrono::system_clock> tp;
+
 std::string trim(const std::string& s) {
     auto start = s.begin();
     while (start != s.end() && std::isspace(*start)) {
@@ -21,6 +23,20 @@ std::string trim(const std::string& s) {
     } while (std::distance(start, end) > 0 && std::isspace(*end));
 
     return std::string(start, end + 1);
+}
+
+int timeIntervalEnclosePersentage(const std::vector<tp> targetInterval, const std::vector<tp> currentInterval){
+    if (currentInterval[0]> targetInterval[1] || targetInterval[0] > currentInterval[1]){
+        return 0;
+    }
+    tp intersectionStart { std::max(targetInterval[0], currentInterval[0])};
+    tp intersectionEnd { std::min(targetInterval[1], currentInterval[1])};
+    double targetDuration = (std::chrono::duration_cast<std::chrono::minutes>(targetInterval[1] - targetInterval[0])).count();
+    double intersectionDuration =(std::chrono::duration_cast<std::chrono::minutes>(intersectionEnd - intersectionStart)).count();
+    return static_cast<int>(intersectionDuration / targetDuration * 100);
+
+
+
 }
 
 
