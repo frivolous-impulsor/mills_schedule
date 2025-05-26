@@ -8,4 +8,4 @@ enable_testing()
 
 add_executable(Scheduling tests/catch_amalgamated.cpp tests/shiftTest.cpp)
 
-set_property(TARGET Scheduling PROPERTY CXX_STANDARD 17)
+set_property(TARGET Scheduling PROPERTY CXX_STANDARD 20)

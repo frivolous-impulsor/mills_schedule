@@ -15,7 +15,7 @@ private:
     double m_desiredHours {};
     double m_allocatedHours {};
     double m_allocatedPreferedHours {};
-    std::vector<std::vector<int>> m_preferenceMatrix {};
+    std::vector<std::vector<bool>> m_preferenceMatrix {};
 
 public:
     Worker(std::string name, double desiredHours, int id)
@@ -78,7 +78,7 @@ public:
         }
     }
 
-    std::vector<std::vector<int>> getPreferenceMatrix(){
+    std::vector<std::vector<bool>> getPreferenceMatrix(){
         return m_preferenceMatrix;
     }
 

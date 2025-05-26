@@ -1,5 +1,5 @@
 #include "../include/catch_amalgamated.hpp"
-#include "../include/slot.hpp"
+#include "../include/shift.hpp"
 #include <stdexcept>
 	
 
@@ -53,6 +53,33 @@ TEST_CASE("shift class", "[shift]"){
         int intersectionIntervalPercentage2 {timeIntervalEnclosePersentage(intervalTarget, intervalCurrent2)};
         REQUIRE(intersectionIntervalPercentage2 == 50);
         
+    }
+
+    SECTION("commonfunction - get day of the week"){
+        std::string s1 {"5/20/2025 8:30 PM"};
+        std::string s2 {"5/22/2025 8:30 PM"};
+        std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
+
+        tp tp1 {parseDateTime(s1, timeFormat)};
+        tp tp2 {parseDateTime(s2, timeFormat)};
+        int day1 {getDayOfWeek(tp1)};
+        int day2 {getDayOfWeek(tp2)};
+        REQUIRE(day1 == 2);
+        REQUIRE(day2 == 4);
+    }
+
+    SECTION("shift initialization"){
+        std::string filename {"../../timeSheetSample.csv"};
+        std::string manager {"Oliver Li"};
+        stringMatrix mat {readCSV(filename)};
+        Shift s {};
+        s.initializeShiftMatrix(mat, manager);
+        for(auto row:s.getShiftMatrix()){
+            for(Slot s:row){
+                std::cout<<"["<< s.getDurationInMinute()<<"]";
+            }
+            std::cout<<'\n';
+        }
     }
 
 }

@@ -1,3 +1,6 @@
+#ifndef COMMON_H
+#define COMMON_H
+
 #include <string>
 #include <vector>
 #include <fstream>
@@ -10,6 +13,7 @@
 #include <locale>
 
 typedef std::chrono::time_point<std::chrono::system_clock> tp;
+typedef std::vector<std::vector<std::string>> stringMatrix;
 
 std::string trim(const std::string& s) {
     auto start = s.begin();
@@ -95,8 +99,21 @@ int timeIntervalEnclosePersentage(const std::vector<tp> targetInterval, const st
     return static_cast<int>(intersectionDuration / targetDuration * 100);
 }
 
+int getDayOfWeek(tp dateTime){
+    std::time_t t = std::chrono::system_clock::to_time_t(dateTime);
 
-std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string dateTime, std::string format){
+    // Convert time_t to tm structure (local time)
+    std::tm* local_tm = std::localtime(&t);
+
+    // Get day of the week (0 = Sunday, ..., 6 = Saturday)
+    int weekday {local_tm->tm_wday};
+
+    return weekday;
+    
+}
+
+
+std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string& dateTime, std::string& format){
     std::tm tm = {};   
     std::stringstream ssStart(dateTime);
     size_t len {format.length()};
@@ -105,3 +122,5 @@ std::chrono::time_point<std::chrono::system_clock> parseDateTime(std::string dat
     ssStart >> std::get_time(&tm, arr);
     return std::chrono::system_clock::from_time_t(std::mktime(&tm));
 }
+
+#endif
