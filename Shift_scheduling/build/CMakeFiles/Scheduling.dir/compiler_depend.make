@@ -1092,7 +1092,7 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o: /Users/machine_1997/Pro
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
 
-CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp \
+CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/slotTest.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -2103,11 +2103,12 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/shift.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp
 
 
 /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp:
+
+/Users/machine_1997/Program/Shift_scheduling/tests/slotTest.cpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp:
 
@@ -3427,8 +3428,6 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_result.h:
 
-/Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__string/extern_template_lists.h:
@@ -3938,8 +3937,6 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_count_if.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/common_iterator.h:
-
-/Users/machine_1997/Program/Shift_scheduling/include/shift.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stack:
 

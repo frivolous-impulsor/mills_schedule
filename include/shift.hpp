@@ -40,6 +40,8 @@ public:
         }
     }
 
+    //void willDensityProc
+
     std::vector<std::vector<Slot>> getShiftMatrix(){
         return m_shiftMatrix;
     }

@@ -81,16 +81,18 @@ TEST_CASE("worker class basic functions", "[worker]"){
             REQUIRE(true);
         }
         REQUIRE(s.wantMorePeople());
+        s.addAvailablePersonID(0);
+        s.addAvailablePersonID(1);
+        s.addAvailablePersonID(2);
+        s.addAvailablePersonID(3);
         s.assignPersonID(0);
         s.assignPersonID(1);
         s.assignPersonID(2);
         s.assignPersonID(3);
-        s.assignPersonID(4);
-        s.assignPersonID(5);
         REQUIRE(s.wantMorePeople());
         s.setNumPeopleWanted(3);
         REQUIRE(!s.wantMorePeople());
-        REQUIRE(s.getNumAssigned() == 6);
+        REQUIRE(s.getNumAssigned() == 4);
     }
 
     SECTION("assign id"){
@@ -101,14 +103,20 @@ TEST_CASE("worker class basic functions", "[worker]"){
         REQUIRE(s.getNumPeopleWanted() == 3);
         REQUIRE(s.getNumAssigned() == 0);
         s.assignPersonID(4);
-        REQUIRE(s.getNumAssigned() == 1);
+        REQUIRE(s.getNumAssigned() == 0);
+
         REQUIRE(s.wantMorePeople());
+        s.addAvailablePersonID(4);
         s.assignPersonID(4);
         REQUIRE(s.getNumAssigned() == 1);
         REQUIRE(s.wantMorePeople());
+        s.addAvailablePersonID(5);
+        s.addAvailablePersonID(0);
         s.assignPersonID(5);
+        REQUIRE(s.getNumAssigned() == 2);
         s.assignPersonID(0);
         REQUIRE(s.getNumAssigned() == 3);
+
         REQUIRE(!s.wantMorePeople());
     }
 

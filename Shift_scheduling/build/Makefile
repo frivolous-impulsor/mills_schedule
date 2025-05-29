@@ -527,29 +527,29 @@ tests/catch_amalgamated.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 .PHONY : tests/catch_amalgamated.cpp.s
 
-tests/shiftTest.o: tests/shiftTest.cpp.o
-.PHONY : tests/shiftTest.o
+tests/slotTest.o: tests/slotTest.cpp.o
+.PHONY : tests/slotTest.o
 
 # target to build an object file
-tests/shiftTest.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o
-.PHONY : tests/shiftTest.cpp.o
+tests/slotTest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o
+.PHONY : tests/slotTest.cpp.o
 
-tests/shiftTest.i: tests/shiftTest.cpp.i
-.PHONY : tests/shiftTest.i
+tests/slotTest.i: tests/slotTest.cpp.i
+.PHONY : tests/slotTest.i
 
 # target to preprocess a source file
-tests/shiftTest.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.i
-.PHONY : tests/shiftTest.cpp.i
+tests/slotTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/slotTest.cpp.i
+.PHONY : tests/slotTest.cpp.i
 
-tests/shiftTest.s: tests/shiftTest.cpp.s
-.PHONY : tests/shiftTest.s
+tests/slotTest.s: tests/slotTest.cpp.s
+.PHONY : tests/slotTest.s
 
 # target to generate assembly for a file
-tests/shiftTest.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.s
-.PHONY : tests/shiftTest.cpp.s
+tests/slotTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/slotTest.cpp.s
+.PHONY : tests/slotTest.cpp.s
 
 # Help Target
 help:
@@ -592,9 +592,9 @@ help:
 	@echo "... tests/catch_amalgamated.o"
 	@echo "... tests/catch_amalgamated.i"
 	@echo "... tests/catch_amalgamated.s"
-	@echo "... tests/shiftTest.o"
-	@echo "... tests/shiftTest.i"
-	@echo "... tests/shiftTest.s"
+	@echo "... tests/slotTest.o"
+	@echo "... tests/slotTest.i"
+	@echo "... tests/slotTest.s"
 .PHONY : help
 
 

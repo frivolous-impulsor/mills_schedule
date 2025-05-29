@@ -17,6 +17,7 @@ private:
     int m_numPeopleWanted {0};
     bool m_critical {true};
     std::set<int> m_peopleAssignedID {};
+    std::set<int> m_peopleAvailableID {};
 public:
     Slot(int dayI, int slotI,   std::chrono::time_point<std::chrono::system_clock> startT, 
                                 std::chrono::time_point<std::chrono::system_clock> endT)
@@ -47,8 +48,19 @@ public:
         m_numPeopleWanted = n;
     }
 
+    void addAvailablePersonID(int id){
+        m_peopleAvailableID.insert(id);
+    }
+
+    std::set<int> getPeopleAvailable(){
+        return m_peopleAvailableID;
+    }
+
     void assignPersonID(int id){
-        m_peopleAssignedID.insert(id);
+        if(m_peopleAvailableID.find(id) != m_peopleAvailableID.end()){
+            m_peopleAssignedID.insert(id);
+            m_peopleAvailableID.erase(id);
+        }
     }
 
     int getNumPeopleWanted(){
