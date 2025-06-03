@@ -9,7 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/machine_1997/Program/Shift_scheduling/tests/catch_amalgamated.cpp" "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o" "gcc" "CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o.d"
-  "/Users/machine_1997/Program/Shift_scheduling/tests/slotTest.cpp" "CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o" "gcc" "CMakeFiles/Scheduling.dir/tests/slotTest.cpp.o.d"
+  "/Users/machine_1997/Program/Shift_scheduling/tests/mainTest.cpp" "CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o" "gcc" "CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

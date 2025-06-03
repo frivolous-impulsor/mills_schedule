@@ -99,6 +99,10 @@ int timeIntervalEnclosePersentage(const std::vector<tp> targetInterval, const st
     return static_cast<int>(intersectionDuration / targetDuration * 100);
 }
 
+bool isCovered(const std::vector<tp> targetInterval, const std::vector<tp> currentInterval){
+    return timeIntervalEnclosePersentage(targetInterval, currentInterval) == 100;
+}
+
 int getDayOfWeek(tp dateTime){
     std::time_t t = std::chrono::system_clock::to_time_t(dateTime);
 

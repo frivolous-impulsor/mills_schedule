@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Darwin-c++"
-	BuildStamp="20250529-0016-Experimental"
+	BuildStamp="20250603-0203-Experimental"
 	Name="microQuantumComputer95"
 	Generator="ctest-3.31.6"
 	CompilerName="/Library/Developer/CommandLineTools/usr/bin/c++"
@@ -19,17 +19,17 @@
 	ProcessorCacheSize="32768"
 	NumberOfLogicalCPU="4"
 	NumberOfPhysicalCPU="2"
-	TotalVirtualMemory="0"
+	TotalVirtualMemory="1024"
 	TotalPhysicalMemory="8192"
 	LogicalProcessorsPerPhysical="8"
 	ProcessorClockFrequency="1600"
 	>
 	<Testing>
-		<StartDateTime>May 28 21:18 EDT</StartDateTime>
-		<StartTestTime>1748481529</StartTestTime>
+		<StartDateTime>Jun 02 22:32 EDT</StartDateTime>
+		<StartTestTime>1748917927</StartTestTime>
 		<TestList/>
-		<EndDateTime>May 28 21:18 EDT</EndDateTime>
-		<EndTestTime>1748481529</EndTestTime>
+		<EndDateTime>Jun 02 22:32 EDT</EndDateTime>
+		<EndTestTime>1748917927</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

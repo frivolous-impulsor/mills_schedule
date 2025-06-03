@@ -1,3 +1,6 @@
+#ifndef SLOT_H
+#define SLOT_H
+
 #include <string>
 #include <vector>
 #include <stdexcept>
@@ -41,6 +44,11 @@ public:
         return m_duration/60;
     }
 
+    std::vector<tp> getInterval(){
+        std::vector<tp> interval {m_startTime, m_endTime};
+        return interval;
+    }
+
     void setNumPeopleWanted(int n){
         if(n<0){
             throw std::invalid_argument("only non-negative number of people can be wanted");
@@ -81,3 +89,5 @@ public:
     }
 
 };
+
+#endif

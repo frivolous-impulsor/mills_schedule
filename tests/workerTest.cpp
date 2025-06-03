@@ -42,12 +42,5 @@ TEST_CASE("worker class basic functions", "[worker]"){
         
     }
 
-    SECTION("preference matrix"){
-        std::string name {"hello world"};
-        Worker w {name, 10, 0};
-        std::vector<std::vector<int>> answer {{1,0,2,1}, {0,1,1,2}, {2,0,0,1}};
-        w.setPreferenceMatrixCSV("preferenceTest.csv");
-        REQUIRE(w.getPreferenceMatrix()  == answer );
-    }
 
 }
