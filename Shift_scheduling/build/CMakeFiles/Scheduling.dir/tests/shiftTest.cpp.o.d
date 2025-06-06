@@ -1011,4 +1011,5 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Users/machine_1997/Program/Shift_scheduling/tests/../include/commonFunctions.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/tests/../include/slot.hpp
+  /Users/machine_1997/Program/Shift_scheduling/tests/../include/slot.hpp \
+  /Users/machine_1997/Program/Shift_scheduling/tests/../include/worker.hpp

@@ -20,7 +20,7 @@ private:
     int m_numPeopleWanted {0};
     bool m_critical {true};
     std::set<int> m_peopleAssignedID {};
-    std::set<int> m_peopleAvailableID {};
+    std::set<std::vector<int>> m_peopleAvailableID {};
 public:
     Slot(int dayI, int slotI,   std::chrono::time_point<std::chrono::system_clock> startT, 
                                 std::chrono::time_point<std::chrono::system_clock> endT)
@@ -56,20 +56,27 @@ public:
         m_numPeopleWanted = n;
     }
 
-    void addAvailablePersonID(int id){
+    void addAvailablePersonID(int id, int preference){
         //std::cout<<"["<<id<<"] ";
-        m_peopleAvailableID.insert(id);
+        m_peopleAvailableID.insert({id, preference});
         //std::cout<<"size: "<<m_peopleAvailableID.size()<<'\n';
     }
 
-    std::set<int> getPeopleAvailable(){
+    void addAvailablePersonID(int id){
+        //std::cout<<"["<<id<<"] ";
+        m_peopleAvailableID.insert({id, 0});
+        //std::cout<<"size: "<<m_peopleAvailableID.size()<<'\n';
+    }
+
+    std::set<std::vector<int>> getPeopleAvailable(){
         return m_peopleAvailableID;
     }
 
     void assignPersonID(int id){
-        if(m_peopleAvailableID.find(id) != m_peopleAvailableID.end()){
+        if(m_peopleAvailableID.find({id, 0}) != m_peopleAvailableID.end() || m_peopleAvailableID.find({id, 1}) != m_peopleAvailableID.end()){
             m_peopleAssignedID.insert(id);
-            m_peopleAvailableID.erase(id);
+            m_peopleAvailableID.erase({id,0});
+            m_peopleAvailableID.erase({id,1});
         }
     }
 

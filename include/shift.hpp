@@ -9,6 +9,7 @@
 #include <sstream>
 #include "commonFunctions.hpp"
 #include "slot.hpp"
+#include "worker.hpp"
 #include <unordered_map>
 
 class Shift
@@ -17,6 +18,7 @@ private:
     std::vector<std::vector<Slot>> m_shiftMatrix {};
     std::unordered_map<std::string, int> m_nameID {};
     std::unordered_map<int, std::string> m_IDname {};
+    std::vector<Worker> m_staffs {};
     int m_newId {0};
     tp m_startingDate {};
 
@@ -26,10 +28,12 @@ public:
 
     int addPerson(const std::string name){
         if(m_nameID.find(name) != m_nameID.end()){
-            return -1;
+            return m_nameID[name];
         }
         m_nameID.insert({name, m_newId});
         m_IDname.insert({m_newId, name});
+        Worker w{name, 10, m_newId};
+        m_staffs.push_back(w);
         ++m_newId;
         return m_newId-1;
     }
@@ -70,6 +74,7 @@ public:
                 m_shiftMatrix[dayI].push_back(s);
             }else{
                 this->addPerson(row[personIndex]);
+
             }
             
         }
@@ -101,7 +106,12 @@ public:
                 std::vector<tp> currentInterval {startTime, endTime};
                 for(auto& slot: this->getShiftMatrix()[dayI]){
                     if(isCovered(slot.getInterval(), currentInterval)){
-                        slot.addAvailablePersonID(getID(row[personIndex]));
+                        if(row[titleIndex] == "*"){
+                            slot.addAvailablePersonID(getID(row[personIndex]), 1);
+                        }else{
+                            slot.addAvailablePersonID(getID(row[personIndex]));
+                        }
+                        
                     }
                 }
             }

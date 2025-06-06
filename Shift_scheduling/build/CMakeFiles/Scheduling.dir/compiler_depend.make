@@ -2104,7 +2104,8 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/shift.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp
+  /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp \
+  /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp
 
 
 /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp:
@@ -3930,6 +3931,8 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_day.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_ends_with.h:
+
+/Users/machine_1997/Program/Shift_scheduling/include/worker.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/width_estimation_table.h:
 
