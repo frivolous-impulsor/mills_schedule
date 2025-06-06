@@ -69,17 +69,39 @@ TEST_CASE("shift class", "[shift]"){
     }
 
     SECTION("shift initialization"){
+        std::string timeString {"5/22/2024 8:30 PM"};
+        std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
+        tp tp1 {parseDateTime(timeString, timeFormat)};
         std::string filename {"../../timeSheetSample.csv"};
         std::string manager {"Oliver Li"};
         stringMatrix mat {readCSV(filename)};
-        Shift s {};
+
+        Shift s {tp1};
         s.initializeShiftMatrix(mat, manager);
-        for(auto row:s.getShiftMatrix()){
-            for(Slot s:row){
-                std::cout<<"["<< s.getDurationInMinute()<<"]";
+    }
+
+    SECTION("fillStaff"){
+        std::string timeString {"5/30/2025 8:30 PM"};
+        std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
+        tp tp1 {parseDateTime(timeString, timeFormat)};
+        std::string filename {"../../timeSheetShiftTest.csv"};
+        std::string manager {"Oliver Li"};
+        stringMatrix mat {readCSV(filename)};
+        Shift s {tp1};
+        s.initializeShiftMatrix(mat, manager);
+        s.fillStaff(mat, manager);
+        std::vector<int> numSlots {3, 4, 0, 4, 0, 0, 0};
+        std::vector<std::vector<int>> numAvaliable {{1, 0, 0}, {0,1,0,2}, {}, {1,0,1,0}};
+        for(int day {0}; day < s.getShiftMatrix().size(); ++day){
+            REQUIRE(s.getShiftMatrix()[day].size() == numSlots[day]);
+
+            for(int i {0}; i < s.getShiftMatrix()[day].size(); ++i){
+                REQUIRE(s.getShiftMatrix()[day][i].getPeopleAvailable().size() == numAvaliable[day][i] );
+                //std::cout<<s.getPeopleAvailable().size()<<" ";
             }
-            std::cout<<'\n';
+            //std::cout<<'\n';
         }
+            
     }
 
 }

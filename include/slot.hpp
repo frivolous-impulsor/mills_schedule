@@ -57,7 +57,9 @@ public:
     }
 
     void addAvailablePersonID(int id){
+        //std::cout<<"["<<id<<"] ";
         m_peopleAvailableID.insert(id);
+        //std::cout<<"size: "<<m_peopleAvailableID.size()<<'\n';
     }
 
     std::set<int> getPeopleAvailable(){

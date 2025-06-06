@@ -18,11 +18,16 @@ private:
     std::unordered_map<std::string, int> m_nameID {};
     std::unordered_map<int, std::string> m_IDname {};
     int m_newId {0};
+    tp m_startingDate {};
 
 public:
-    Shift(){};
+    Shift(tp startingDate): m_startingDate {startingDate}
+    {};
 
     int addPerson(const std::string name){
+        if(m_nameID.find(name) != m_nameID.end()){
+            return -1;
+        }
         m_nameID.insert({name, m_newId});
         m_IDname.insert({m_newId, name});
         ++m_newId;
@@ -31,6 +36,10 @@ public:
 
     std::string getPerson(int ID){
         return m_IDname[ID];
+    }
+
+    int getID(std::string name){
+        return m_nameID[name];
     }
 
     void initializeShiftMatrix(const stringMatrix& mat, std::string& manager){
@@ -48,8 +57,12 @@ public:
         int endIndex {getItemIndex(end, mat)};
         int titleIndex {getItemIndex(title, mat)};
         for(auto row: mat){
+            tp startTime { parseDateTime(row[startIndex], timeFormat )};
+            if(startTime < this->m_startingDate){
+                continue;
+            }
             if(row[personIndex] == manager){
-                tp startTime { parseDateTime(row[startIndex], timeFormat )};
+                //tp startTime { parseDateTime(row[startIndex], timeFormat )};
                 tp endTime { parseDateTime(row[endIndex], timeFormat )};
                 int dayI {getDayOfWeek(startTime)};
                 int slotI {static_cast<int>(m_shiftMatrix[dayI].size())};
@@ -77,14 +90,18 @@ public:
         int endIndex {getItemIndex(end, mat)};
         int titleIndex {getItemIndex(title, mat)};
         for(auto row: mat){
+            tp startTime { parseDateTime(row[startIndex], timeFormat )};
+            if(startTime < this->m_startingDate){
+                continue;
+            }
             if(row[personIndex] != manager){
-                tp startTime { parseDateTime(row[startIndex], timeFormat )};
+                //tp startTime { parseDateTime(row[startIndex], timeFormat )};
                 tp endTime { parseDateTime(row[endIndex], timeFormat )};
                 int dayI {getDayOfWeek(startTime)};
                 std::vector<tp> currentInterval {startTime, endTime};
-                for(auto slot: this->getShiftMatrix()[dayI]){
+                for(auto& slot: this->getShiftMatrix()[dayI]){
                     if(isCovered(slot.getInterval(), currentInterval)){
-                        slot.addAvailablePersonID(0);
+                        slot.addAvailablePersonID(getID(row[personIndex]));
                     }
                 }
             }

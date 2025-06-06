@@ -527,29 +527,29 @@ tests/catch_amalgamated.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 .PHONY : tests/catch_amalgamated.cpp.s
 
-tests/mainTest.o: tests/mainTest.cpp.o
-.PHONY : tests/mainTest.o
+tests/shiftTest.o: tests/shiftTest.cpp.o
+.PHONY : tests/shiftTest.o
 
 # target to build an object file
-tests/mainTest.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o
-.PHONY : tests/mainTest.cpp.o
+tests/shiftTest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o
+.PHONY : tests/shiftTest.cpp.o
 
-tests/mainTest.i: tests/mainTest.cpp.i
-.PHONY : tests/mainTest.i
+tests/shiftTest.i: tests/shiftTest.cpp.i
+.PHONY : tests/shiftTest.i
 
 # target to preprocess a source file
-tests/mainTest.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/mainTest.cpp.i
-.PHONY : tests/mainTest.cpp.i
+tests/shiftTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.i
+.PHONY : tests/shiftTest.cpp.i
 
-tests/mainTest.s: tests/mainTest.cpp.s
-.PHONY : tests/mainTest.s
+tests/shiftTest.s: tests/shiftTest.cpp.s
+.PHONY : tests/shiftTest.s
 
 # target to generate assembly for a file
-tests/mainTest.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/mainTest.cpp.s
-.PHONY : tests/mainTest.cpp.s
+tests/shiftTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.s
+.PHONY : tests/shiftTest.cpp.s
 
 # Help Target
 help:
@@ -592,9 +592,9 @@ help:
 	@echo "... tests/catch_amalgamated.o"
 	@echo "... tests/catch_amalgamated.i"
 	@echo "... tests/catch_amalgamated.s"
-	@echo "... tests/mainTest.o"
-	@echo "... tests/mainTest.i"
-	@echo "... tests/mainTest.s"
+	@echo "... tests/shiftTest.o"
+	@echo "... tests/shiftTest.i"
+	@echo "... tests/shiftTest.s"
 .PHONY : help
 
 

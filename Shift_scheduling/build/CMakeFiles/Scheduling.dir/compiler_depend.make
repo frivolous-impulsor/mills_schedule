@@ -1092,7 +1092,7 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o: /Users/machine_1997/Pro
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
 
-CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/mainTest.cpp \
+CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -2102,22 +2102,12 @@ CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o: /Users/machine_1997/Program/Shif
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/src/indexPriorityQueue.tpp \
   /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/indexPriorityQueue.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/shift.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/src/schedule.cpp
+  /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp
 
-
-/Users/machine_1997/Program/Shift_scheduling/src/schedule.cpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp:
-
-/Users/machine_1997/Program/Shift_scheduling/include/indexPriorityQueue.hpp:
-
-/Users/machine_1997/Program/Shift_scheduling/tests/mainTest.cpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp:
 
@@ -3437,6 +3427,8 @@ CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o: /Users/machine_1997/Program/Shif
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_result.h:
 
+/Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__string/extern_template_lists.h:
@@ -3939,8 +3931,6 @@ CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o: /Users/machine_1997/Program/Shif
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_ends_with.h:
 
-/Users/machine_1997/Program/Shift_scheduling/include/worker.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/width_estimation_table.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/mach/i386/boolean.h:
@@ -4156,8 +4146,6 @@ CMakeFiles/Scheduling.dir/tests/mainTest.cpp.o: /Users/machine_1997/Program/Shif
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_first_of.h:
-
-/Users/machine_1997/Program/Shift_scheduling/src/indexPriorityQueue.tpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/errno.h:
 
