@@ -104,4 +104,21 @@ TEST_CASE("shift class", "[shift]"){
             
     }
 
+    SECTION("density"){
+                std::string timeString {"5/30/2025 8:30 PM"};
+        std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
+        tp tp1 {parseDateTime(timeString, timeFormat)};
+        std::string filename {"../../timeSheetShiftTest.csv"};
+        std::string manager {"Oliver Li"};
+        stringMatrix mat {readCSV(filename)};
+        Shift s {tp1};
+        s.initializeShiftMatrix(mat, manager);
+        s.fillStaff(mat, manager);
+        std::vector<int> numSlots {3, 4, 0, 4, 0, 0, 0};
+        std::vector<std::vector<int>> numAvaliable {{1, 0, 0}, {0,1,0,2}, {}, {1,0,1,0}};
+        
+        s.setDensity();
+        
+    }
+
 }

@@ -4,10 +4,12 @@
 	
 
 TEST_CASE("worker class basic functions", "[worker]"){
-    SECTION("construction"){
+    SECTION("construction and critical"){
         std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
         Slot s {0, 0, now, now};
-        REQUIRE(true);
+        REQUIRE(s.isCritical());
+        s.cancelCritical();
+        REQUIRE_FALSE(s.isCritical());
     }
 
     SECTION("parse time calc"){
@@ -30,6 +32,7 @@ TEST_CASE("worker class basic functions", "[worker]"){
         REQUIRE(timeDiffDurationMin2.count() == 14*60);
 
     }
+
     
     SECTION("duration calculation"){
         std::string startTimeString {"2023-06-17 9:30:00"};

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "commonFunctions.hpp"
+#include "indexPriorityQueue.hpp"
 #include "slot.hpp"
 #include "worker.hpp"
 #include <unordered_map>
@@ -19,6 +20,7 @@ private:
     std::unordered_map<std::string, int> m_nameID {};
     std::unordered_map<int, std::string> m_IDname {};
     std::vector<Worker> m_staffs {};
+    IndexPriorityQueue<Slot> m_densityQueue {false};
     int m_newId {0};
     tp m_startingDate {};
 
@@ -71,6 +73,9 @@ public:
                 int dayI {getDayOfWeek(startTime)};
                 int slotI {static_cast<int>(m_shiftMatrix[dayI].size())};
                 Slot s {dayI, slotI, startTime, endTime};
+                if(row[titleIndex] == "*"){
+                    s.cancelCritical();
+                }
                 m_shiftMatrix[dayI].push_back(s);
             }else{
                 this->addPerson(row[personIndex]);
@@ -117,6 +122,20 @@ public:
             }
         }
     }
+
+    void setDensity(){
+        for(int i {0}; i < m_shiftMatrix.size(); ++i){
+            for(int j {0}; j < m_shiftMatrix[i].size(); ++j){
+                int numAvailable {static_cast<int>(m_shiftMatrix[i][j].getPeopleAvailable().size())};
+                m_densityQueue.insert(m_shiftMatrix[i][j], numAvailable);
+            }
+        }
+        while(!m_densityQueue.empty()){
+            std::cout<<m_densityQueue.pop().getPeopleAvailable().size()<<" ";
+        }
+    }
+
+    
 
     std::vector<std::vector<Slot>>& getShiftMatrix(){
         return m_shiftMatrix;

@@ -40,6 +40,19 @@ public:
         return m_duration;
     }
 
+    std::vector<int> getIndex() const{
+        std::vector<int> index {m_dayIndex, m_slotIndex};
+        return index;
+    }
+
+    void cancelCritical(){
+        m_critical = false;
+    }
+
+    bool isCritical(){
+        return m_critical;
+    }
+
     double getDurationInHour(){
         return m_duration/60;
     }
@@ -97,6 +110,31 @@ public:
         return this->getNumAssigned() < m_numPeopleWanted;
     }
 
+    bool operator<(const Slot& other) const{
+        return m_dayIndex < other.getIndex()[0] && m_slotIndex < other.getIndex()[1];
+    };
+
+    bool operator==(const Slot& other) const{
+        return m_dayIndex == other.getIndex()[0] && m_slotIndex == other.getIndex()[1];
+    };
+
+};
+
+template <>
+struct std::hash<Slot>
+{
+  std::size_t operator()(const Slot& s) const
+  {
+    using std::size_t;
+    using std::hash;
+
+    // Compute individual hash values for first,
+    // second and third and combine them using XOR
+    // and bit shifting:
+
+    return ((hash<int>()(s.getIndex()[0])
+             ^ (hash<int>()(s.getIndex()[1]) << 1)) >> 1);
+  }
 };
 
 #endif
