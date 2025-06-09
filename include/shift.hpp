@@ -72,9 +72,26 @@ public:
                 int dayI {getDayOfWeek(startTime)};
                 int slotI {static_cast<int>(m_shiftMatrix[dayI].size())};
                 Slot s {dayI, slotI, startTime, endTime};
-                if(row[titleIndex] == "*"){
+                size_t markPos {row[titleIndex].find("*") };
+                if(markPos != std::string::npos){
                     s.cancelCritical();
+                    //std::cout<<row[titleIndex]<<" ";
+                    row[titleIndex].erase(markPos, 1);
+                    //std::cout<<row[titleIndex]<<"\n";
+                
                 }
+                try
+                {
+                    int numPeopleWanted {std::stoi(row[titleIndex])};
+                    s.setNumPeopleWanted(numPeopleWanted);
+
+                }
+                catch(const std::invalid_argument& e)
+                {
+                    std::cerr << e.what() << "manager comment on number of needed people invalid" << '\n';
+                    continue;
+                }
+                
                 m_shiftMatrix[dayI].push_back(s);
             }else{
                 this->addPerson(row[personIndex]);

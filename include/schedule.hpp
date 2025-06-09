@@ -38,7 +38,7 @@ public:
             if(currentSlot.getNumPeopleAvailable() < 1){
                 continue;
             }
-            //for(currentSlot.)
+            
 
 
         }
