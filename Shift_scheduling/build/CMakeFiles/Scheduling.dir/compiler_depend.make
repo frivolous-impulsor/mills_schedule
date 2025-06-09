@@ -1092,7 +1092,7 @@ CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.o: /Users/machine_1997/Pro
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp
 
-CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp \
+CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.o: /Users/machine_1997/Program/Shift_scheduling/tests/scheduleTest.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -2102,17 +2102,22 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/machine_1997/Program/Shift_scheduling/src/indexPriorityQueue.tpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/indexPriorityQueue.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/shift.hpp \
   /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp \
-  /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp
+  /Users/machine_1997/Program/Shift_scheduling/include/worker.hpp \
+  /Users/machine_1997/Program/Shift_scheduling/include/catch_amalgamated.hpp \
+  /Users/machine_1997/Program/Shift_scheduling/include/schedule.hpp
 
+
+/Users/machine_1997/Program/Shift_scheduling/include/schedule.hpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/slot.hpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/indexPriorityQueue.hpp:
+
+/Users/machine_1997/Program/Shift_scheduling/tests/scheduleTest.cpp:
 
 /Users/machine_1997/Program/Shift_scheduling/include/commonFunctions.hpp:
 
@@ -3431,8 +3436,6 @@ CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o: /Users/machine_1997/Program/Shi
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_final.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_result.h:
-
-/Users/machine_1997/Program/Shift_scheduling/tests/shiftTest.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
 

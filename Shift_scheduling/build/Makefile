@@ -527,29 +527,29 @@ tests/catch_amalgamated.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 .PHONY : tests/catch_amalgamated.cpp.s
 
-tests/shiftTest.o: tests/shiftTest.cpp.o
-.PHONY : tests/shiftTest.o
+tests/scheduleTest.o: tests/scheduleTest.cpp.o
+.PHONY : tests/scheduleTest.o
 
 # target to build an object file
-tests/shiftTest.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.o
-.PHONY : tests/shiftTest.cpp.o
+tests/scheduleTest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.o
+.PHONY : tests/scheduleTest.cpp.o
 
-tests/shiftTest.i: tests/shiftTest.cpp.i
-.PHONY : tests/shiftTest.i
+tests/scheduleTest.i: tests/scheduleTest.cpp.i
+.PHONY : tests/scheduleTest.i
 
 # target to preprocess a source file
-tests/shiftTest.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.i
-.PHONY : tests/shiftTest.cpp.i
+tests/scheduleTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.i
+.PHONY : tests/scheduleTest.cpp.i
 
-tests/shiftTest.s: tests/shiftTest.cpp.s
-.PHONY : tests/shiftTest.s
+tests/scheduleTest.s: tests/scheduleTest.cpp.s
+.PHONY : tests/scheduleTest.s
 
 # target to generate assembly for a file
-tests/shiftTest.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/shiftTest.cpp.s
-.PHONY : tests/shiftTest.cpp.s
+tests/scheduleTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.s
+.PHONY : tests/scheduleTest.cpp.s
 
 # Help Target
 help:
@@ -592,9 +592,9 @@ help:
 	@echo "... tests/catch_amalgamated.o"
 	@echo "... tests/catch_amalgamated.i"
 	@echo "... tests/catch_amalgamated.s"
-	@echo "... tests/shiftTest.o"
-	@echo "... tests/shiftTest.i"
-	@echo "... tests/shiftTest.s"
+	@echo "... tests/scheduleTest.o"
+	@echo "... tests/scheduleTest.i"
+	@echo "... tests/scheduleTest.s"
 .PHONY : help
 
 

@@ -20,13 +20,12 @@ private:
     std::unordered_map<std::string, int> m_nameID {};
     std::unordered_map<int, std::string> m_IDname {};
     std::vector<Worker> m_staffs {};
-    IndexPriorityQueue<Slot> m_densityQueue {false};
     int m_newId {0};
     tp m_startingDate {};
 
 public:
     Shift(tp startingDate): m_startingDate {startingDate}
-    {};
+    {srand(time(0));};
 
     int addPerson(const std::string name){
         if(m_nameID.find(name) != m_nameID.end()){
@@ -123,17 +122,6 @@ public:
         }
     }
 
-    void setDensity(){
-        for(int i {0}; i < m_shiftMatrix.size(); ++i){
-            for(int j {0}; j < m_shiftMatrix[i].size(); ++j){
-                int numAvailable {static_cast<int>(m_shiftMatrix[i][j].getPeopleAvailable().size())};
-                m_densityQueue.insert(m_shiftMatrix[i][j], numAvailable);
-            }
-        }
-        while(!m_densityQueue.empty()){
-            std::cout<<m_densityQueue.pop().getPeopleAvailable().size()<<" ";
-        }
-    }
 
     
 
