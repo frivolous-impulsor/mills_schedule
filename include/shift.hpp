@@ -111,7 +111,7 @@ public:
                 for(auto& slot: this->getShiftMatrix()[dayI]){
                     if(isCovered(slot.getInterval(), currentInterval)){
                         if(row[titleIndex] == "*"){
-                            slot.addAvailablePersonID(getID(row[personIndex]), 1);
+                            slot.addAvailablePersonID(getID(row[personIndex]), false);
                         }else{
                             slot.addAvailablePersonID(getID(row[personIndex]));
                         }

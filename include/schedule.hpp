@@ -8,7 +8,7 @@
 
 class Schedule{
 private:
-    IndexPriorityQueue<Slot> m_densityQueue {false};
+    IndexPriorityQueue<Slot> m_slotQueue {false};
 
 public:
     Schedule()
@@ -26,17 +26,22 @@ public:
                     dragWeight = rand()%9 + 1;
                 }
                 
-                m_densityQueue.insert(shift.getShiftMatrix()[i][j], numAvailable+dragWeight);
+                m_slotQueue.insert(shift.getShiftMatrix()[i][j], numAvailable+dragWeight);
             }
-        }
-        while(!m_densityQueue.empty()){
-            std::cout<<m_densityQueue.pop().getPeopleAvailable().size()<<" ";
         }
     }
 
     
     void schedule(){
+        while(!m_slotQueue.empty()){
+            Slot currentSlot {m_slotQueue.pop()};
+            if(currentSlot.getNumPeopleAvailable() < 1){
+                continue;
+            }
+            //for(currentSlot.)
 
+
+        }
     }
     
 };
