@@ -83,7 +83,7 @@ public:
     int getNumPeopleAvailable(){
         return static_cast<int>(m_peopleAvailableID.size());
     }
-
+    
     void assignPersonID(int id){
         if(m_peopleAvailableID.find({id, true}) != m_peopleAvailableID.end() || m_peopleAvailableID.find({id, false}) != m_peopleAvailableID.end()){
             m_peopleAssignedID.insert(id);

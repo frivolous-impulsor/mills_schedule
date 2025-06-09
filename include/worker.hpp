@@ -47,6 +47,20 @@ public:
         return m_allocatedHours;
     }
 
+    double getHoursDiff(){
+        try
+        {
+            double hoursDiff {m_desiredHours-m_allocatedHours};   //positive if desire more hours, negative if allocated for than needed
+            return hoursDiff;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << "fail to set positive desired hours for some staffs before calculating hour difference between desired and allocated" << '\n';
+            return 0;
+        }
+        
+    }
+
     double getAllocatedPreferedHours(){
         return m_allocatedPreferedHours;
     }

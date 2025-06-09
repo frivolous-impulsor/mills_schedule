@@ -25,7 +25,7 @@ private:
 
 public:
     Shift(tp startingDate): m_startingDate {startingDate}
-    {srand(time(0));};
+    {};
 
     int addPerson(const std::string name){
         if(m_nameID.find(name) != m_nameID.end()){
@@ -101,7 +101,14 @@ public:
         }
     }
 
+    void setStaffHours(){
+        for(Worker& w: m_staffs){
+            w.setDesiredHours(10);
+        }
+    }
+
     void fillStaff(const stringMatrix& mat, std::string& manager){
+        this->setStaffHours();
         while(m_shiftMatrix.size() < 7){
             std::vector<Slot> emptyDay {};
             m_shiftMatrix.push_back(emptyDay);
@@ -144,6 +151,10 @@ public:
 
     std::vector<std::vector<Slot>>& getShiftMatrix(){
         return m_shiftMatrix;
+    }
+
+    std::vector<Worker>& getStaffs(){
+        return m_staffs;
     }
 };
 

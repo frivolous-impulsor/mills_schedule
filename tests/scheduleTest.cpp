@@ -14,7 +14,7 @@ TEST_CASE("main", "[main]"){
         s.fillStaff(mat, manager);
         Schedule schedule {};
         schedule.setDensity(s);
-        schedule.schedule();
+        schedule.schedule(s);
         
     }
 }
