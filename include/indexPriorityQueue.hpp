@@ -14,16 +14,16 @@ public:
     int getSize();
     bool empty();
     double getValue(T content);
-    void insert(T content, double value);
-    T peek();
-    T pop();
+    void insert(T& content, double value);
+    T& peek();
+    T& pop();
     void update(T content, double newVal);
 
     //regardless max or min priority queue, the value of content will be added with incrementation
     //that is, if incrementation is positive, value increase; incrementation is negative, value decrease
     void increment(T content, double incrementation);
 
-    bool inQueue(T content);
+    bool inQueue(T& content);
 
 
 

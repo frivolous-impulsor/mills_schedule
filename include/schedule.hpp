@@ -37,8 +37,12 @@ public:
             workedIDInDays.push_back({});
         }
         while(!m_slotQueue.empty()){
-            Slot currentSlot {m_slotQueue.pop()};
-            if(currentSlot.getNumPeopleAvailable() < 1){continue;}
+
+            Slot currentSlot {m_slotQueue.peek()};
+            if(currentSlot.getNumPeopleAvailable() < 1){
+                m_slotQueue.pop();
+                continue;
+            }
 
             const int dayIndex {currentSlot.getIndex()[0]};
 
@@ -61,7 +65,15 @@ public:
                 const double score {hoursDiff * hoursDiffWeight + prefer * preferWeight - workedToday * workedTodayWeight };
 
                 properStaff.insert(id, score);
+                
             }
+            int selectedID {properStaff.pop()};
+            std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
+            currentSlot.assignPersonID(selectedID);
+            std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
+            m_slotQueue.increment(currentSlot, -1);
+
+            
         
         }
     }

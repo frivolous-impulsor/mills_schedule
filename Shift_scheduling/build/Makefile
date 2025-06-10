@@ -527,29 +527,29 @@ tests/catch_amalgamated.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/catch_amalgamated.cpp.s
 .PHONY : tests/catch_amalgamated.cpp.s
 
-tests/scheduleTest.o: tests/scheduleTest.cpp.o
-.PHONY : tests/scheduleTest.o
+tests/unitTestsIndexPQ.o: tests/unitTestsIndexPQ.cpp.o
+.PHONY : tests/unitTestsIndexPQ.o
 
 # target to build an object file
-tests/scheduleTest.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.o
-.PHONY : tests/scheduleTest.cpp.o
+tests/unitTestsIndexPQ.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/unitTestsIndexPQ.cpp.o
+.PHONY : tests/unitTestsIndexPQ.cpp.o
 
-tests/scheduleTest.i: tests/scheduleTest.cpp.i
-.PHONY : tests/scheduleTest.i
+tests/unitTestsIndexPQ.i: tests/unitTestsIndexPQ.cpp.i
+.PHONY : tests/unitTestsIndexPQ.i
 
 # target to preprocess a source file
-tests/scheduleTest.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.i
-.PHONY : tests/scheduleTest.cpp.i
+tests/unitTestsIndexPQ.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/unitTestsIndexPQ.cpp.i
+.PHONY : tests/unitTestsIndexPQ.cpp.i
 
-tests/scheduleTest.s: tests/scheduleTest.cpp.s
-.PHONY : tests/scheduleTest.s
+tests/unitTestsIndexPQ.s: tests/unitTestsIndexPQ.cpp.s
+.PHONY : tests/unitTestsIndexPQ.s
 
 # target to generate assembly for a file
-tests/scheduleTest.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/scheduleTest.cpp.s
-.PHONY : tests/scheduleTest.cpp.s
+tests/unitTestsIndexPQ.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scheduling.dir/build.make CMakeFiles/Scheduling.dir/tests/unitTestsIndexPQ.cpp.s
+.PHONY : tests/unitTestsIndexPQ.cpp.s
 
 # Help Target
 help:
@@ -592,9 +592,9 @@ help:
 	@echo "... tests/catch_amalgamated.o"
 	@echo "... tests/catch_amalgamated.i"
 	@echo "... tests/catch_amalgamated.s"
-	@echo "... tests/scheduleTest.o"
-	@echo "... tests/scheduleTest.i"
-	@echo "... tests/scheduleTest.s"
+	@echo "... tests/unitTestsIndexPQ.o"
+	@echo "... tests/unitTestsIndexPQ.i"
+	@echo "... tests/unitTestsIndexPQ.s"
 .PHONY : help
 
 

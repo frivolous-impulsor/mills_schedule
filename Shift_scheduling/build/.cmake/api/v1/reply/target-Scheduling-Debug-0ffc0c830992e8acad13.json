@@ -106,7 +106,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "tests/scheduleTest.cpp",
+			"path" : "tests/unitTestsIndexPQ.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

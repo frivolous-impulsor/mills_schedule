@@ -60,6 +60,7 @@
         "iomanip": "cpp",
         "queue": "cpp",
         "regex": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "*.tpp": "cpp"
     }
 }

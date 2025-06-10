@@ -29,7 +29,7 @@ double IndexPriorityQueue<T>::getValue(T content){
 }
 
 template <typename T>
-void IndexPriorityQueue<T>::insert(T content, double value){
+void IndexPriorityQueue<T>::insert(T& content, double value){
     if(m_content2index.find(content) != m_content2index.end()){
         this->update(content, value);
         return;
@@ -65,7 +65,7 @@ void IndexPriorityQueue<T>::insert(T content, double value){
 }
 
 template <typename T>
-T IndexPriorityQueue<T>::peek(){
+T& IndexPriorityQueue<T>::peek(){
     if(this->empty()){
         throw std::underflow_error("priority queue empty, cannot peek");
     }
@@ -75,13 +75,13 @@ T IndexPriorityQueue<T>::peek(){
 }
 
 template <typename T>
-T IndexPriorityQueue<T>::pop(){
+T& IndexPriorityQueue<T>::pop(){
     if(this->empty()){
         throw std::underflow_error("priority queue empty, cannot pop");
     }
 
     int key {m_inverseMap[0]};
-    T content{m_content[key]};
+    T& content{m_content[key]};
 
     int iLastItem {this->getSize() - 1};
     this->swap(0, iLastItem);
@@ -179,6 +179,6 @@ void IndexPriorityQueue<T>::sink(int position){
 }
 
 template <typename T>
-bool IndexPriorityQueue<T>::inQueue(T content){
+bool IndexPriorityQueue<T>::inQueue(T& content){
     return (m_content2index.find(content) != m_content2index.end());
 }
