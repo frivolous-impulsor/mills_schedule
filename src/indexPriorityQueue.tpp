@@ -1,25 +1,25 @@
 template <typename T>
-IndexPriorityQueue<T>::IndexPriorityQueue(bool isMax):
+IndexPriorityQueue<T>::IndexPriorityQueue(const bool isMax):
     m_isMax {isMax}
 {}
 
 template <typename T>
-bool IndexPriorityQueue<T>::isMax(){
+bool IndexPriorityQueue<T>::isMax() const{
     return m_isMax;
 }
 
 template <typename T>
-int IndexPriorityQueue<T>::getSize(){
+int IndexPriorityQueue<T>::getSize() const {
     return m_size;
 }
 
 template <typename T>
-bool IndexPriorityQueue<T>::empty(){
+bool IndexPriorityQueue<T>::empty() const{
     return m_size < 1;
 }
 
 template <typename T>
-double IndexPriorityQueue<T>::getValue(T content){
+double IndexPriorityQueue<T>::getValue(const T& content){
     if(m_content2index.find(content) == m_content2index.end()){
         throw std::invalid_argument("no such content in priority queue");
     }
@@ -29,7 +29,7 @@ double IndexPriorityQueue<T>::getValue(T content){
 }
 
 template <typename T>
-void IndexPriorityQueue<T>::insert(T& content, double value){
+void IndexPriorityQueue<T>::insert(const T& content, double value){
     if(m_content2index.find(content) != m_content2index.end()){
         this->update(content, value);
         return;
@@ -96,7 +96,7 @@ T& IndexPriorityQueue<T>::pop(){
 }
 
 template <typename T>
-void IndexPriorityQueue<T>::update(T content, double newVal){
+void IndexPriorityQueue<T>::update(const T& content, double newVal){
 
     if(m_content2index.find(content) == m_content2index.end()){
         return;
@@ -116,7 +116,7 @@ void IndexPriorityQueue<T>::update(T content, double newVal){
 }
 
 template <typename T>
-void IndexPriorityQueue<T>::increment(T content, double incrementation){
+void IndexPriorityQueue<T>::increment(const T& content, double incrementation){
     if(m_content2index.find(content) == m_content2index.end()){
         return;
     }
@@ -179,6 +179,6 @@ void IndexPriorityQueue<T>::sink(int position){
 }
 
 template <typename T>
-bool IndexPriorityQueue<T>::inQueue(T& content){
+bool IndexPriorityQueue<T>::inQueue(const T& content){
     return (m_content2index.find(content) != m_content2index.end());
 }

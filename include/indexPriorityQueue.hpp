@@ -9,21 +9,21 @@
 template <typename T>
 class IndexPriorityQueue{
 public:
-    IndexPriorityQueue(bool isMax = true);
-    bool isMax();
-    int getSize();
-    bool empty();
-    double getValue(T content);
-    void insert(T& content, double value);
+    IndexPriorityQueue(const bool isMax = true);
+    bool isMax() const;
+    int getSize() const;
+    bool empty() const;
+    double getValue(const T& content);
+    void insert(const T& content, double value);
     T& peek();
     T& pop();
-    void update(T content, double newVal);
+    void update(const T& content, double newVal);
 
     //regardless max or min priority queue, the value of content will be added with incrementation
     //that is, if incrementation is positive, value increase; incrementation is negative, value decrease
-    void increment(T content, double incrementation);
+    void increment(const T& content, double incrementation);
 
-    bool inQueue(T& content);
+    bool inQueue(const T& content);
 
 
 

@@ -66,7 +66,7 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         
         REQUIRE(q.peek() == 22);
 
-        q.update(22, 3);
+        q.update(ids[3], 3);
         REQUIRE(q.peek() == 45);
 
     }
@@ -82,8 +82,8 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         
         REQUIRE(q.peek() == 445);
 
-        q.update(445, 3);
-        q.update(45, -5);
+        q.update(ids[1], 3);
+        q.update(ids[4], -5);
         REQUIRE(q.peek() == 45);
 
     }
@@ -101,7 +101,7 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         
 
         REQUIRE(q.peek() == 3414);
-        REQUIRE(q.getValue(3414) == 3+221);
+        REQUIRE(q.getValue(ids[2]) == 3+221);
     }
 
     SECTION("increment negative number"){
@@ -113,11 +113,11 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         q.insert(ids[3], 221);
         q.insert(ids[4], 4);
         
-        q.increment(22, -220);
+        q.increment(ids[3], -220);
         
 
         REQUIRE(q.peek() == 45);
-        REQUIRE(q.getValue(22) == 1);
+        REQUIRE(q.getValue(ids[3]) == 1);
     }
 
     SECTION("increment minPQ"){
@@ -147,9 +147,9 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         q.insert(ids[3], 221);
         q.insert(ids[4], 4);
         
-        REQUIRE(q.getValue(3414) == 3);
-        q.update(3414, 90);
-        REQUIRE(q.getValue(3414) == 90);
+        REQUIRE(q.getValue(ids[2]) == 3);
+        q.update(ids[2], 90);
+        REQUIRE(q.getValue(ids[2]) == 90);
 
     }
 
@@ -207,7 +207,7 @@ TEST_CASE("index priority queue", "[Index PQ]"){
         REQUIRE(q.pop() == 11);
         q.insert(ids[6], 0);
         REQUIRE(q.pop() == 223);
-        q.update(9, 2);
+        q.update(ids[4], 2);
         REQUIRE(q.pop() == 9);
     }
 
@@ -231,7 +231,7 @@ TEST_CASE("index priority queue", "[Index PQ]"){
 
         q.insert(ids[6], 0);
         REQUIRE(q.pop() == 223);
-        q.update(9, 2);
+        q.update(ids[4], 2);
 
         REQUIRE(q.inQueue(ids[4]));
         REQUIRE(q.pop() == 9);
