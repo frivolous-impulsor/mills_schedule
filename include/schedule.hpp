@@ -38,8 +38,9 @@ public:
         }
         while(!m_slotQueue.empty()){
 
-            Slot currentSlot {m_slotQueue.peek()};
+            Slot& currentSlot {m_slotQueue.peek()};
             if(currentSlot.getNumPeopleAvailable() < 1){
+                std::cout<<"popped\n";
                 m_slotQueue.pop();
                 continue;
             }
@@ -68,10 +69,11 @@ public:
                 
             }
             int selectedID {properStaff.pop()};
-            std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
+            //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             currentSlot.assignPersonID(selectedID);
-            std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
+            //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             m_slotQueue.increment(currentSlot, -1);
+
 
             
         
