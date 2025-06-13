@@ -31,7 +31,7 @@ private:
     bool m_isMax {true};
     int m_size {0};
     std::vector<double> m_values {};
-    std::vector<T> m_content {};
+    std::vector<const T*> m_content {};
     std::unordered_map<T, int> m_content2index {};
     std::vector<int> m_positionMap {};
     std::vector<int> m_inverseMap {};

@@ -44,7 +44,7 @@ void IndexPriorityQueue<T>::insert(const T& content, double value){
         //popped, newly inserted element will inherit the key of the element just beyond the queue size
         int key {m_inverseMap[queueSize]};
         m_values[key] = (this->isMax()) ? value : -value;
-        m_content[key] = content;
+        m_content[key] = &content;
         m_content2index[content] = key;
 
 
@@ -55,7 +55,7 @@ void IndexPriorityQueue<T>::insert(const T& content, double value){
         }else{
             m_values.push_back(-value);
         }
-        m_content.push_back(content);
+        m_content.push_back(&content);
         m_content2index[content] = queueSize;
         m_inverseMap.push_back(queueSize);
         m_positionMap.push_back(queueSize);
@@ -71,7 +71,7 @@ T& IndexPriorityQueue<T>::peek(){
     }
 
     int key {m_inverseMap[0]};
-    return m_content[key];
+    return const_cast<T&>(*m_content[key]);
 }
 
 template <typename T>
@@ -81,7 +81,7 @@ T& IndexPriorityQueue<T>::pop(){
     }
 
     int key {m_inverseMap[0]};
-    T& content{m_content[key]};
+    const T& content{*m_content[key]};
 
     int iLastItem {this->getSize() - 1};
     this->swap(0, iLastItem);
@@ -92,7 +92,7 @@ T& IndexPriorityQueue<T>::pop(){
         this->sink(0);
     }
 
-    return content;
+    return const_cast<T&>(content);
 }
 
 template <typename T>

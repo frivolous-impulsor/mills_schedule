@@ -40,7 +40,7 @@ public:
 
             Slot& currentSlot {m_slotQueue.peek()};
             if(currentSlot.getNumPeopleAvailable() < 1){
-                std::cout<<"popped\n";
+                //std::cout<<"popped\n";
                 m_slotQueue.pop();
                 continue;
             }
@@ -56,7 +56,7 @@ public:
             //according to (hours deviance, worked that day, preference)
             IndexPriorityQueue<int> properStaff {};    //max pq determine which staff gets the slot first
             for(std::tuple<int, bool> id_pref: currentSlot.getPeopleAvailable()){
-                const int id {std::get<0>(id_pref)};
+                int id {std::get<0>(id_pref)};
                 const int prefer = (std::get<1>(id_pref))? 1 : 0;
                 const double hoursDiff {shift.getStaffs()[ id ].getHoursDiff() };
                 const int workedToday = (workedIDInDays[dayIndex].find(id) != workedIDInDays[dayIndex].end())? 1 : 0;
@@ -68,9 +68,10 @@ public:
                 properStaff.insert(id, score);
                 
             }
-            int selectedID {properStaff.pop()};
+            const int selectedID {properStaff.pop()};
             //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             currentSlot.assignPersonID(selectedID);
+            //std::cout<<currentSlot.getNumAssigned();
             //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             m_slotQueue.increment(currentSlot, -1);
 
@@ -78,8 +79,22 @@ public:
             
         
         }
+
+        
     }
     
+    void printResult(Shift& shift){
+        for(auto& row: shift.getShiftMatrix()){
+            for(Slot& slot: row){
+                std::cout<<"[";
+                for(int id: slot.getPeopleAssigned()){
+                    std::cout<< shift.getPerson(id) <<",";
+                }
+                std::cout<<"]";
+            }
+            std::cout<<'\n';
+        }
+    }
 };
 
 

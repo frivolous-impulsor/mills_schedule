@@ -3,10 +3,10 @@
 
 TEST_CASE("main", "[main]"){
     SECTION("null"){
-        std::string timeString {"5/30/2025 8:30 PM"};
+        std::string timeString {"6/7/2025 1:30 AM"};
         std::string timeFormat      {"%m/%d/%Y %H:%M %p"};
         tp tp1 {parseDateTime(timeString, timeFormat)};
-        std::string filename {"../../timeSheetShiftTest.csv"};
+        std::string filename {"../../timeSheetScheduleTest.csv"};
         std::string manager {"Oliver Li"};
         stringMatrix mat {readCSV(filename)};
         Shift s {tp1};
@@ -15,6 +15,7 @@ TEST_CASE("main", "[main]"){
         Schedule schedule {};
         schedule.setDensity(s);
         schedule.schedule(s);
+        schedule.printResult(s);
         
     }
 }
