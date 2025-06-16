@@ -9,6 +9,8 @@
 class Schedule{
 private:
     IndexPriorityQueue<Slot> m_slotQueue {false};
+    int m_maxScore {0};
+
 
 public:
     Schedule()
@@ -82,6 +84,16 @@ public:
 
         
     }
+  
+    void arrange(Shift& shift){
+        for(int i {0}; i<3000; ++i){
+            Shift currentShift {shift};
+            this->setDensity(shift);
+            this->schedule(shift);
+            int thisScore {0};
+            m_maxScore = std::max(thisScore, m_maxScore);
+        }
+    }
     
     void printResult(Shift& shift){
         for(auto& row: shift.getShiftMatrix()){
@@ -95,6 +107,8 @@ public:
             std::cout<<'\n';
         }
     }
+
+
 };
 
 
