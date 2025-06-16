@@ -23,7 +23,9 @@ private:
     int m_newId {0};
     tp m_startingDate {};
 
+
 public:
+
     Shift(tp startingDate): m_startingDate {startingDate}
     {};
 

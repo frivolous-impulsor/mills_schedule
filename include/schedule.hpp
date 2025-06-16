@@ -85,11 +85,12 @@ public:
         
     }
   
+
     void arrange(Shift& shift){
-        for(int i {0}; i<3000; ++i){
-            Shift currentShift {shift};
-            this->setDensity(shift);
-            this->schedule(shift);
+        for(int i {0}; i<10; ++i){
+            Shift copyShift = shift;
+            this->setDensity(copyShift);
+            this->schedule(copyShift);
             int thisScore {0};
             m_maxScore = std::max(thisScore, m_maxScore);
         }
