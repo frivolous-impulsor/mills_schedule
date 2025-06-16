@@ -136,7 +136,7 @@ public:
                 std::vector<tp> currentInterval {startTime, endTime};
                 for(auto& slot: this->getShiftMatrix()[dayI]){
                     if(isCovered(slot.getInterval(), currentInterval)){
-                        if(row[titleIndex] == "*"){
+                        if(row[titleIndex].find("*") != std::string::npos){
                             slot.addAvailablePersonID(getID(row[personIndex]), false);
                         }else{
                             slot.addAvailablePersonID(getID(row[personIndex]));
@@ -148,6 +148,25 @@ public:
         }
     }
 
+    double getCoverageRate(){
+        int totalSlots {0};
+        int coveredSlots {0};
+        for(auto day: m_shiftMatrix){
+            for(Slot& slot: day){
+                totalSlots += slot.getNumPeopleWanted();
+                coveredSlots += slot.getNumAssigned();
+            }
+        }
+        double rate {static_cast<double>(coveredSlots)/totalSlots};
+        return rate;
+    }
+
+    /*
+    double getPreferenceRate(){
+        int totalAssigned {0};
+        int preferAssigned {0};
+    }
+*/
 
     
 

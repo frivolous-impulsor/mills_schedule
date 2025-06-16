@@ -39,6 +39,8 @@ TEST_CASE("worker class basic functions", "[worker]"){
         {
             REQUIRE(true);
         }
+
+    
         
     }
 

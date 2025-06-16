@@ -62,6 +62,7 @@ public:
                 const int prefer = (std::get<1>(id_pref))? 1 : 0;
                 const double hoursDiff {shift.getStaffs()[ id ].getHoursDiff() };
                 const int workedToday = (workedIDInDays[dayIndex].find(id) != workedIDInDays[dayIndex].end())? 1 : 0;
+                //std::cout<<workedToday<<" ";
                 
                 //each criterion is weighted. Higher hoursDiff, is preferred should have higher probability of getting picked
                 //whereas if worked that day already, then lower probability
@@ -70,9 +71,22 @@ public:
                 properStaff.insert(id, score);
                 
             }
+            
             const int selectedID {properStaff.pop()};
+            
+            std::tuple<int, bool> test {selectedID, true};
+
+            const bool prefer = (currentSlot.getPeopleAvailable().find(test) != currentSlot.getPeopleAvailable().end());
+
+            //std::cout << "Prefers = " << prefer << "\n\n\n";
+
+
+            //const bool prefer {(currentSlot.getPeopleAvailable().find(test) != currentSlot.getPeopleAvailable().end())};
+            //std::cout<<prefer<<'\n';
             //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             currentSlot.assignPersonID(selectedID);
+            workedIDInDays[dayIndex].insert(selectedID);
+            shift.getStaffs()[selectedID].allocatHours(currentSlot.getDurationInHour(), prefer);
             //std::cout<<currentSlot.getNumAssigned();
             //std::cout<<currentSlot.getNumPeopleAvailable()<<"\n";
             m_slotQueue.increment(currentSlot, -1);
@@ -82,7 +96,6 @@ public:
         
         }
 
-        
     }
   
 

@@ -10,6 +10,8 @@
 #include <chrono>
 #include "commonFunctions.hpp"
 
+
+
 class Slot{
 private:
     int m_dayIndex {};
@@ -76,7 +78,7 @@ public:
     //by default 
 
 
-    std::set<std::tuple<int, bool>> getPeopleAvailable(){
+    std::set<std::tuple<int, bool>>& getPeopleAvailable(){
         return m_peopleAvailableID;
     }
 

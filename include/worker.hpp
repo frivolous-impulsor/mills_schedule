@@ -27,7 +27,7 @@ public:
         ,m_allocatedHours {0}
         {}
 
-    std::string getName(){
+    std::string& getName(){
         return m_name;
     }
 
